@@ -21,7 +21,7 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="font-serif text-2xl font-bold tracking-tight">Designer Directory</span>
+            <span className="font-serif text-2xl font-bold tracking-tight">Afrispiration</span>
           </Link>
 
           {/* Desktop Navigation */}

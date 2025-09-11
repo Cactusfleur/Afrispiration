@@ -1,6 +1,7 @@
 export interface Designer {
   id: string
   name: string
+  slug: string
   bio?: string
   location?: string
   website_url?: string
@@ -8,11 +9,17 @@ export interface Designer {
   email?: string
   phone?: string
   image_url?: string
+  category?: string
+  subcategory?: string
+  cover_image?: string
   specialties?: string[]
+  featured?: boolean
   years_experience?: number
-  price_range?: string
-  sustainability_rating?: number
-  featured: boolean
+  is_sustainable: boolean
+  country_of_design?: string
+  made_in_country?: string
+  portfolio_images?: string[]
+  is_featured: boolean
   status: "active" | "inactive" | "pending"
   created_at: string
   updated_at: string
