@@ -4,7 +4,7 @@ import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Designer } from "@/lib/types"
-import { getDesignerSlug } from "@/lib/designers"
+import { getDesignerSlug } from "@/lib/utils/designer-utils"
 import { MapPin, ExternalLink, Instagram } from "lucide-react"
 
 interface DesignerCardProps {

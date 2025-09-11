@@ -59,9 +59,4 @@ export async function getFeaturedDesigners(limit = 6): Promise<Designer[]> {
   return getDesigners({ featured: true, limit })
 }
 
-export function getDesignerSlug(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "")
-}
+// Export getDesignerSlug from utils instead
