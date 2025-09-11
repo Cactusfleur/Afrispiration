@@ -42,9 +42,10 @@ export default function DesignersPage() {
 
   const handleFiltersChange = (filters: {
     search: string
-    specialty: string
-    location: string
-    priceRange: string
+    category: string
+    subcategory: string
+    designerLocation: string
+    productionLocation: string
     sustainability: boolean
   }) => {
     let filtered = [...designers]
@@ -60,24 +61,33 @@ export default function DesignersPage() {
       )
     }
 
-    // Specialty filter
-    if (filters.specialty) {
-      filtered = filtered.filter((designer) => designer.specialties?.includes(filters.specialty))
+    // Category filter
+    if (filters.category) {
+      filtered = filtered.filter((designer) => designer.category === filters.category)
     }
 
-    // Location filter
-    if (filters.location) {
-      filtered = filtered.filter((designer) => designer.location?.includes(filters.location))
+    // Subcategory filter
+    if (filters.subcategory) {
+      filtered = filtered.filter((designer) => designer.subcategory === filters.subcategory)
     }
 
-    // Price range filter
-    if (filters.priceRange) {
-      filtered = filtered.filter((designer) => designer.price_range === filters.priceRange)
+    // Designer location filter
+    if (filters.designerLocation) {
+      filtered = filtered.filter((designer) =>
+        designer.location?.toLowerCase().includes(filters.designerLocation.toLowerCase()),
+      )
+    }
+
+    // Production location filter
+    if (filters.productionLocation) {
+      filtered = filtered.filter((designer) =>
+        designer.made_in_country?.toLowerCase().includes(filters.productionLocation.toLowerCase()),
+      )
     }
 
     // Sustainability filter
     if (filters.sustainability) {
-      filtered = filtered.filter((designer) => designer.sustainability_rating && designer.sustainability_rating >= 4)
+      filtered = filtered.filter((designer) => designer.is_sustainable === true)
     }
 
     setFilteredDesigners(filtered)
@@ -119,9 +129,10 @@ export default function DesignersPage() {
         <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              {/* Filters Sidebar */}
               <div className="lg:col-span-1">
-                <DesignerFilters onFiltersChange={handleFiltersChange} />
+                <div className="sticky top-16">
+                  <DesignerFilters onFiltersChange={handleFiltersChange} />
+                </div>
               </div>
 
               {/* Results */}
