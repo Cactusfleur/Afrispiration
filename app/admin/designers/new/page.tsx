@@ -13,7 +13,8 @@ import { Button } from "@/components/ui/button"
 const designerFields = [
   { name: "name", label: "Designer Name", type: "text" as const, required: true },
   { name: "bio", label: "Biography", type: "textarea" as const, placeholder: "Tell us about the designer..." },
-  { name: "location", label: "Location", type: "text" as const, placeholder: "City, Country" },
+  { name: "designer_location", label: "Designer Country", type: "text" as const, placeholder: "City, Country" },
+  { name: "production_location", label: "Production Country", type: "text" as const, placeholder: "City, Country" },
   { name: "website_url", label: "Website URL", type: "text" as const, placeholder: "https://..." },
   { name: "instagram_url", label: "Instagram URL", type: "text" as const, placeholder: "https://instagram.com/..." },
   { name: "email", label: "Email", type: "email" as const },

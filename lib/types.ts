@@ -4,6 +4,7 @@ export interface Designer {
   slug: string
   bio?: string
   location?: string
+  production_location?: string
   website_url?: string
   instagram_url?: string
   email?: string
@@ -13,7 +14,6 @@ export interface Designer {
   subcategory?: string
   cover_image?: string
   is_sustainable: boolean
-  made_in_country?: string
   portfolio_images?: string[]
   is_featured: boolean
   status: "active" | "inactive" | "pending"

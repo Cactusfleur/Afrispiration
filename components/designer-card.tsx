@@ -30,11 +30,11 @@ export function DesignerCard({ designer }: DesignerCardProps) {
             <div className="flex items-center gap-2 mb-2 flex-wrap">
               {designer.is_sustainable && <SustainabilityIcon />}
 
-              {designer.made_in_country && (
+              {designer.production_location && (
                 <div className="flex items-center gap-1  text-muted-foreground text-sm">
                   Made in
                   <MapPin className="h-3 w-3" />
-                  <span>{designer.made_in_country}</span>
+                  <span>{designer.production_location}</span>
                 </div>
               )}
 

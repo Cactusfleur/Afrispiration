@@ -64,7 +64,7 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
 
               {/* Verification and Award Icons */}
               <div className="flex items-center justify-center gap-4 mb-6">
-                {designer.featured && (
+                {designer.is_featured && (
                   <div className="flex items-center gap-1">
                     <CheckCircle className="h-5 w-5 text-blue-500" />
                     <span className="text-xs text-muted-foreground">Verified</span>
@@ -115,14 +115,14 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   <h1 className="font-serif text-3xl font-bold mb-6">{designer.name}</h1>
                 </div>
 
-                {designer.made_in_country && (
+                {designer.production_location && (
                   <div>
                     <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
                       PRODUCTION LOCATION
                     </h3>
                     <div className="flex items-center gap-2">
                       <Factory className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground">{designer.made_in_country}</span>
+                      <span className="text-foreground">{designer.production_location}</span>
                     </div>
                   </div>
                 )}
@@ -159,17 +159,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   </div>
                 )}
 
-                {designer.years_experience && (
-                  <div>
-                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
-                      YEAR LAUNCHED
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground">{new Date().getFullYear() - designer.years_experience}</span>
-                    </div>
-                  </div>
-                )}
 
                 {/* Social Links */}
                 <div>

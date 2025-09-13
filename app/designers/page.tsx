@@ -80,7 +80,7 @@ export default function DesignersPage() {
     // Production location filter
     if (filters.productionLocation) {
       filtered = filtered.filter((designer) =>
-        designer.made_in_country?.toLowerCase().includes(filters.productionLocation.toLowerCase()),
+        designer.production_location?.toLowerCase().includes(filters.productionLocation.toLowerCase()),
       )
     }
 
