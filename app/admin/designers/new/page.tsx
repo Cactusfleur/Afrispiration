@@ -13,28 +13,38 @@ import { Button } from "@/components/ui/button"
 const designerFields = [
   { name: "name", label: "Designer Name", type: "text" as const, required: true },
   { name: "bio", label: "Biography", type: "textarea" as const, placeholder: "Tell us about the designer..." },
-  { name: "designer_location", label: "Designer Country", type: "text" as const, placeholder: "City, Country" },
-  { name: "production_location", label: "Production Country", type: "text" as const, placeholder: "City, Country" },
+  { name: "location", label: "Designer Country", type: "text" as const, placeholder: "Country" },
+  { name: "production_location", label: "Production Country", type: "text" as const, placeholder: "Country" },
+  {
+    name: "category",
+    label: "Category",
+    type: "select" as const,
+    options: ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance"]
+  },
+  {
+    name: "subcategory",
+    label: "Sub Category",
+    type: "select" as const,
+    options: ["Skincare", "Fragrance", "Hair Care", "Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom"]
+  },
+  { name: "is_featured", label: "Featured Designer", type: "switch" as const },
+  {
+    name: "portfolio_images",
+    label: "Portfolio Images",
+    type: "tags" as const,
+    placeholder: "https://..."
+  },
+
   { name: "website_url", label: "Website URL", type: "text" as const, placeholder: "https://..." },
   { name: "instagram_url", label: "Instagram URL", type: "text" as const, placeholder: "https://instagram.com/..." },
   { name: "email", label: "Email", type: "email" as const },
   { name: "phone", label: "Phone", type: "text" as const },
   { name: "image_url", label: "Profile Image URL", type: "text" as const, placeholder: "https://..." },
-  {
-    name: "specialties",
-    label: "Specialties",
-    type: "tags" as const,
-    placeholder: "Add specialty and press Enter",
-  },
-  { name: "years_experience", label: "Years of Experience", type: "number" as const },
-  {
-    name: "price_range",
-    label: "Price Range",
-    type: "select" as const,
-    options: ["$", "$$", "$$$", "$$$$"],
-  },
-  { name: "sustainability_rating", label: "Sustainability Rating (1-5)", type: "number" as const },
-  { name: "featured", label: "Featured Designer", type: "switch" as const },
+  { name: "cover_image", label: "Cover Image URL", type: "text" as const, placeholder: "https://..." },
+
+
+
+
   {
     name: "status",
     label: "Status",
@@ -43,6 +53,19 @@ const designerFields = [
     required: true,
   },
 ]
+
+function slugify(text: string, suffix?: number) {
+  let base = text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/&/g, "-and-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-")
+
+  return suffix ? `${base}-${suffix}` : base
+}
 
 export default function NewDesignerPage() {
   const [isLoading, setIsLoading] = useState(false)
@@ -53,9 +76,26 @@ export default function NewDesignerPage() {
     const supabase = createClient()
 
     try {
+      let baseSlug = slugify(data.name)
+      let slug = baseSlug
+      let suffix = 1
+
+      // 🔍 check if slug already exists
+      while (true) {
+        const { data: existing } = await supabase
+          .from("designers")
+          .select("id")
+          .eq("slug", slug)
+          .maybeSingle()
+
+        if (!existing) break // slug is unique ✅
+        slug = slugify(baseSlug, suffix++) // add -1, -2, etc.
+      }
+
       const { error } = await supabase.from("designers").insert([
         {
           ...data,
+          slug,
           status: data.status || "active",
         },
       ])
@@ -94,7 +134,7 @@ export default function NewDesignerPage() {
               onSubmit={handleSubmit}
               submitLabel="Create Designer"
               isLoading={isLoading}
-              initialData={{ status: "active", featured: false }}
+              initialData={{ status: "active", is_featured: false }}
             />
           </CardContent>
         </Card>
