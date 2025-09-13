@@ -56,8 +56,7 @@ export default function DesignersPage() {
       filtered = filtered.filter(
         (designer) =>
           designer.name.toLowerCase().includes(searchTerm) ||
-          designer.bio?.toLowerCase().includes(searchTerm) ||
-          designer.specialties?.some((s) => s.toLowerCase().includes(searchTerm)),
+          designer.bio?.toLowerCase().includes(searchTerm)
       )
     }
 

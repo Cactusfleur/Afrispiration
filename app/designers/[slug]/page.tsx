@@ -10,14 +10,12 @@ interface DesignerPageProps {
 async function getDesignerBySlug(slug: string): Promise<Designer | null> {
   const supabase = await createClient()
 
-  // Convert slug back to name format for search
-  const searchName = slug.replace(/-/g, " ")
 
   const { data, error } = await supabase
     .from("designers")
     .select("*")
     .eq("status", "active")
-    .ilike("name", `%${searchName}%`)
+    .ilike("slug", `%${slug}%`) // use ilike for pattern matching
     .single()
 
   if (error) {

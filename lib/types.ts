@@ -12,11 +12,7 @@ export interface Designer {
   category?: string
   subcategory?: string
   cover_image?: string
-  specialties?: string[]
-  featured?: boolean
-  years_experience?: number
   is_sustainable: boolean
-  country_of_design?: string
   made_in_country?: string
   portfolio_images?: string[]
   is_featured: boolean

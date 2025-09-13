@@ -54,19 +54,21 @@ export default async function AdminDesignersPage() {
                   </div>
                   <div className="flex gap-2">
                     <Badge variant={designer.status === "active" ? "default" : "secondary"}>{designer.status}</Badge>
-                    {designer.featured && <Badge variant="outline">Featured</Badge>}
+                    {designer.is_featured && <Badge variant="outline">Featured</Badge>}
                   </div>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {designer.specialties && (
+                  
+                  {designer.category && (
                     <div className="flex flex-wrap gap-1">
-                      {designer.specialties.slice(0, 3).map((specialty) => (
-                        <Badge key={specialty} variant="secondary" className="text-xs">
-                          {specialty}
-                        </Badge>
-                      ))}
+                      <Badge variant="secondary" className="text-xs">
+                        {designer.category}
+                      </Badge>
+                      <Badge variant="secondary" className="text-xs">
+                        {designer.subcategory}
+                      </Badge>
                     </div>
                   )}
 
