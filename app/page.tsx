@@ -16,7 +16,7 @@ async function getFeaturedDesigners(): Promise<Designer[]> {
   const { data, error } = await supabase
     .from("designers")
     .select("*")
-    .eq("featured", true)
+    .eq("is_featured", true)
     .eq("status", "active")
     .limit(3)
 

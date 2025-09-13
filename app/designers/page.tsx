@@ -27,7 +27,7 @@ export default function DesignersPage() {
       .from("designers")
       .select("*")
       .eq("status", "active")
-      .order("featured", { ascending: false })
+      .order("is_featured", { ascending: false })
       .order("created_at", { ascending: false })
 
     if (error) {

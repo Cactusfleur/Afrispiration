@@ -235,8 +235,7 @@ export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
         </Select>
       </div>
 
-      <div className="space-y-2">
-        <Label>Sustainability</Label>
+      <div className="space-y-3">
         <div className="flex items-center space-x-2">
           <Checkbox
             id="sustainability"
@@ -248,7 +247,7 @@ export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 flex items-center gap-2 cursor-pointer"
           >
             <Leaf className="h-4 w-4 text-green-600" />
-            Sustainable Designers
+            Sustainable
           </label>
         </div>
       </div>
