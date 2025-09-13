@@ -5,9 +5,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/server"
 import type { Event } from "@/lib/types"
-import { Plus, Edit, Eye, Trash2, Calendar, MapPin } from "lucide-react"
+import { Plus, Edit, Eye, Calendar, MapPin } from "lucide-react"
 import Link from "next/link"
 import { formatEventDate } from "@/lib/events"
+import { DeleteEventButton } from "./components/DeleteEventButton"
 
 async function getEvents(): Promise<Event[]> {
   const supabase = await createClient()
@@ -103,9 +104,7 @@ export default async function AdminEventsPage() {
                         Edit
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" className="text-red-600 hover:text-red-700 bg-transparent">
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
+                    <DeleteEventButton eventId={event.id} eventTitle={event.title} />
                   </div>
                 </div>
               </CardContent>

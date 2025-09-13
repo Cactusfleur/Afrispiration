@@ -38,6 +38,10 @@ export default async function EventPage({ params }: EventPageProps) {
   const eventDate = formatEventDate(event.event_date)
   const eventTime = formatEventTime(event.event_date)
   const endTime = event.end_date ? formatEventTime(event.end_date) : null
+  const startDateTime = `${formatEventDate(event.event_date)} ${formatEventTime(event.event_date)}`
+  const endDateTime = event.end_date
+    ? `${formatEventDate(event.end_date)} ${formatEventTime(event.end_date)}`
+    : null
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -95,13 +99,22 @@ export default async function EventPage({ params }: EventPageProps) {
 
                 {/* Event Details Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <Card>
+                  <Card className="sm:col-span-2">
                     <CardContent className="p-4">
                       <div className="flex items-center gap-2 mb-2">
                         <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <h4 className="font-medium text-sm text-muted-foreground">Date</h4>
+                        <h4 className="font-medium text-sm text-muted-foreground">Schedule</h4>
                       </div>
-                      <p className="font-semibold">{eventDate}</p>
+                      <p className="font-semibold">
+                        {startDateTime}
+                        {endDateTime && (
+                          <>
+                            {" "}
+                            – <br className="sm:hidden" />
+                            {endDateTime}
+                          </>
+                        )}
+                      </p>
                     </CardContent>
                   </Card>
 

@@ -10,6 +10,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { X, Plus } from "lucide-react"
+import { Calendar } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { format } from "date-fns"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 interface FormBuilderProps {
   initialData?: any
@@ -22,7 +28,7 @@ interface FormBuilderProps {
 interface FormField {
   name: string
   label: string
-  type: "text" | "email" | "textarea" | "switch" | "tags" | "select" | "number"
+  type: "text" | "email" | "textarea" | "switch" | "tags" | "select" | "number" | "datetime"
   required?: boolean
   placeholder?: string
   options?: string[]
@@ -171,6 +177,20 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             </div>
 
           </div>
+        )
+
+      case "datetime":
+        return (
+          <DatePicker
+            selected={value ? new Date(value) : null}
+            onChange={(date) => updateField(field.name, date?.toISOString() ?? null)}
+            showTimeSelect
+            timeIntervals={15}
+            dateFormat="MMMM d, yyyy h:mm aa"
+            placeholderText={`Pick ${field.label}`}
+            className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            popperClassName="z-[9999]"   // ✅ ensures calendar popup stays on top
+          />
         )
 
 
