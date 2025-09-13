@@ -18,6 +18,8 @@ interface DesignerFiltersProps {
     productionLocation: string
     sustainability: boolean
   }) => void
+  designerCountries: string[]
+  productionCountries: string[]
 }
 
 const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance",]
@@ -33,31 +35,9 @@ const subcategories = {
   "Beauty & Fragrance": ["Skincare", "Fragrance", "Hair Care"],
 }
 
-const countries = [
-  "Nigeria",
-  "Ghana",
-  "South Africa",
-  "Kenya",
-  "Morocco",
-  "Egypt",
-  "Ethiopia",
-  "Senegal",
-  "Ivory Coast",
-  "Tanzania",
-  "Uganda",
-  "Rwanda",
-  "Botswana",
-  "Namibia",
-  "Zimbabwe",
-  "United Arab Emirates",
-  "United Kingdom",
-  "United States",
-  "France",
-  "Italy",
-  "Germany",
-]
 
-export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
+
+export function DesignerFilters({ onFiltersChange, designerCountries, productionCountries }: DesignerFiltersProps) {
   const [filters, setFilters] = useState({
     search: "",
     category: "",
@@ -95,13 +75,13 @@ export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
     typeof value === "string" ? value !== "" : value === true,
   )
 
-  const filteredDesignerCountries = countries.filter((country) =>
-    country.toLowerCase().includes(designerLocationSearch.toLowerCase()),
-  )
+  const filteredDesignerCountries = designerCountries.filter((country) =>
+  country.toLowerCase().includes(designerLocationSearch.toLowerCase())
+)
 
-  const filteredProductionCountries = countries.filter((country) =>
-    country.toLowerCase().includes(productionLocationSearch.toLowerCase()),
-  )
+const filteredProductionCountries = productionCountries.filter((country) =>
+  country.toLowerCase().includes(productionLocationSearch.toLowerCase())
+)
 
   const availableSubcategories = filters.category
     ? subcategories[filters.category as keyof typeof subcategories] || []
@@ -125,7 +105,7 @@ export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             id="search"
-            placeholder="Search by name or description..."
+            placeholder="Search by name/description..."
             value={filters.search}
             onChange={(e) => updateFilters({ search: e.target.value })}
             className="pl-10"
@@ -182,16 +162,7 @@ export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
 
       <div className="space-y-2">
         <Label>Designer Location</Label>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search countries..."
-            value={designerLocationSearch}
-            onChange={(e) => setDesignerLocationSearch(e.target.value)}
-            className="pl-10 mb-2"
-          />
-        </div>
-        <Select value={filters.designerLocation} onValueChange={(value) => updateFilters({ designerLocation: value })}>
+        <Select value={filters.designerLocation} onValueChange={(value) => updateFilters({ designerLocation: value === "all" ? "" : value })}>
           <SelectTrigger>
             <SelectValue placeholder="All locations" />
           </SelectTrigger>
@@ -208,18 +179,11 @@ export function DesignerFilters({ onFiltersChange }: DesignerFiltersProps) {
 
       <div className="space-y-2">
         <Label>Production Location</Label>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search countries..."
-            value={productionLocationSearch}
-            onChange={(e) => setProductionLocationSearch(e.target.value)}
-            className="pl-10 mb-2"
-          />
-        </div>
         <Select
+      
           value={filters.productionLocation}
-          onValueChange={(value) => updateFilters({ productionLocation: value })}
+          
+          onValueChange={(value) => updateFilters({ productionLocation: value === "all" ? "" : value })}
         >
           <SelectTrigger>
             <SelectValue placeholder="All locations" />

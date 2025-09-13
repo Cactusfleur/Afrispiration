@@ -13,6 +13,8 @@ import { Loader2, Grid, List } from "lucide-react"
 export default function DesignersPage() {
   const [designers, setDesigners] = useState<Designer[]>([])
   const [filteredDesigners, setFilteredDesigners] = useState<Designer[]>([])
+  const [designerCountries, setDesignerCountries] = useState<string[]>([])
+  const [productionCountries, setProductionCountries] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
 
@@ -35,6 +37,19 @@ export default function DesignersPage() {
     } else {
       setDesigners(data || [])
       setFilteredDesigners(data || [])
+
+       // ✅ Extract unique countries dynamically
+      const designerLocs = Array.from(
+        new Set((data || []).map((d) => d.location).filter(Boolean))
+      )
+      const productionLocs = Array.from(
+        new Set((data || []).map((d) => d.production_location).filter(Boolean))
+      )
+
+      setDesignerCountries(designerLocs)
+      setProductionCountries(productionLocs)
+
+
     }
 
     setLoading(false)
@@ -130,7 +145,11 @@ export default function DesignersPage() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="sticky top-16">
-                  <DesignerFilters onFiltersChange={handleFiltersChange} />
+                  <DesignerFilters 
+                    onFiltersChange={handleFiltersChange}
+                    designerCountries={designerCountries}
+                    productionCountries={productionCountries}
+                  />
                 </div>
               </div>
 
