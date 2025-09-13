@@ -121,32 +121,58 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
       case "tags":
         return (
           <div className="space-y-2">
-            <div className="flex gap-2">
+            {/* Input + add button */}
+            <div className="flex gap-2 items-center">
               <Input
+                className="flex-1"
                 value={tagInputs[field.name] || ""}
-                onChange={(e) => setTagInputs((prev) => ({ ...prev, [field.name]: e.target.value }))}
+                onChange={(e) =>
+                  setTagInputs((prev) => ({
+                    ...prev,
+                    [field.name]: e.target.value,
+                  }))
+                }
                 placeholder={field.placeholder}
-                onKeyPress={(e) => {
+                onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     e.preventDefault()
                     addTag(field.name)
                   }
                 }}
               />
-              <Button type="button" size="sm" onClick={() => addTag(field.name)}>
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => addTag(field.name)}
+                className="shrink-0"
+              >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
+
+            {/* Tags list */}
             <div className="flex flex-wrap gap-2">
               {(value || []).map((tag: string) => (
-                <Badge key={tag} variant="secondary" className="gap-1">
-                  {tag}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => removeTag(field.name, tag)} />
+                <Badge
+                  key={tag}
+                  variant="secondary"
+                  className="flex items-center gap-1 px-2 py-1 break-all max-w-full"
+                >
+                  <span className="truncate max-w-[300px]">{tag}</span>
+                  <button
+                    type="button"
+                    className="ml-1 text-muted-foreground hover:text-foreground shrink-0"
+                    onClick={() => removeTag(field.name, tag)}
+                  >
+                    <X className="h-3 w-3" />
+                  </button>
                 </Badge>
               ))}
             </div>
+
           </div>
         )
+
 
       default:
         return null
