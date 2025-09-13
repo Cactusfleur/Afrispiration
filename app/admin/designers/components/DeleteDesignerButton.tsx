@@ -3,7 +3,7 @@
 import { useTransition } from "react"
 import { Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { deleteDesigner } from "@/app/designers/actions"
+import { deleteDesigner } from "./action"
 
 export function DeleteDesignerButton({ id }: { id: string }) {
   const [isPending, startTransition] = useTransition()
