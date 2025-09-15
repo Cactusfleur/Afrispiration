@@ -1,7 +1,6 @@
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_designers_status ON public.designers(status);
-CREATE INDEX IF NOT EXISTS idx_designers_featured ON public.designers(featured);
-CREATE INDEX IF NOT EXISTS idx_designers_specialties ON public.designers USING GIN(specialties);
+CREATE INDEX IF NOT EXISTS idx_designers_featured ON public.designers(is_featured);
 CREATE INDEX IF NOT EXISTS idx_designers_location ON public.designers(location);
 
 CREATE INDEX IF NOT EXISTS idx_blog_posts_published ON public.blog_posts(published);

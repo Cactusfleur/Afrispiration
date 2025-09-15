@@ -9,14 +9,17 @@ CREATE TABLE IF NOT EXISTS public.designers (
   email TEXT,
   phone TEXT,
   image_url TEXT,
-  specialties TEXT[], -- Array of specialties like ["Fashion", "Accessories", "Sustainable"]
-  years_experience INTEGER,
-  price_range TEXT, -- e.g., "$$", "$$$", "$$$$"
-  sustainability_rating INTEGER CHECK (sustainability_rating >= 1 AND sustainability_rating <= 5),
-  featured BOOLEAN DEFAULT FALSE,
   status TEXT DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'pending')),
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  slug TEXT UNIQUE,
+  is_sustainable BOOLEAN DEFAULT FALSE,
+  portfolio_images TEXT[],
+  category TEXT,
+  subcategory TEXT,
+  is_featured BOOLEAN DEFAULT FALSE,
+  cover_image TEXT,
+  production_location TEXT
 );
 
 -- Create blog_posts table
@@ -30,7 +33,7 @@ CREATE TABLE IF NOT EXISTS public.blog_posts (
   author_name TEXT NOT NULL,
   author_bio TEXT,
   author_image_url TEXT,
-  tags TEXT[], -- Array of tags
+  tags TEXT[],
   featured BOOLEAN DEFAULT FALSE,
   published BOOLEAN DEFAULT FALSE,
   published_at TIMESTAMP WITH TIME ZONE,
@@ -56,96 +59,73 @@ CREATE TABLE IF NOT EXISTS public.events (
   organizer_name TEXT,
   organizer_contact TEXT,
   capacity INTEGER,
-  tags TEXT[], -- Array of tags like ["Fashion Week", "Networking", "Workshop"]
+  tags TEXT[],
   featured BOOLEAN DEFAULT FALSE,
   published BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create coming_soon_signups table for email collection
+-- Create coming_soon_signups table
 CREATE TABLE IF NOT EXISTS public.coming_soon_signups (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email TEXT UNIQUE NOT NULL,
   name TEXT,
-  interests TEXT[], -- What they're interested in
-  referral_source TEXT, -- How they heard about us
+  interests TEXT[],
+  referral_source TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create admin users table (references auth.users)
+-- Create admin users table
 CREATE TABLE IF NOT EXISTS public.admin_users (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   role TEXT DEFAULT 'admin' CHECK (role IN ('admin', 'editor', 'super_admin')),
-  permissions TEXT[], -- Array of permissions
+  permissions TEXT[],
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Enable Row Level Security on all tables
+-- Enable Row Level Security
 ALTER TABLE public.designers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.blog_posts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.coming_soon_signups ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 
--- Create policies for public read access (no auth required for public content)
 -- Designers policies
 CREATE POLICY "Allow public read access to active designers" ON public.designers
   FOR SELECT USING (status = 'active');
 
 CREATE POLICY "Allow admin full access to designers" ON public.designers
-  FOR ALL USING (
-    EXISTS (
-      SELECT 1 FROM public.admin_users 
-      WHERE id = auth.uid()
-    )
-  );
+  FOR ALL USING (auth.uid() IN (SELECT id FROM public.admin_users));
 
--- Blog posts policies  
+-- Blog posts policies
 CREATE POLICY "Allow public read access to published blog posts" ON public.blog_posts
   FOR SELECT USING (published = true);
 
 CREATE POLICY "Allow admin full access to blog posts" ON public.blog_posts
-  FOR ALL USING (
-    EXISTS (
-      SELECT 1 FROM public.admin_users 
-      WHERE id = auth.uid()
-    )
-  );
+  FOR ALL USING (auth.uid() IN (SELECT id FROM public.admin_users));
 
 -- Events policies
 CREATE POLICY "Allow public read access to published events" ON public.events
   FOR SELECT USING (published = true);
 
 CREATE POLICY "Allow admin full access to events" ON public.events
-  FOR ALL USING (
-    EXISTS (
-      SELECT 1 FROM public.admin_users 
-      WHERE id = auth.uid()
-    )
-  );
+  FOR ALL USING (auth.uid() IN (SELECT id FROM public.admin_users));
 
 -- Coming soon signups policies
 CREATE POLICY "Allow public insert to coming soon signups" ON public.coming_soon_signups
   FOR INSERT WITH CHECK (true);
 
-CREATE POLICY "Allow admin read access to coming soon signups" ON public.admin_users
-  FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM public.admin_users 
-      WHERE id = auth.uid()
-    )
-  );
+CREATE POLICY "Allow admin read access to coming soon signups" ON public.coming_soon_signups
+  FOR SELECT USING (auth.uid() IN (SELECT id FROM public.admin_users));
 
--- Admin users policies
-CREATE POLICY "Allow admin users to view their own data" ON public.admin_users
-  FOR SELECT USING (auth.uid() = id);
+-- ✅ Fixed Admin users policies (no self-recursion)
+CREATE POLICY "Allow authenticated users to view admin data" ON public.admin_users
+  FOR SELECT USING (auth.uid() IS NOT NULL);
 
-CREATE POLICY "Allow super admin full access to admin users" ON public.admin_users
-  FOR ALL USING (
-    EXISTS (
-      SELECT 1 FROM public.admin_users 
-      WHERE id = auth.uid() AND role = 'super_admin'
-    )
-  );
+CREATE POLICY "Allow admin users to update their own data" ON public.admin_users
+  FOR UPDATE USING (auth.uid() = id);
+
+CREATE POLICY "Allow insert for admin users" ON public.admin_users
+  FOR INSERT WITH CHECK (auth.uid() = id);

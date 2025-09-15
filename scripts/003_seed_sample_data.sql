@@ -1,9 +1,101 @@
--- Insert sample designers
-INSERT INTO public.designers (name, bio, location, website_url, instagram_url, specialties, years_experience, price_range, sustainability_rating, featured, status) VALUES
-('Amara Okafor', 'Sustainable fashion designer specializing in African-inspired contemporary wear. Committed to ethical production and supporting local artisans.', 'Lagos, Nigeria', 'https://amaraokafor.com', 'https://instagram.com/amaraokafor', ARRAY['Fashion', 'Sustainable', 'Contemporary'], 8, '$$$', 5, true, 'active'),
-('Kofi Asante', 'Luxury menswear designer known for innovative tailoring and modern African aesthetics. Featured in Vogue and GQ.', 'Accra, Ghana', 'https://kofiasante.com', 'https://instagram.com/kofiasante', ARRAY['Menswear', 'Luxury', 'Tailoring'], 12, '$$$$', 4, true, 'active'),
-('Zara Mbeki', 'Accessories designer creating handcrafted jewelry and bags using traditional techniques with contemporary design.', 'Cape Town, South Africa', 'https://zarambeki.co.za', 'https://instagram.com/zarambeki', ARRAY['Accessories', 'Jewelry', 'Handcrafted'], 6, '$$', 5, false, 'active'),
-('Fatima Al-Rashid', 'Modest fashion designer blending Middle Eastern heritage with modern silhouettes for the contemporary woman.', 'Dubai, UAE', 'https://fatimaalrashid.com', 'https://instagram.com/fatimaalrashid', ARRAY['Modest Fashion', 'Contemporary', 'Womenswear'], 10, '$$$', 3, true, 'active');
+INSERT INTO public.designers 
+(name, bio, location, website_url, instagram_url, email, phone, image_url, portfolio_images, category, subcategory, is_sustainable, cover_image, production_location, slug)
+VALUES
+-- Designer 1 (Bags)
+(
+  'Ayesha Khan',
+  'Designer specializing in luxury handbags and sustainable accessories.',
+  'Lahore, Pakistan',
+  'https://ayeshakhanfashion.com',
+  'https://instagram.com/ayeshakhanfashion',
+  'ayesha@example.com',
+  '+92-300-1234567',
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Bag1.jpg',
+  ARRAY[
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Bag1-1.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Bag1-2.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Bag2.jpg'
+  ],
+  'Accessories',
+  'Handbags',
+  TRUE,
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Bag2-1.jpg',
+  'Pakistan',
+  'ayesha-khan'
+),
+
+-- Designer 2 (Shirts)
+(
+  'Omar Sheikh',
+  'Luxury menswear designer with a focus on tailored shirts.',
+  'Karachi, Pakistan',
+  'https://omarsheikhmenswear.com',
+  'https://instagram.com/omarsheikhmenswear',
+  'omar@example.com',
+  '+92-321-7654321',
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Shirt-1---front.jpg',
+  ARRAY[
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Shirt-1---back.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Shirt-2---front.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Shirt-2---back.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Shirt-3-blue-front.jpg'
+  ],
+  'Apparel',
+  'Shirts',
+  FALSE,
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Shirt-3-yellow-front.jpg',
+  'Italy',
+  'omar-sheikh'
+),
+
+-- Designer 3 (Hoodies)
+(
+  'Sara Malik',
+  'Streetwear designer known for creative hoodie collections.',
+  'Islamabad, Pakistan',
+  'https://saramalikfashion.com',
+  'https://instagram.com/saramalikfashion',
+  'sara@example.com',
+  '+92-345-1122334',
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Hoodie-1.jpg',
+  ARRAY[
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Hoodie-2.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Hoodie-3.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Hoodie-Women-1.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Hoodie-Women-2.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/Hoodie-Women-3.jpg'
+  ],
+  'Apparel',
+  'Hoodies',
+  TRUE,
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Divi-Ninja.jpg',
+  'Pakistan',
+  'sara-malik'
+),
+
+-- Designer 4 (Crop Tops)
+(
+  'Ali Raza',
+  'Trendy women’s wear designer focusing on crop tops.',
+  'Dubai, UAE',
+  'https://alirazacouture.com',
+  'https://instagram.com/alirazacouture',
+  'ali@example.com',
+  '+971-50-1234567',
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/divi-Simplified-croptop-white.jpg',
+  ARRAY[
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/divi-Simplified-croptop-blue.jpg',
+    'https://ajax-filters-bc.diviengine.com/sampledata/images/divi-Simplified-croptop-yellow.jpg'
+  ],
+  'Apparel',
+  'Crop Tops',
+  FALSE,
+  'https://ajax-filters-bc.diviengine.com/sampledata/images/Dat-Divi_Life.jpg',
+  'UAE',
+  'ali-raza'
+);
+
+
 
 -- Insert sample blog posts
 INSERT INTO public.blog_posts (title, slug, excerpt, content, author_name, author_bio, tags, featured, published, published_at) VALUES
