@@ -69,7 +69,7 @@ export function AdminNav() {
           <div className="p-6 border-b border-border">
             <Link href="/admin/dashboard" className="block">
               <h1 className="font-serif text-xl font-bold">Admin Panel</h1>
-              <p className="text-sm text-muted-foreground">Designer Directory</p>
+              <p className="text-sm text-muted-foreground">Afrispiration</p>
             </Link>
           </div>
 

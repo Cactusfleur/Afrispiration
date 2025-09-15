@@ -33,7 +33,7 @@ export default async function AdminDashboard() {
         {/* Header */}
         <div>
           <h1 className="font-serif text-3xl font-bold">Dashboard</h1>
-          <p className="text-muted-foreground">Welcome to the Designer Directory admin panel</p>
+          <p className="text-muted-foreground">Welcome to the Afrispiration admin panel</p>
         </div>
 
         {/* Stats Grid */}

@@ -89,7 +89,7 @@ export function Lightbox({ images, isOpen, currentIndex, onClose, onNext, onPrev
         <img
           src={images[currentIndex] || "/placeholder.svg"}
           alt={alt || `Image ${currentIndex + 1}`}
-          className="max-w-full max-h-full object-contain"
+          className="max-h-[90vh] max-w-[90vw] w-auto h-auto object-contain mx-auto"
         />
       </div>
 
