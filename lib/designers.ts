@@ -20,7 +20,7 @@ export async function getDesigners(options?: {
   }
 
   if (options?.location) {
-    query = query.ilike("location", `%${options.location}%`)
+    query = query.contains("location", [options.location])
   }
 
   if (options?.limit) {

@@ -38,18 +38,13 @@ export default function DesignersPage() {
       setDesigners(data || [])
       setFilteredDesigners(data || [])
 
-       // ✅ Extract unique countries dynamically
-      const designerLocs = Array.from(
-        new Set((data || []).map((d) => d.location).filter(Boolean))
-      )
+      const designerLocs = Array.from(new Set((data || []).flatMap((d) => d.location || []).filter(Boolean)))
       const productionLocs = Array.from(
-        new Set((data || []).map((d) => d.production_location).filter(Boolean))
+        new Set((data || []).flatMap((d) => d.production_location || []).filter(Boolean)),
       )
 
       setDesignerCountries(designerLocs)
       setProductionCountries(productionLocs)
-
-
     }
 
     setLoading(false)
@@ -70,8 +65,7 @@ export default function DesignersPage() {
       const searchTerm = filters.search.toLowerCase()
       filtered = filtered.filter(
         (designer) =>
-          designer.name.toLowerCase().includes(searchTerm) ||
-          designer.bio?.toLowerCase().includes(searchTerm)
+          designer.name.toLowerCase().includes(searchTerm) || designer.bio?.toLowerCase().includes(searchTerm),
       )
     }
 
@@ -85,17 +79,17 @@ export default function DesignersPage() {
       filtered = filtered.filter((designer) => designer.subcategory === filters.subcategory)
     }
 
-    // Designer location filter
     if (filters.designerLocation) {
       filtered = filtered.filter((designer) =>
-        designer.location?.toLowerCase().includes(filters.designerLocation.toLowerCase()),
+        designer.location?.some((loc) => loc.toLowerCase().includes(filters.designerLocation.toLowerCase())),
       )
     }
 
-    // Production location filter
     if (filters.productionLocation) {
       filtered = filtered.filter((designer) =>
-        designer.production_location?.toLowerCase().includes(filters.productionLocation.toLowerCase()),
+        designer.production_location?.some((loc) =>
+          loc.toLowerCase().includes(filters.productionLocation.toLowerCase()),
+        ),
       )
     }
 
@@ -145,7 +139,7 @@ export default function DesignersPage() {
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
               <div className="lg:col-span-1">
                 <div className="sticky top-16">
-                  <DesignerFilters 
+                  <DesignerFilters
                     onFiltersChange={handleFiltersChange}
                     designerCountries={designerCountries}
                     productionCountries={productionCountries}

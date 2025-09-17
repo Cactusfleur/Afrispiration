@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Lightbox } from "@/components/lightbox"
 import type { Designer } from "@/lib/types"
-import { MapPin, Instagram, Mail, Phone, Calendar, Factory, Award, CheckCircle } from "lucide-react"
+import { MapPin, Instagram, Mail, Phone, Factory, Award, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { DesignerCard } from "@/components/designer-card"
 
@@ -115,30 +115,29 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   <h1 className="font-serif text-3xl font-bold mb-6">{designer.name}</h1>
                 </div>
 
-                {designer.location && (
+                {designer.location && designer.location.length > 0 && (
                   <div>
                     <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
                       DESIGNER NATIONALITY
                     </h3>
                     <div className="flex items-center gap-2">
                       <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground">{designer.location}</span>
+                      <span className="text-foreground">{designer.location.join(", ")}</span>
                     </div>
                   </div>
                 )}
 
-                {designer.production_location && (
+                {designer.production_location && designer.production_location.length > 0 && (
                   <div>
                     <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
                       PRODUCTION LOCATION
                     </h3>
                     <div className="flex items-center gap-2">
                       <Factory className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground">{designer.production_location}</span>
+                      <span className="text-foreground">{designer.production_location.join(", ")}</span>
                     </div>
                   </div>
                 )}
-
 
                 {designer.category && (
                   <div>
@@ -159,7 +158,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                     </Badge>
                   </div>
                 )}
-
 
                 {/* Social Links */}
                 <div>
@@ -237,12 +235,7 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                       />
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 flex items-center justify-center">
                         <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-2">
-                          <svg
-                            className="w-6 h-6 text-gray-800"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
+                          <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path
                               strokeLinecap="round"
                               strokeLinejoin="round"
@@ -255,7 +248,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                     </div>
                   ))}
                 </div>
-
               </div>
             </div>
           </div>

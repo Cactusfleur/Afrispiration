@@ -10,10 +10,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Switch } from "@/components/ui/switch"
 import { Badge } from "@/components/ui/badge"
 import { X, Plus } from "lucide-react"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar as CalendarIcon } from "lucide-react"
-import { format } from "date-fns"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -28,10 +24,11 @@ interface FormBuilderProps {
 interface FormField {
   name: string
   label: string
-  type: "text" | "email" | "textarea" | "switch" | "tags" | "select" | "number" | "datetime"
+  type: "text" | "email" | "textarea" | "switch" | "tags" | "select" | "multi-select" | "number" | "datetime"
   required?: boolean
   placeholder?: string
-  options?: string[]
+  options?: readonly string[]
+  maxSelections?: number
 }
 
 export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = "Save", isLoading }: FormBuilderProps) {
@@ -40,6 +37,21 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    const requiredFields = fields.filter((field) => field.required)
+    const missingFields = requiredFields.filter((field) => {
+      const value = formData[field.name]
+      if (field.type === "multi-select") {
+        return !value || !Array.isArray(value) || value.length === 0
+      }
+      return !value || (typeof value === "string" && value.trim() === "")
+    })
+
+    if (missingFields.length > 0) {
+      alert(`Please fill in the following required fields: ${missingFields.map((f) => f.label).join(", ")}`)
+      return
+    }
+
     onSubmit(formData)
   }
 
@@ -64,6 +76,26 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
       fieldName,
       currentTags.filter((tag: string) => tag !== tagToRemove),
     )
+  }
+
+  const toggleMultiSelectOption = (fieldName: string, option: string, maxSelections?: number) => {
+    const currentValues = formData[fieldName] || []
+    const isSelected = currentValues.includes(option)
+
+    if (isSelected) {
+      // Remove option
+      updateField(
+        fieldName,
+        currentValues.filter((val: string) => val !== option),
+      )
+    } else {
+      // Add option if under limit
+      if (!maxSelections || currentValues.length < maxSelections) {
+        updateField(fieldName, [...currentValues, option])
+      } else {
+        alert(`You can only select up to ${maxSelections} options`)
+      }
+    }
   }
 
   const renderField = (field: FormField) => {
@@ -146,12 +178,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
                   }
                 }}
               />
-              <Button
-                type="button"
-                size="sm"
-                onClick={() => addTag(field.name)}
-                className="shrink-0"
-              >
+              <Button type="button" size="sm" onClick={() => addTag(field.name)} className="shrink-0">
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
@@ -159,11 +186,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             {/* Tags list */}
             <div className="flex flex-wrap gap-2">
               {(value || []).map((tag: string) => (
-                <Badge
-                  key={tag}
-                  variant="secondary"
-                  className="flex items-center gap-1 px-2 py-1 break-all max-w-full"
-                >
+                <Badge key={tag} variant="secondary" className="flex items-center gap-1 px-2 py-1 break-all max-w-full">
                   <span className="truncate max-w-[300px]">{tag}</span>
                   <button
                     type="button"
@@ -175,7 +198,6 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
                 </Badge>
               ))}
             </div>
-
           </div>
         )
 
@@ -189,10 +211,58 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             dateFormat="MMMM d, yyyy h:mm aa"
             placeholderText={`Pick ${field.label}`}
             className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            popperClassName="z-[9999]"   // ✅ ensures calendar popup stays on top
+            popperClassName="z-[9999]" // ensures calendar popup stays on top
           />
         )
 
+      case "multi-select":
+        const selectedValues = value || []
+        return (
+          <div className="space-y-3">
+            <div className="text-sm text-muted-foreground">
+              {field.maxSelections && `Select up to ${field.maxSelections} options`}
+              {selectedValues.length > 0 && ` (${selectedValues.length}/${field.maxSelections || "∞"} selected)`}
+            </div>
+
+            {/* Selected values display */}
+            {selectedValues.length > 0 && (
+              <div className="flex flex-wrap gap-2 p-2 bg-muted rounded-md">
+                {selectedValues.map((selectedValue: string) => (
+                  <Badge key={selectedValue} variant="secondary" className="flex items-center gap-1">
+                    {selectedValue}
+                    <button
+                      type="button"
+                      onClick={() => toggleMultiSelectOption(field.name, selectedValue, field.maxSelections)}
+                      className="ml-1 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            )}
+
+            {/* Options dropdown */}
+            <select
+              onChange={(e) => {
+                if (e.target.value) {
+                  toggleMultiSelectOption(field.name, e.target.value, field.maxSelections)
+                  e.target.value = "" // Reset dropdown
+                }
+              }}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            >
+              <option value="">{field.placeholder || `Add ${field.label}`}</option>
+              {field.options
+                ?.filter((option) => !selectedValues.includes(option))
+                .map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+            </select>
+          </div>
+        )
 
       default:
         return null

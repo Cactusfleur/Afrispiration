@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { createClient } from "@/lib/supabase/server"
 import type { Designer } from "@/lib/types"
-import { Plus, Edit, Eye, Trash2 } from "lucide-react"
+import { Plus, Edit, Eye } from "lucide-react"
 import Link from "next/link"
 import { DeleteDesignerButton } from "./components/DeleteDesignerButton"
 
@@ -51,7 +51,11 @@ export default async function AdminDesignersPage() {
                 <div className="flex items-start justify-between">
                   <div>
                     <CardTitle className="text-lg">{designer.name}</CardTitle>
-                    <p className="text-sm text-muted-foreground">{designer.location}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {designer.location && designer.location.length > 0
+                        ? designer.location.join(", ")
+                        : "No location specified"}
+                    </p>
                   </div>
                   <div className="flex gap-2">
                     <Badge variant={designer.status === "active" ? "default" : "secondary"}>{designer.status}</Badge>
@@ -61,7 +65,6 @@ export default async function AdminDesignersPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  
                   {designer.category && (
                     <div className="flex flex-wrap gap-1">
                       <Badge variant="secondary" className="text-xs">

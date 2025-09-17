@@ -1,20 +1,51 @@
 // components/forms/designer-fields.ts
+import { AFRICAN_COUNTRIES, WORLD_COUNTRIES } from "@/lib/countries"
+
 export const designerFields = [
   { name: "name", label: "Designer Name", type: "text" as const, required: true },
   { name: "bio", label: "Biography", type: "textarea" as const, placeholder: "Tell us about the designer..." },
-  { name: "location", label: "Designer Country", type: "text" as const, placeholder: "Country" },
-  { name: "production_location", label: "Production Country", type: "text" as const, placeholder: "Country" },
+  {
+    name: "location",
+    label: "Designer Nationality (up to 2)",
+    type: "multi-select" as const,
+    options: AFRICAN_COUNTRIES,
+    maxSelections: 2,
+    required: true,
+    placeholder: "Select African nationality/nationalities",
+  },
+  {
+    name: "production_location",
+    label: "Production Location (up to 2)",
+    type: "multi-select" as const,
+    options: WORLD_COUNTRIES,
+    maxSelections: 2,
+    required: true,
+    placeholder: "Select production location(s)",
+  },
   {
     name: "category",
     label: "Category",
     type: "select" as const,
-    options: ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance", "Handbags & luggage", "Bridal", "Sportswear", "Swimwear"]
+    options: [
+      "Women",
+      "Men",
+      "Unisex",
+      "Kids",
+      "Accessories",
+      "Shoes",
+      "Jewellery",
+      "Beauty & Fragrance",
+      "Handbags & luggage",
+      "Bridal",
+      "Sportswear",
+      "Swimwear",
+    ],
   },
   {
     name: "subcategory",
     label: "Sub Category",
     type: "select" as const,
-    options: ["Skincare", "Fragrance", "Hair Care", "Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom"]
+    options: ["Skincare", "Fragrance", "Hair Care", "Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom"],
   },
   { name: "is_featured", label: "Featured Designer", type: "switch" as const },
   { name: "is_sustainable", label: "Sustainable Designer", type: "switch" as const },
@@ -23,7 +54,7 @@ export const designerFields = [
     name: "portfolio_images",
     label: "Portfolio Images",
     type: "tags" as const,
-    placeholder: "https://..."
+    placeholder: "https://...",
   },
   { name: "website_url", label: "Website URL", type: "text" as const, placeholder: "https://..." },
   { name: "instagram_url", label: "Instagram URL", type: "text" as const, placeholder: "https://instagram.com/..." },

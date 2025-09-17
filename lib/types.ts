@@ -1,10 +1,12 @@
+import type { AfricanCountry, WorldCountry } from "./countries"
+
 export interface Designer {
   id: string
   name: string
   slug: string
   bio?: string
-  location?: string
-  production_location?: string
+  location?: AfricanCountry[] // Updated to array of African countries
+  production_location?: WorldCountry[] // Updated to array of world countries
   website_url?: string
   instagram_url?: string
   email?: string
