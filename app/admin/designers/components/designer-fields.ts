@@ -8,7 +8,7 @@ export const designerFields = [
     name: "category",
     label: "Category",
     type: "select" as const,
-    options: ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance"]
+    options: ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance", "Handbags & luggage", "Bridal", "Sportswear", "Swimwear"]
   },
   {
     name: "subcategory",

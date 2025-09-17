@@ -22,16 +22,19 @@ interface DesignerFiltersProps {
   productionCountries: string[]
 }
 
-const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance",]
+const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance","Handbags & luggage", "Bridal", "Sportswear", "Swimwear"]
 
 const subcategories = {
-  Women: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
-  Men: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
-  Unisex: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
-  Kids: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
-  Accessories: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
-  Shoes: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
-  Jewellery: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", "Children's Wear", "Modest Fashion", "Bridal"],
+  Women: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", ],
+  Men: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", ],
+  Unisex: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", ],
+  Kids: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Accessories: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Shoes: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Jewellery: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Bridal: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Swimwear: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  "Handbags & luggage": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Beauty & Fragrance": ["Skincare", "Fragrance", "Hair Care"],
 }
 
