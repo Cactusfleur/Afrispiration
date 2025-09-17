@@ -4,10 +4,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { ArrowRight, Users, Calendar, BookOpen, MapPin } from "lucide-react"
-import { Separator } from "@/components/ui/separator"
+import { ArrowRight, Users, Calendar, MapPin } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
-import { CountryFlag, MadeInIcon, SustainabilityIcon } from "@/components/icons"
 import type { Designer, Event } from "@/lib/types"
 import { DesignerCard } from "@/components/designer-card"
 
@@ -46,8 +44,51 @@ async function getUpcomingEvents(): Promise<Event[]> {
   return data || []
 }
 
+async function getStats() {
+  const supabase = await createClient()
+
+  // Get total designer count
+  const { count: designerCount } = await supabase
+    .from("designers")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "active")
+
+  // Get total event count
+  const { count: eventCount } = await supabase
+    .from("events")
+    .select("*", { count: "exact", head: true })
+    .eq("published", true)
+
+  // Get unique countries from designer locations
+  const { data: designers } = await supabase
+    .from("designers")
+    .select("location")
+    .eq("status", "active")
+    .not("location", "is", null)
+
+  // Count unique countries from all designer locations
+  const uniqueCountries = new Set<string>()
+  designers?.forEach((designer) => {
+    if (designer.location && Array.isArray(designer.location)) {
+      designer.location.forEach((country: string) => {
+        uniqueCountries.add(country)
+      })
+    }
+  })
+
+  return {
+    designerCount: designerCount || 0,
+    eventCount: eventCount || 0,
+    countryCount: uniqueCountries.size,
+  }
+}
+
 export default async function HomePage() {
-  const [featuredDesigners, upcomingEvents] = await Promise.all([getFeaturedDesigners(), getUpcomingEvents()])
+  const [featuredDesigners, upcomingEvents, stats] = await Promise.all([
+    getFeaturedDesigners(),
+    getUpcomingEvents(),
+    getStats(),
+  ])
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -86,22 +127,22 @@ export default async function HomePage() {
                 <div className="flex justify-center mb-4">
                   <Users className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">200+</h3>
+                <h3 className="font-serif text-3xl font-bold mb-2">{stats.designerCount}+</h3>
                 <p className="text-muted-foreground">Curated Designers</p>
               </div>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <Calendar className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">50+</h3>
+                <h3 className="font-serif text-3xl font-bold mb-2">{stats.eventCount}+</h3>
                 <p className="text-muted-foreground">Fashion Events</p>
               </div>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
-                  <BookOpen className="h-8 w-8 text-primary" />
+                  <MapPin className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">100+</h3>
-                <p className="text-muted-foreground">Editorial Articles</p>
+                <h3 className="font-serif text-3xl font-bold mb-2">{stats.countryCount}+</h3>
+                <p className="text-muted-foreground">African Countries + Diaspora</p>
               </div>
             </div>
           </div>
@@ -117,7 +158,6 @@ export default async function HomePage() {
                 authenticity.
               </p>
             </div>
-
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               {featuredDesigners.map((designer) => (
