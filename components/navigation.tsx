@@ -29,22 +29,7 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/coming-soon"
-              className={cn(
-                "transition-colors text-sm font-medium tracking-wide",
-                pathname === "/coming-soon" ? "text-foreground" : "text-foreground/80 hover:text-foreground",
-              )}
-            >
-              <div
-                className={cn(
-                  "w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2",
-                  pathname === "/coming-soon" ? "border-black bg-black text-white" : "border-black",
-                )}
-              >
-                SHOP
-              </div>
-            </Link>
+
 
             {navItems.map((item) => {
               const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
@@ -72,6 +57,22 @@ export function Navigation() {
               onClick={() => setIsOpen(false)}
             >
               Join our directory
+            </Link>
+            <Link
+              href="/coming-soon"
+              className={cn(
+                "transition-colors text-sm font-medium tracking-wide",
+                pathname === "/coming-soon" ? "text-foreground" : "text-foreground/80 hover:text-foreground",
+              )}
+            >
+              <div
+                className={cn(
+                  "w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2",
+                  pathname === "/coming-soon" ? "border-black bg-black text-white" : "border-black",
+                )}
+              >
+                SHOP
+              </div>
             </Link>
           </div>
 
@@ -106,18 +107,6 @@ export function Navigation() {
                 )
               })}
 
-              <Link
-                href="/coming-soon"
-                className={cn(
-                  "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
-                  pathname === "/coming-soon"
-                    ? "bg-muted text-foreground font-semibold"
-                    : "text-foreground/80 hover:text-foreground hover:bg-muted",
-                )}
-                onClick={() => setIsOpen(false)}
-              >
-                SHOP
-              </Link>
 
               <Link
                 href="/submit"
@@ -130,6 +119,19 @@ export function Navigation() {
                 onClick={() => setIsOpen(false)}
               >
                 Join our directory
+              </Link>
+
+              <Link
+                href="/coming-soon"
+                className={cn(
+                  "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
+                  pathname === "/coming-soon"
+                    ? "bg-muted text-foreground font-semibold"
+                    : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                SHOP
               </Link>
             </div>
           </div>
