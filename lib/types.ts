@@ -13,9 +13,10 @@ export interface Designer {
   category?: string
   subcategory?: string
   cover_image?: string
-  is_sustainable: boolean
   portfolio_images?: string[]
   is_featured: boolean
+  is_sustainable: boolean
+  is_verified: boolean
   status: "active" | "inactive" | "pending"
   created_at: string
   updated_at: string

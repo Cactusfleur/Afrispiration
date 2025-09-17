@@ -64,7 +64,7 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
 
               {/* Verification and Award Icons */}
               <div className="flex items-center justify-center gap-4 mb-6">
-                {designer.is_featured && (
+                {designer.is_verified && (
                   <div className="flex items-center gap-1">
                     <CheckCircle className="h-5 w-5 text-blue-500" />
                     <span className="text-xs text-muted-foreground">Verified</span>
