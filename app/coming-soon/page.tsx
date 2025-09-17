@@ -63,34 +63,7 @@ export default function ComingSoonPage() {
               <p className="text-sm text-muted-foreground">Supporting eco-friendly and ethical fashion practices</p>
             </div>
           </div>
-
-          {/* Newsletter Signup */}
-          <div className="bg-muted/50 rounded-2xl p-8 space-y-4">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Bell className="h-5 w-5 text-primary" />
-              <h3 className="font-semibold">Get Notified</h3>
-            </div>
-            <p className="text-muted-foreground">
-              Be the first to know when we launch. We'll send you an exclusive early access invitation.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/20"
-              />
-              <Button className="gap-2">
-                <Mail className="h-4 w-4" />
-                Notify Me
-              </Button>
-            </div>
-          </div>
-
-          {/* Timeline */}
-          <div className="text-center space-y-2">
-            <p className="text-sm text-muted-foreground">Expected Launch</p>
-            <p className="font-semibold text-lg">Q2 2024</p>
-          </div>
+      
         </div>
       </main>
 

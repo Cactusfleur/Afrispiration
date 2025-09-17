@@ -23,15 +23,16 @@ export function Footer() {
               <Link href="/designers" className="text-muted-foreground hover:text-foreground transition-colors">
                 Designers
               </Link>
-              <Link href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
-                Journal
-              </Link>
               <Link href="/events" className="text-muted-foreground hover:text-foreground transition-colors">
                 Events
               </Link>
-              <Link href="/submit" className="text-muted-foreground hover:text-foreground transition-colors">
-                Submit Profile
+              <Link href="/blog" className="text-muted-foreground hover:text-foreground transition-colors">
+                Blog
               </Link>
+              <Link href="/coming-soon" className="text-muted-foreground hover:text-foreground transition-colors">
+                Shop
+              </Link>
+   
             </nav>
           </div>
 
@@ -42,14 +43,11 @@ export function Footer() {
               <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
                 About Us
               </Link>
-              <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">
-                Contact
+              <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
+                FAQ
               </Link>
-              <Link href="/privacy" className="text-muted-foreground hover:text-foreground transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-muted-foreground hover:text-foreground transition-colors">
-                Terms of Service
+              <Link href="" className="text-muted-foreground hover:text-foreground transition-colors">
+                Join our directory
               </Link>
             </nav>
           </div>
@@ -65,7 +63,7 @@ export function Footer() {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">© 2024 Designer Directory. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">© 2025 Afrispiration. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 sm:mt-0">
             <a
               href="https://www.instagram.com/afrispiration/"

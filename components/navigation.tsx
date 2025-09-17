@@ -10,8 +10,8 @@ export function Navigation() {
 
   const navItems = [
     { href: "/designers", label: "Designers" },
-    { href: "/blog", label: "Journal" },
     { href: "/events", label: "Events" },
+    { href: "/blog", label: "Blog" },
     { href: "/about", label: "About" },
   ]
 
@@ -26,6 +26,15 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
+            <Link
+              href="/coming-soon"
+              className="text-foreground/80 hover:text-foreground transition-colors text-sm font-medium tracking-wide"
+            >
+              <div className="w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2 border-black">
+                SHOP
+              </div>
+            </Link>
+
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -35,6 +44,13 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
+            <Link
+              href=""
+              className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
+              onClick={() => setIsOpen(false)}
+            >
+              Join our directory
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -49,6 +65,8 @@ export function Navigation() {
         {isOpen && (
           <div className="md:hidden border-t border-border">
             <div className="px-2 pt-2 pb-3 space-y-1">
+
+
               {navItems.map((item) => (
                 <Link
                   key={item.href}
@@ -59,6 +77,23 @@ export function Navigation() {
                   {item.label}
                 </Link>
               ))}
+
+              <Link
+                href="/coming-soon"
+                className="text-foreground/80 hover:text-foreground transition-colors text-sm font-medium tracking-wide"
+              >
+                <div className="w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2 border-black">
+                  SHOP
+                </div>
+              </Link>
+              
+              <Link
+                href=""
+                className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                Join our directory
+              </Link>
             </div>
           </div>
         )}
