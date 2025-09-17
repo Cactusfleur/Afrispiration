@@ -115,6 +115,18 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   <h1 className="font-serif text-3xl font-bold mb-6">{designer.name}</h1>
                 </div>
 
+                {designer.location && (
+                  <div>
+                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
+                      DESIGNER NATIONALITY
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground">{designer.location}</span>
+                    </div>
+                  </div>
+                )}
+
                 {designer.production_location && (
                   <div>
                     <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
@@ -127,17 +139,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   </div>
                 )}
 
-                {designer.location && (
-                  <div>
-                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
-                      DESIGNER LOCATION
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground">{designer.location}</span>
-                    </div>
-                  </div>
-                )}
 
                 {designer.category && (
                   <div>
