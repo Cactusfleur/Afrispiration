@@ -8,7 +8,7 @@ import { HelpCircle } from "lucide-react"
 export default function FAQPage() {
   const faqs = [
     {
-      question: "Is there an application fee?",
+      question: "Is there an application fee? (edited)",
       answer:
         "No, our platform is free for designers. We believe in supporting creative talent without financial barriers.",
     },
