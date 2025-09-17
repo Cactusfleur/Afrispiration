@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Search, Leaf } from "lucide-react"
+import { Bubblegum_Sans } from "next/font/google"
 
 interface DesignerFiltersProps {
   onFiltersChange: (filters: {
@@ -22,12 +23,12 @@ interface DesignerFiltersProps {
   productionCountries: string[]
 }
 
-const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance","Handbags & luggage", "Bridal", "Sportswear", "Swimwear"]
+const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance", "Handbags & luggage", "Bridal", "Sportswear", "Swimwear"]
 
 const subcategories = {
-  Women: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", ],
-  Men: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", ],
-  Unisex: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.", ],
+  Women: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Men: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  Unisex: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   Kids: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   Accessories: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   Shoes: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
@@ -37,8 +38,6 @@ const subcategories = {
   "Handbags & luggage": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Beauty & Fragrance": ["Skincare", "Fragrance", "Hair Care"],
 }
-
-
 
 export function DesignerFilters({ onFiltersChange, designerCountries, productionCountries }: DesignerFiltersProps) {
   const [filters, setFilters] = useState({
@@ -54,6 +53,7 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
   const [productionLocationSearch, setProductionLocationSearch] = useState("")
 
   const updateFilters = (newFilters: Partial<typeof filters>) => {
+    console.log("HELLLOOOO")
     const updated = { ...filters, ...newFilters }
     setFilters(updated)
     onFiltersChange(updated)
@@ -79,12 +79,12 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
   )
 
   const filteredDesignerCountries = designerCountries.filter((country) =>
-  country.toLowerCase().includes(designerLocationSearch.toLowerCase())
-)
+    country.toLowerCase().includes(designerLocationSearch.toLowerCase())
+  )
 
-const filteredProductionCountries = productionCountries.filter((country) =>
-  country.toLowerCase().includes(productionLocationSearch.toLowerCase())
-)
+  const filteredProductionCountries = productionCountries.filter((country) =>
+    country.toLowerCase().includes(productionLocationSearch.toLowerCase())
+  )
 
   const availableSubcategories = filters.category
     ? subcategories[filters.category as keyof typeof subcategories] || []
@@ -141,11 +141,9 @@ const filteredProductionCountries = productionCountries.filter((country) =>
         </Select>
       </div>
 
-
       {filters.category && (
         <div className="space-y-2">
           <Label>Subcategory</Label>
-          
           <Select value={filters.subcategory} onValueChange={(value) => updateFilters({ subcategory: value === "all" ? "" : value, })}>
             <SelectTrigger>
               <SelectValue placeholder="All subcategories" />
@@ -154,7 +152,6 @@ const filteredProductionCountries = productionCountries.filter((country) =>
               <SelectItem value="all">All subcategories</SelectItem>
               {availableSubcategories.map((subcategory) => (
                 <SelectItem key={subcategory} value={subcategory}>
-                  
                   {subcategory}
                 </SelectItem>
               ))}
@@ -170,6 +167,14 @@ const filteredProductionCountries = productionCountries.filter((country) =>
             <SelectValue placeholder="All locations" />
           </SelectTrigger>
           <SelectContent>
+            <div className="p-2">
+              <Input
+                placeholder="Search countries..."
+                value={designerLocationSearch}
+                onChange={(e) => setDesignerLocationSearch(e.target.value)}
+                className="mb-2"
+              />
+            </div>
             <SelectItem value="all">All locations</SelectItem>
             {filteredDesignerCountries.map((country) => (
               <SelectItem key={country} value={country}>
@@ -182,16 +187,19 @@ const filteredProductionCountries = productionCountries.filter((country) =>
 
       <div className="space-y-2">
         <Label>Production Location</Label>
-        <Select
-      
-          value={filters.productionLocation}
-          
-          onValueChange={(value) => updateFilters({ productionLocation: value === "all" ? "" : value })}
-        >
+        <Select value={filters.productionLocation} onValueChange={(value) => updateFilters({ productionLocation: value === "all" ? "" : value })}>
           <SelectTrigger>
             <SelectValue placeholder="All locations" />
           </SelectTrigger>
           <SelectContent>
+            <div className="p-2">
+              <Input
+                placeholder="Search countries..."
+                value={productionLocationSearch}
+                onChange={(e) => setProductionLocationSearch(e.target.value)}
+                className="mb-2"
+              />
+            </div>
             <SelectItem value="all">All locations</SelectItem>
             {filteredProductionCountries.map((country) => (
               <SelectItem key={country} value={country}>
@@ -227,41 +235,50 @@ const filteredProductionCountries = productionCountries.filter((country) =>
             {filters.search && (
               <Badge variant="secondary" className="gap-1">
                 Search: {filters.search}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilters({ search: "" })} />
+                <button onClick={() => updateFilters({ search: "" })} >
+                  <X className="h-3 w-3 cursor-pointer" />
+                </button>
               </Badge>
             )}
             {filters.category && filters.category !== 'all' && (
               <Badge variant="secondary" className="gap-1">
                 {filters.category}
-                <X
-                  className="h-3 w-3 cursor-pointer"
-                  onClick={() => updateFilters({ category: "", subcategory: "" })}
-                />
+                <button onClick={() => updateFilters({ category: "", subcategory: "" })}>
+                  <X className="h-3 w-3 cursor-pointer" />
+                </button>
               </Badge>
             )}
             {filters.subcategory && (
               <Badge variant="secondary" className="gap-1">
                 {filters.subcategory}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilters({ subcategory: "" })} />
+                <button onClick={() => updateFilters({ subcategory: "" })}>
+                  <X className="h-3 w-3 cursor-pointer" />
+                </button>
               </Badge>
             )}
             {filters.designerLocation && (
               <Badge variant="secondary" className="gap-1">
                 Designer: {filters.designerLocation}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilters({ designerLocation: "" })} />
+                <button onClick={() => updateFilters({ designerLocation: "" })}>
+                  <X className="h-3 w-3 cursor-pointer" />
+                </button>
               </Badge>
             )}
             {filters.productionLocation && (
               <Badge variant="secondary" className="gap-1">
                 Production: {filters.productionLocation}
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilters({ productionLocation: "" })} />
+                <button onClick={() => updateFilters({ productionLocation: "" })}>
+                  <X className="h-3 w-3 cursor-pointer"/>
+                </button>
               </Badge>
             )}
             {filters.sustainability && (
               <Badge variant="secondary" className="gap-1">
                 <Leaf className="h-3 w-3 text-green-600" />
                 Sustainable
-                <X className="h-3 w-3 cursor-pointer" onClick={() => updateFilters({ sustainability: false })} />
+                <button onClick={() => updateFilters({ sustainability: false })}>
+                  <X className="h-3 w-3 cursor-pointer" />
+                </button>
               </Badge>
             )}
           </div>
