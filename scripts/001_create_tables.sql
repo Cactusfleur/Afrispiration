@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS public.designers (
   category TEXT,
   subcategory TEXT,
   is_featured BOOLEAN DEFAULT FALSE,
+  is_verified BOOLEAN DEFAULT TRUE,
   cover_image TEXT,
   production_location TEXT
 );
