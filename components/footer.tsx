@@ -32,7 +32,7 @@ export function Footer() {
               <Link href="/coming-soon" className="text-muted-foreground hover:text-foreground transition-colors">
                 Shop
               </Link>
-   
+
             </nav>
           </div>
 
@@ -70,15 +70,22 @@ export function Footer() {
           <div className="flex space-x-6 mt-4 sm:mt-0">
             <a
               href="https://www.instagram.com/afrispiration/"
+              target="_blank"
+              rel="noopener noreferrer"
+
               className="text-muted-foreground hover:text-foreground transition-colors"
             >
               <Instagram className="h-5 w-5" />
               <span className="sr-only">Instagram</span>
             </a>
-            <a href="https://www.facebook.com/Afrispiration" className="text-muted-foreground hover:text-foreground transition-colors">
+            <a href="https://www.facebook.com/Afrispiration"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-foreground transition-colors">
+
               <span className="sr-only">Facebook</span>
               <Facebook className="h-5 w-5" />
-        
+
             </a>
             <a
               href="https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18"
