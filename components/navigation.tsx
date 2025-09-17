@@ -2,11 +2,14 @@
 
 import Link from "next/link"
 import { useState } from "react"
+import { usePathname } from "next/navigation" // Added usePathname import for active page detection
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
+import { cn } from "@/lib/utils" // Added cn utility for conditional styling
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname() // Added pathname hook to detect current page
 
   const navItems = [
     { href: "/designers", label: "Designers" },
@@ -28,25 +31,44 @@ export function Navigation() {
           <div className="hidden md:flex items-center space-x-8">
             <Link
               href="/coming-soon"
-              className="text-foreground/80 hover:text-foreground transition-colors text-sm font-medium tracking-wide"
+              className={cn(
+                "transition-colors text-sm font-medium tracking-wide",
+                pathname === "/coming-soon" ? "text-foreground" : "text-foreground/80 hover:text-foreground",
+              )}
             >
-              <div className="w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2 border-black">
+              <div
+                className={cn(
+                  "w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2",
+                  pathname === "/coming-soon" ? "border-black bg-black text-white" : "border-black",
+                )}
+              >
                 SHOP
               </div>
             </Link>
 
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-foreground/80 hover:text-foreground transition-colors text-sm font-medium tracking-wide"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "transition-colors text-sm font-medium tracking-wide",
+                    isActive
+                      ? "text-foreground font-semibold border-b-2 border-foreground pb-1"
+                      : "text-foreground/80 hover:text-foreground",
+                  )}
+                >
+                  {item.label}
+                </Link>
+              )
+            })}
             <Link
               href="/submit"
-              className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
+              className={cn(
+                "block px-3 py-2 transition-colors text-sm font-medium",
+                pathname === "/submit" ? "text-foreground font-semibold" : "text-foreground/80 hover:text-foreground",
+              )}
               onClick={() => setIsOpen(false)}
             >
               Join our directory
@@ -65,29 +87,46 @@ export function Navigation() {
         {isOpen && (
           <div className="md:hidden border-t border-border">
             <div className="px-2 pt-2 pb-3 space-y-1">
-
-
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={cn(
+                      "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
+                      isActive
+                        ? "bg-muted text-foreground font-semibold"
+                        : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                    )}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
 
               <Link
                 href="/coming-soon"
-                className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
+                className={cn(
+                  "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
+                  pathname === "/coming-soon"
+                    ? "bg-muted text-foreground font-semibold"
+                    : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                )}
+                onClick={() => setIsOpen(false)}
               >
-                  SHOP
+                SHOP
               </Link>
 
               <Link
                 href="/submit"
-                className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
+                className={cn(
+                  "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
+                  pathname === "/submit"
+                    ? "bg-muted text-foreground font-semibold"
+                    : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                )}
                 onClick={() => setIsOpen(false)}
               >
                 Join our directory
