@@ -8,11 +8,6 @@ import { HelpCircle } from "lucide-react"
 export default function FAQPage() {
   const faqs = [
     {
-      question: "When will designer applications open?",
-      answer:
-        "We're planning to launch designer applications in early 2024. Sign up on our Join page to be notified as soon as they're available.",
-    },
-    {
       question: "Is there an application fee?",
       answer:
         "No, our platform is free for designers. We believe in supporting creative talent without financial barriers.",

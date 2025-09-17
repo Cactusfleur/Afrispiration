@@ -46,8 +46,11 @@ export function Footer() {
               <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
                 FAQ
               </Link>
-              <Link href="" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link href="https://forms.gle/PSoHZw5gV2sxP5MbA" className="text-muted-foreground hover:text-foreground transition-colors">
                 Join our directory
+              </Link>
+              <Link href="https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18" className="text-muted-foreground hover:text-foreground transition-colors">
+                Join our WhatsApp Channel
               </Link>
             </nav>
           </div>
@@ -78,7 +81,7 @@ export function Footer() {
         
             </a>
             <a
-              href="https://www.whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18?fbclid=PAZXh0bgNhZW0CMTEAAaei23wK6JASRyk5Ufzma2DyJtJXGajk621Berl6a_kow035lMN8j3D2e6kkuw_aem_p7Kbvi42Lm_Z4BdGPsDYBA"
+              href="https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18"
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors"

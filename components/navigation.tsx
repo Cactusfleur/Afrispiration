@@ -45,7 +45,7 @@ export function Navigation() {
               </Link>
             ))}
             <Link
-              href=""
+              href="https://forms.gle/PSoHZw5gV2sxP5MbA"
               className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
               onClick={() => setIsOpen(false)}
             >
@@ -80,15 +80,13 @@ export function Navigation() {
 
               <Link
                 href="/coming-soon"
-                className="text-foreground/80 hover:text-foreground transition-colors text-sm font-medium tracking-wide"
+                className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
               >
-                <div className="w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2 border-black">
                   SHOP
-                </div>
               </Link>
-              
+
               <Link
-                href=""
+                href="https://forms.gle/PSoHZw5gV2sxP5MbA"
                 className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
                 onClick={() => setIsOpen(false)}
               >
