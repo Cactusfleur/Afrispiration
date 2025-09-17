@@ -46,7 +46,7 @@ export function Footer() {
               <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
                 FAQ
               </Link>
-              <Link href="https://forms.gle/PSoHZw5gV2sxP5MbA" className="text-muted-foreground hover:text-foreground transition-colors">
+              <Link href="/submit" className="text-muted-foreground hover:text-foreground transition-colors">
                 Join our directory
               </Link>
               <Link href="https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18" className="text-muted-foreground hover:text-foreground transition-colors">
@@ -76,7 +76,7 @@ export function Footer() {
               <span className="sr-only">Instagram</span>
             </a>
             <a href="https://www.facebook.com/Afrispiration" className="text-muted-foreground hover:text-foreground transition-colors">
-              <span className="sr-only">Twitter</span>
+              <span className="sr-only">Facebook</span>
               <Facebook className="h-5 w-5" />
         
             </a>

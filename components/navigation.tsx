@@ -45,7 +45,7 @@ export function Navigation() {
               </Link>
             ))}
             <Link
-              href="https://forms.gle/PSoHZw5gV2sxP5MbA"
+              href="/submit"
               className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
               onClick={() => setIsOpen(false)}
             >
@@ -86,7 +86,7 @@ export function Navigation() {
               </Link>
 
               <Link
-                href="https://forms.gle/PSoHZw5gV2sxP5MbA"
+                href="/submit"
                 className="block px-3 py-2 text-foreground/80 hover:text-foreground transition-colors text-sm font-medium"
                 onClick={() => setIsOpen(false)}
               >

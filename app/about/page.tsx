@@ -77,7 +77,7 @@ export default function AboutPage() {
                             cultural richness of African designers across the continent and diaspora.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="https://forms.gle/PSoHZw5gV2sxP5MbA">
+                            <Link href="/submit">
                                 <Button size="lg">
                                     <Users className="mr-2 h-5 w-5" />
                                     Join Our Community
@@ -226,7 +226,7 @@ export default function AboutPage() {
                         there's a place for you in our growing community.
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="https://forms.gle/PSoHZw5gV2sxP5MbA">
+                        <Link href="/submit">
                             <Button size="lg" variant="secondary">
                                 <Users className="mr-2 h-5 w-5" />
                                 Join as Designer
