@@ -9,6 +9,7 @@ export interface Designer {
   production_location?: WorldCountry[] // Updated to array of world countries
   website_url?: string
   instagram_url?: string
+  tiktok_url?: string
   email?: string
   phone?: string
   image_url?: string

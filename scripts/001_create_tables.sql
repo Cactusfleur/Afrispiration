@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS public.designers (
   location TEXT,
   website_url TEXT,
   instagram_url TEXT,
+  tiktok_url TEXT,
   email TEXT,
   phone TEXT,
   image_url TEXT,

@@ -58,6 +58,7 @@ export const designerFields = [
   },
   { name: "website_url", label: "Website URL", type: "text" as const, placeholder: "https://..." },
   { name: "instagram_url", label: "Instagram URL", type: "text" as const, placeholder: "https://instagram.com/..." },
+  { name: "tiktok_url", label: "TikTok URL", type: "text" as const, placeholder: "https://tiktok.com/..." },
   { name: "email", label: "Email", type: "email" as const },
   { name: "phone", label: "Phone", type: "text" as const },
   { name: "image_url", label: "Profile Image URL", type: "text" as const, placeholder: "https://..." },
