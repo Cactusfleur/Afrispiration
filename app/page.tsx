@@ -101,7 +101,7 @@ export default async function HomePage() {
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance mb-6">
                 Discover Exceptional
-                <span className="block text-muted-foreground">Fashion Talent</span>
+                <span className="block text-muted-foreground">African Fashion </span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 text-pretty">
                 A curated platform showcasing emerging and established African fashion designers from around the world. Explore
@@ -154,7 +154,7 @@ export default async function HomePage() {
             <div className="text-center mb-16">
               <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Featured Designers</h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-                Meet the innovative minds shaping the future of fashion with sustainable practices and cultural
+                Meet the innovative minds shaping the present and future of African fashion with sustainable practices and cultural
                 authenticity.
               </p>
             </div>
