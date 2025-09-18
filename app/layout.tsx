@@ -18,9 +18,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Designer Directory - Discover Exceptional Fashion Talent",
+  title: "Designer Directory - Discover African Fashion",
   description:
-    "A curated platform showcasing emerging and established fashion designers from around the world. Discover sustainable, innovative, and culturally rich fashion.",
+    "A curated platform showcasing emerging and established African fashion designers from around the world. Discover sustainable, innovative, and culturally rich fashion.",
   generator: "v0.app",
 }
 
