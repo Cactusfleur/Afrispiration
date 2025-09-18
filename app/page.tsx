@@ -104,7 +104,7 @@ export default async function HomePage() {
                 <span className="block text-muted-foreground">Fashion Talent</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 text-pretty">
-                A curated platform showcasing emerging and established fashion designers from around the world. Explore
+                A curated platform showcasing emerging and established African fashion designers from around the world. Explore
                 sustainable, innovative, and culturally rich design.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
