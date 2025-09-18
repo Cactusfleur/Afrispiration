@@ -23,7 +23,7 @@ interface DesignerFiltersProps {
   productionCountries: string[]
 }
 
-const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance", "Handbags & luggage", "Bridal", "Sportswear", "Swimwear"]
+const categories = ["Women", "Men", "Unisex", "Kids", "Accessories", "Shoes", "Jewellery", "Beauty & Fragrance", "Handbags & luggage", "Bridal", "Sportswear", "Swimwear", "Textiles", "Lingerie", "Haute Couture"]
 
 const subcategories = {
   Women: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
@@ -36,6 +36,10 @@ const subcategories = {
   Bridal: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   Swimwear: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Handbags & luggage": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  "Sportswear": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+   "Textiles": ["Ready to Wear (RWT)", "Bespoke/Custom.",],
+   "Lingerie": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+   "Haute Couture": [ "Bespoke/Custom.",],
   "Beauty & Fragrance": ["Skincare", "Fragrance", "Hair Care"],
 }
 
