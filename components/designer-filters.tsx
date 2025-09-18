@@ -13,8 +13,8 @@ import { Bubblegum_Sans } from "next/font/google"
 interface DesignerFiltersProps {
   onFiltersChange: (filters: {
     search: string
-    category: string
-    subcategory: string
+    category: string[]  //Changed to an array 19/09/2025
+    subcategory: string[] //Changed to an array 19/09/2025
     designerLocation: string
     productionLocation: string
     sustainability: boolean
