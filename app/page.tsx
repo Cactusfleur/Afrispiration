@@ -8,6 +8,7 @@ import { ArrowRight, Users, Calendar, MapPin } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
 import type { Designer, Event } from "@/lib/types"
 import { DesignerCard } from "@/components/designer-card"
+import { getPageContentWithFallback, getNestedContent } from "@/lib/page-content"
 
 async function getFeaturedDesigners(): Promise<Designer[]> {
   const supabase = await createClient()
@@ -84,11 +85,48 @@ async function getStats() {
 }
 
 export default async function HomePage() {
-  const [featuredDesigners, upcomingEvents, stats] = await Promise.all([
+  const [featuredDesigners, upcomingEvents, stats, pageContent] = await Promise.all([
     getFeaturedDesigners(),
     getUpcomingEvents(),
     getStats(),
+    getPageContentWithFallback("home", {
+      hero: {
+        title: "Discover Exceptional",
+        subtitle: "African Fashion",
+        description:
+          "A curated platform showcasing emerging and established African fashion designers from around the world. Explore sustainable, innovative, and culturally rich design.",
+        buttonText: "Explore Designers",
+        buttonUrl: "/designers",
+      },
+      stats: {
+        designers: "Curated Designers",
+        events: "Fashion Events",
+        countries: "African Countries + Diaspora",
+      },
+      featuredSection: {
+        title: "Featured Designers",
+        description:
+          "Meet the innovative minds shaping the present and future of African fashion with sustainable practices and cultural authenticity.",
+        buttonText: "View All Designers",
+      },
+      eventsSection: {
+        title: "Upcoming Events",
+        description: "Join us at the latest fashion events, workshops, and showcases happening around the world.",
+        buttonText: "View All Events",
+      },
+      journalSection: {
+        title: "Latest from the Journal",
+        description: "Insights, trends, and stories from the world of sustainable and innovative fashion design.",
+        buttonText: "Read More Articles",
+      },
+    }),
   ])
+
+  const heroContent = getNestedContent(pageContent, "hero", {})
+  const statsContent = getNestedContent(pageContent, "stats", {})
+  const featuredContent = getNestedContent(pageContent, "featuredSection", {})
+  const eventsContent = getNestedContent(pageContent, "eventsSection", {})
+  const journalContent = getNestedContent(pageContent, "journalSection", {})
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -100,17 +138,17 @@ export default async function HomePage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance mb-6">
-                Discover Exceptional
-                <span className="block text-muted-foreground">African Fashion </span>
+                {heroContent.title || "Discover Exceptional"}
+                <span className="block text-muted-foreground">{heroContent.subtitle || "African Fashion"}</span>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 text-pretty">
-                A curated platform showcasing emerging and established African fashion designers from around the world. Explore
-                sustainable, innovative, and culturally rich design.
+                {heroContent.description ||
+                  "A curated platform showcasing emerging and established African fashion designers from around the world. Explore sustainable, innovative, and culturally rich design."}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg" className="text-base">
-                  <Link href="/designers">
-                    Explore Designers
+                  <Link href={heroContent.buttonUrl || "/designers"}>
+                    {heroContent.buttonText || "Explore Designers"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -128,21 +166,21 @@ export default async function HomePage() {
                   <Users className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="font-serif text-3xl font-bold mb-2">{stats.designerCount}+</h3>
-                <p className="text-muted-foreground">Curated Designers</p>
+                <p className="text-muted-foreground">{statsContent.designers || "Curated Designers"}</p>
               </div>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <Calendar className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="font-serif text-3xl font-bold mb-2">{stats.eventCount}+</h3>
-                <p className="text-muted-foreground">Fashion Events</p>
+                <p className="text-muted-foreground">{statsContent.events || "Fashion Events"}</p>
               </div>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <MapPin className="h-8 w-8 text-primary" />
                 </div>
                 <h3 className="font-serif text-3xl font-bold mb-2">{stats.countryCount}+</h3>
-                <p className="text-muted-foreground">African Countries + Diaspora</p>
+                <p className="text-muted-foreground">{statsContent.countries || "African Countries + Diaspora"}</p>
               </div>
             </div>
           </div>
@@ -152,10 +190,12 @@ export default async function HomePage() {
         <section className="py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Featured Designers</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                {featuredContent.title || "Featured Designers"}
+              </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-                Meet the innovative minds shaping the present and future of African fashion with sustainable practices and cultural
-                authenticity.
+                {featuredContent.description ||
+                  "Meet the innovative minds shaping the present and future of African fashion with sustainable practices and cultural authenticity."}
               </p>
             </div>
 
@@ -168,7 +208,7 @@ export default async function HomePage() {
             <div className="text-center">
               <Button asChild variant="outline" size="lg">
                 <Link href="/designers">
-                  View All Designers
+                  {featuredContent.buttonText || "View All Designers"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -181,9 +221,12 @@ export default async function HomePage() {
           <section className="py-24 bg-muted/30">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-16">
-                <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Upcoming Events</h2>
+                <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                  {eventsContent.title || "Upcoming Events"}
+                </h2>
                 <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-                  Join us at the latest fashion events, workshops, and showcases happening around the world.
+                  {eventsContent.description ||
+                    "Join us at the latest fashion events, workshops, and showcases happening around the world."}
                 </p>
               </div>
 
@@ -216,7 +259,7 @@ export default async function HomePage() {
               <div className="text-center">
                 <Button asChild variant="outline" size="lg">
                   <Link href="/events">
-                    View All Events
+                    {eventsContent.buttonText || "View All Events"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -229,16 +272,19 @@ export default async function HomePage() {
         <section className="py-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Latest from the Journal</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                {journalContent.title || "Latest from the Journal"}
+              </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-pretty">
-                Insights, trends, and stories from the world of sustainable and innovative fashion design.
+                {journalContent.description ||
+                  "Insights, trends, and stories from the world of sustainable and innovative fashion design."}
               </p>
             </div>
 
             <div className="text-center">
               <Button asChild variant="outline" size="lg">
                 <Link href="/blog">
-                  Read More Articles
+                  {journalContent.buttonText || "Read More Articles"}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>

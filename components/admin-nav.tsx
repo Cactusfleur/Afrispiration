@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, FileText, Calendar, Mail, LogOut, Menu, X } from "lucide-react"
+import { LayoutDashboard, Users, FileText, Calendar, Mail, LogOut, Menu, X, Settings } from "lucide-react"
 import { useState } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
@@ -24,6 +24,11 @@ const navItems = [
     href: "/admin/blog",
     label: "Blog Posts",
     icon: FileText,
+  },
+  {
+    href: "/admin/pages-content",
+    label: "Pages Content",
+    icon: Settings,
   },
   {
     href: "/admin/events",
