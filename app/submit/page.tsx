@@ -65,9 +65,9 @@ export default async function SubmitPage() {
 
   const heroContent = getNestedContent(pageContent, "hero", {})
   const applicationContent = getNestedContent(pageContent, "application", {})
-  const featuresContent = getNestedContent(pageContent, "features", [])
-  const requirementsContent = getNestedContent(pageContent, "requirements", [])
-  const faqsContent = getNestedContent(pageContent, "faqs", [])
+  const featuresContent = getNestedContent(pageContent, "whatToExpect", [])
+  const requirementsContent = getNestedContent(pageContent, "requirements", {})
+  const faqsContent = getNestedContent(pageContent, "faq", [])
 
   const getFeatureIcon = (iconType: string) => {
     switch (iconType) {
@@ -143,9 +143,9 @@ export default async function SubmitPage() {
 
               {/* Requirements */}
               <div className="space-y-4">
-                <h3 className="font-serif text-2xl font-semibold">Application Requirements</h3>
+                <h3 className="font-serif text-2xl font-semibold">{requirementsContent.title}</h3>
                 <ul className="text-muted-foreground text-base space-y-2 list-disc pl-5">
-                  {requirementsContent.map((requirement: string, index: number) => (
+                  {requirementsContent.items.map((requirement: string, index: number) => (
                     <li key={index}>{requirement}</li>
                   ))}
                 </ul>

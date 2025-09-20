@@ -827,7 +827,7 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
           <CardContent className="space-y-4">
             <div>
               <Label>Title</Label>
-              <Input
+              <Textarea
                 value={requirements.title || ""}
                 onChange={(e) =>
                   setContent({
@@ -836,6 +836,7 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
                   })
                 }
                 placeholder="Application Requirements"
+                className="min-h-[120px]" // optional: taller box
               />
             </div>
             <div>
@@ -857,6 +858,74 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
             </div>
           </CardContent>
         </Card>
+
+        {/* FAQ Section */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle>FAQs</CardTitle>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                const newFaqs = [...faq, { question: "", answer: "" }]
+                setContent({ ...content, faq: newFaqs })
+              }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Add FAQ
+            </Button>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {faq.map((item: any, index: number) => (
+              <Card key={index} className="border-l-4 border-l-orange-500">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                  <Badge variant="secondary">FAQ {index + 1}</Badge>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      const newFaqs = faq.filter((_: any, i: number) => i !== index)
+                      setContent({ ...content, faq: newFaqs })
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <Label>Question</Label>
+                    <Input
+                      value={item.question || ""}
+                      onChange={(e) => {
+                        const newFaqs = [...faq]
+                        newFaqs[index] = { ...item, question: e.target.value }
+                        setContent({ ...content, faq: newFaqs })
+                      }}
+                      placeholder="Enter the question"
+                    />
+                  </div>
+                  <div>
+                    <Label>Answer</Label>
+                    <Textarea
+                      value={item.answer || ""}
+                      onChange={(e) => {
+                        const newFaqs = [...faq]
+                        newFaqs[index] = { ...item, answer: e.target.value }
+                        setContent({ ...content, faq: newFaqs })
+                      }}
+                      placeholder="Enter the answer"
+                      rows={3}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </CardContent>
+        </Card>
+
+
       </div>
     )
   }
