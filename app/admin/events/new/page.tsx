@@ -88,9 +88,9 @@ export default async function NewEventPage() {
     },
     {
       name: "featured_image_url",
-      label: "Featured Image URL",
-      type: "text" as const,
-      placeholder: "Main event image URL",
+      label: "Featured Image",
+      type: "image" as const,
+      bucket: "event-featured",
     },
     {
       name: "tags",

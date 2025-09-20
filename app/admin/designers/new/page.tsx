@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect  } from "react"
 import { useRouter } from "next/navigation"
 import { AdminLayout } from "@/components/admin-layout"
 import { FormBuilder } from "@/components/form-builder"
@@ -11,6 +11,36 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
 import { designerFields } from "../components/designer-fields"
+
+import { createClient as createSupabaseClient } from "@supabase/supabase-js"
+
+// ✅ Direct supabase client (using anon key from .env)
+const supabase = createSupabaseClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+// ✅ Debugging helper: list all buckets
+async function listBuckets() {
+  const { data, error } = await supabase.storage.listBuckets()
+  if (error) {
+    console.error("❌ Error listing buckets:", error)
+  } else {
+    console.log("✅ Buckets:", data)
+  }
+}
+async function listAfrispirationFiles() {
+  const { data, error } = await supabase.storage
+    .from("afrispiration")   // ✅ use your bucket name
+    .list("", { limit: 100 }) // "" means root folder
+
+  if (error) {
+    console.error("❌ Error listing files:", error)
+  } else {
+    console.log("✅ Files in afrispiration bucket:", data)
+  }
+}
+
 
 function slugify(text: string, suffix?: number) {
   let base = text
@@ -28,6 +58,10 @@ function slugify(text: string, suffix?: number) {
 export default function NewDesignerPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    listAfrispirationFiles()
+  }, [])
 
   const handleSubmit = async (data: any) => {
     setIsLoading(true)

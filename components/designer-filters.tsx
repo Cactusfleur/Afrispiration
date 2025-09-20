@@ -57,7 +57,6 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
   const [productionLocationSearch, setProductionLocationSearch] = useState("")
 
   const updateFilters = (newFilters: Partial<typeof filters>) => {
-    console.log("HELLLOOOO")
     const updated = { ...filters, ...newFilters }
     setFilters(updated)
     onFiltersChange(updated)

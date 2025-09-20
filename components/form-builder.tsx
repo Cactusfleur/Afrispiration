@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge"
 import { X, Plus } from "lucide-react"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
+import { ImageUpload } from "@/components/image-upload"
 
 interface FormBuilderProps {
   initialData?: any
@@ -24,11 +25,23 @@ interface FormBuilderProps {
 interface FormField {
   name: string
   label: string
-  type: "text" | "email" | "textarea" | "switch" | "tags" | "select" | "multi-select" | "number" | "datetime"
+  type:
+    | "text"
+    | "email"
+    | "textarea"
+    | "switch"
+    | "tags"
+    | "select"
+    | "multi-select"
+    | "number"
+    | "datetime"
+    | "image"
+    | "image-multiple"
   required?: boolean
   placeholder?: string
   options?: readonly string[]
   maxSelections?: number
+  bucket?: string // For image uploads
 }
 
 export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = "Save", isLoading }: FormBuilderProps) {
@@ -102,6 +115,30 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
     const value = formData[field.name]
 
     switch (field.type) {
+      case "image":
+        return (
+          <ImageUpload
+            value={value || ""}
+            onChange={(newValue) => updateField(field.name, newValue)}
+            multiple={false}
+            label={field.label}
+            required={field.required}
+            bucket={field.bucket}
+          />
+        )
+
+      case "image-multiple":
+        return (
+          <ImageUpload
+            value={value || []}
+            onChange={(newValue) => updateField(field.name, newValue)}
+            multiple={true}
+            label={field.label}
+            required={field.required}
+            bucket={field.bucket}
+          />
+        )
+
       case "text":
       case "email":
         return (
@@ -273,10 +310,12 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
     <form onSubmit={handleSubmit} className="space-y-6">
       {fields.map((field) => (
         <div key={field.name} className="space-y-2">
-          <Label htmlFor={field.name}>
-            {field.label}
-            {field.required && <span className="text-red-500 ml-1">*</span>}
-          </Label>
+          {!field.type.startsWith("image") && (
+            <Label htmlFor={field.name}>
+              {field.label}
+              {field.required && <span className="text-red-500 ml-1">*</span>}
+            </Label>
+          )}
           {renderField(field)}
         </div>
       ))}

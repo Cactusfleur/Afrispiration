@@ -22,8 +22,8 @@ const blogFields = [
   },
   { name: "author_name", label: "Author Name", type: "text" as const, required: true },
   { name: "author_bio", label: "Author Bio", type: "textarea" as const, placeholder: "Brief author biography..." },
-  { name: "author_image_url", label: "Author Image URL", type: "text" as const, placeholder: "https://..." },
-  { name: "featured_image_url", label: "Featured Image URL", type: "text" as const, placeholder: "https://..." },
+  { name: "author_image_url", label: "Author Image", type: "image" as const, bucket: "blog-authors" },
+  { name: "featured_image_url", label: "Featured Image", type: "image" as const, bucket: "blog-featured" },
   {
     name: "tags",
     label: "Tags",
