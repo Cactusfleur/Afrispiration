@@ -1,3 +1,4 @@
+import { getPageContent } from "@/lib/content"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Card, CardContent } from "@/components/ui/card"
@@ -6,6 +7,28 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default function SubmitPage() {
+  const content = await getPageContent('submit')
+  
+  // Fallback content if not found
+  const hero = content?.hero || {
+    title: "Join Our Designer Directory",
+    description: "We're building the world's most comprehensive platform for discovering exceptional fashion talent. Be part of our curated community of innovative designers."
+  }
+  
+  const submitCard = content?.submitCard || {
+    title: "Submit Your Application",
+    description: "Share your work and philosophy to be part of our global directory.",
+    buttonText: "Submit Application",
+    buttonUrl: "https://forms.gle/PSoHZw5gV2sxP5MbA"
+  }
+  
+  const whatToExpect = content?.whatToExpect || []
+  const requirements = content?.requirements || {
+    title: "Application Requirements",
+    items: []
+  }
+  const faq = content?.faq || []
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -14,13 +37,9 @@ export default function SubmitPage() {
         {/* Hero Section */}
         <section className="relative bg-muted/30 py-20">
           <div className="max-w-7xl mx-auto px-6 text-center">
-            <h1 className="font-serif text-5xl md:text-6xl font-bold mb-6">
-              Join Our Designer Directory
-            </h1>
+            <h1 className="font-serif text-5xl md:text-6xl font-bold mb-6">{hero.title}</h1>
             <p className="max-w-2xl mx-auto text-lg md:text-xl text-muted-foreground leading-relaxed">
-              We're building the world’s most comprehensive platform for discovering
-              exceptional fashion talent. Be part of our curated community of innovative
-              designers.
+              {hero.description}
             </p>
           </div>
         </section>
@@ -33,14 +52,14 @@ export default function SubmitPage() {
               <CardContent className="p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <Clock className="h-7 w-7 text-primary" />
-                  <h2 className="font-serif text-2xl font-semibold">Submit Your Application</h2>
+                  <h2 className="font-serif text-2xl font-semibold">{submitCard.title}</h2>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mb-6">
-                  Share your work and philosophy to be part of our global directory.
+                  {submitCard.description}
                 </p>
-                <Link href="https://forms.gle/PSoHZw5gV2sxP5MbA" target="_blank">
+                <Link href={submitCard.buttonUrl} target="_blank">
                   <Button size="lg" className="w-full">
-                    Submit Application
+                    {submitCard.buttonText}
                   </Button>
                 </Link>
               </CardContent>
@@ -52,33 +71,31 @@ export default function SubmitPage() {
               <div className="space-y-6">
                 <h3 className="font-serif text-3xl font-semibold">What to Expect</h3>
                 <div className="space-y-6">
-                  <Feature
-                    icon={<CheckCircle className="h-6 w-6 text-green-600" />}
-                    title="Curated Platform"
-                    desc="Join a selective community of designers focused on quality and sustainability."
-                  />
-                  <Feature
-                    icon={<Users className="h-6 w-6 text-blue-600" />}
-                    title="Global Exposure"
-                    desc="Reach fashion enthusiasts, buyers, and collaborators from around the world."
-                  />
-                  <Feature
-                    icon={<Star className="h-6 w-6 text-yellow-600" />}
-                    title="Featured Opportunities"
-                    desc="Get highlighted in our editorial content, events, and designer spotlights."
-                  />
+                  {whatToExpected.map((item: any, index: number) => {
+                    const icons = [
+                      <CheckCircle className="h-6 w-6 text-green-600" />,
+                      <Users className="h-6 w-6 text-blue-600" />,
+                      <Star className="h-6 w-6 text-yellow-600" />
+                    ]
+                    return (
+                      <Feature
+                        key={index}
+                        icon={icons[index] || <CheckCircle className="h-6 w-6 text-green-600" />}
+                        title={item.title}
+                        desc={item.description}
+                      />
+                    )
+                  })}
                 </div>
               </div>
 
               {/* Requirements */}
               <div className="space-y-4">
-                <h3 className="font-serif text-2xl font-semibold">Application Requirements</h3>
+                <h3 className="font-serif text-2xl font-semibold">{requirements.title}</h3>
                 <ul className="text-muted-foreground text-base space-y-2 list-disc pl-5">
-                  <li>Portfolio showcasing your design work</li>
-                  <li>Professional biography and design philosophy</li>
-                  <li>High-quality images of your collections</li>
-                  <li>Information about your sustainable practices</li>
-                  <li>Contact details and social media presence</li>
+                  {requirements.items?.map((item: string, index: number) => (
+                    <li key={index}>{item}</li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -92,18 +109,9 @@ export default function SubmitPage() {
               Frequently Asked Questions
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <FAQ
-                q="Is there an application fee?"
-                a="No, our platform is free for designers. We believe in supporting creative talent without financial barriers."
-              />
-              <FAQ
-                q="What types of designers do you accept?"
-                a="We welcome designers across all categories - fashion, accessories, jewelry, and more. We particularly value innovation and sustainability."
-              />
-              <FAQ
-                q="How long does the review process take?"
-                a="Our curation team typically reviews applications within 2-3 weeks. We'll keep you updated throughout the process."
-              />
+              {faq.map((item: any, index: number) => (
+                <FAQ key={index} q={item.question} a={item.answer} />
+              ))}
             </div>
           </div>
         </section>

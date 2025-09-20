@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { getPageContentClient } from "@/lib/content"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { EventCard } from "@/components/event-card"
@@ -14,6 +15,7 @@ import { Loader2, Search, X, Calendar } from "lucide-react"
 export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([])
   const [filteredEvents, setFilteredEvents] = useState<Event[]>([])
+  const [heroContent, setHeroContent] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTag, setSelectedTag] = useState("")
@@ -22,11 +24,20 @@ export default function EventsPage() {
 
   useEffect(() => {
     fetchEvents()
+    fetchHeroContent()
   }, [])
 
   useEffect(() => {
     filterEvents()
   }, [events, searchTerm, selectedTag, showUpcoming])
+
+  const fetchHeroContent = async () => {
+    const content = await getPageContentClient('events')
+    setHeroContent(content?.hero || {
+      title: "Fashion Events",
+      description: "Discover upcoming fashion shows, networking events, workshops, and industry gatherings. Connect with designers, buyers, and fashion enthusiasts from around the world."
+    })
+  }
 
   const fetchEvents = async () => {
     const supabase = createClient()
@@ -111,10 +122,11 @@ export default function EventsPage() {
         <section className="py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto">
-              <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">Fashion Events</h1>
+              <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">
+                {heroContent?.title || "Fashion Events"}
+              </h1>
               <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
-                Discover upcoming fashion shows, networking events, workshops, and industry gatherings. Connect with
-                designers, buyers, and fashion enthusiasts from around the world.
+                {heroContent?.description || "Discover upcoming fashion shows, networking events, workshops, and industry gatherings. Connect with designers, buyers, and fashion enthusiasts from around the world."}
               </p>
             </div>
           </div>

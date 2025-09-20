@@ -1,18 +1,49 @@
+import { getPageContent } from "@/lib/content"
 import Link from "next/link"
 import { NewsletterSignup } from "@/components/newsletter-signup"
 import { Instagram, Facebook } from "lucide-react"
 
-export function Footer() {
+export async function Footer() {
+  const content = await getPageContent('footer')
+  
+  // Fallback content if not found
+  const brand = content?.brand || {
+    name: "Afrispiration",
+    description: "Discovering exceptional fashion talent from around the world. Curated designers, sustainable practices, cultural authenticity."
+  }
+  
+  const company = content?.company || {
+    title: "Company",
+    links: [
+      { label: "About Us", url: "/about" },
+      { label: "FAQ", url: "/faq" },
+      { label: "Join our directory", url: "/submit" },
+      { label: "Join our WhatsApp Channel", url: "https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18" }
+    ]
+  }
+  
+  const social = content?.social || {
+    instagram: "https://www.instagram.com/afrispiration/",
+    facebook: "https://www.facebook.com/Afrispiration", 
+    whatsapp: "https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18"
+  }
+  
+  const newsletter = content?.newsletter || {
+    title: "Stay Updated",
+    description: "Get the latest designer spotlights and fashion insights delivered to your inbox."
+  }
+  
+  const copyright = content?.copyright || "© 2025 Afrispiration. All rights reserved."
+
   return (
     <footer className="bg-background border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="font-serif text-lg font-semibold">Afrispiration</h3>
+            <h3 className="font-serif text-lg font-semibold">{brand.name}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              Discovering exceptional fashion talent from around the world. Curated designers, sustainable practices,
-              cultural authenticity.
+              {brand.description}
             </p>
           </div>
 
@@ -38,38 +69,31 @@ export function Footer() {
 
           {/* Company */}
           <div className="space-y-4">
-            <h4 className="font-medium">Company</h4>
+            <h4 className="font-medium">{company.title}</h4>
             <nav className="flex flex-col space-y-2 text-sm">
-              <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">
-                About Us
-              </Link>
-              <Link href="/faq" className="text-muted-foreground hover:text-foreground transition-colors">
-                FAQ
-              </Link>
-              <Link href="/submit" className="text-muted-foreground hover:text-foreground transition-colors">
-                Join our directory
-              </Link>
-              <Link href="https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18" className="text-muted-foreground hover:text-foreground transition-colors">
-                Join our WhatsApp Channel
-              </Link>
+              {company.links?.map((link: any, index: number) => (
+                <Link key={index} href={link.url} className="text-muted-foreground hover:text-foreground transition-colors">
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           </div>
 
           {/* Newsletter */}
           <div className="space-y-4">
-            <h4 className="font-medium">Stay Updated</h4>
+            <h4 className="font-medium">{newsletter.title}</h4>
             <p className="text-sm text-muted-foreground">
-              Get the latest designer spotlights and fashion insights delivered to your inbox.
+              {newsletter.description}
             </p>
             <NewsletterSignup placeholder="Your email" buttonText="Subscribe" />
           </div>
         </div>
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">© 2025 Afrispiration. All rights reserved.</p>
+          <p className="text-sm text-muted-foreground">{copyright}</p>
           <div className="flex space-x-6 mt-4 sm:mt-0">
             <a
-              href="https://www.instagram.com/afrispiration/"
+              href={social.instagram}
               target="_blank"
               rel="noopener noreferrer"
 
@@ -78,7 +102,7 @@ export function Footer() {
               <Instagram className="h-5 w-5" />
               <span className="sr-only">Instagram</span>
             </a>
-            <a href="https://www.facebook.com/Afrispiration"
+            <a href={social.facebook}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors">
@@ -88,7 +112,7 @@ export function Footer() {
 
             </a>
             <a
-              href="https://whatsapp.com/channel/0029VaEMFm5J93wYaEt7tA18"
+              href={social.whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-foreground transition-colors"

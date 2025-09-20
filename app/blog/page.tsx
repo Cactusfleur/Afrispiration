@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { getPageContentClient } from "@/lib/content"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { BlogCard } from "@/components/blog-card"
@@ -14,6 +15,7 @@ import { Loader2, Search, X } from "lucide-react"
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([])
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([])
+  const [heroContent, setHeroContent] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedTag, setSelectedTag] = useState("")
@@ -21,11 +23,20 @@ export default function BlogPage() {
 
   useEffect(() => {
     fetchBlogPosts()
+    fetchHeroContent()
   }, [])
 
   useEffect(() => {
     filterPosts()
   }, [posts, searchTerm, selectedTag])
+
+  const fetchHeroContent = async () => {
+    const content = await getPageContentClient('blog')
+    setHeroContent(content?.hero || {
+      title: "Fashion Journal",
+      description: "Insights, trends, and stories from the world of sustainable and innovative fashion design. Discover the latest in fashion culture, designer spotlights, and industry analysis."
+    })
+  }
 
   const fetchBlogPosts = async () => {
     const supabase = createClient()
@@ -102,10 +113,11 @@ export default function BlogPage() {
         <section className="py-16 bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto">
-              <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">Fashion Journal</h1>
+              <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">
+                {heroContent?.title || "Fashion Journal"}
+              </h1>
               <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
-                Insights, trends, and stories from the world of sustainable and innovative fashion design. Discover the
-                latest in fashion culture, designer spotlights, and industry analysis.
+                {heroContent?.description || "Insights, trends, and stories from the world of sustainable and innovative fashion design. Discover the latest in fashion culture, designer spotlights, and industry analysis."}
               </p>
             </div>
           </div>

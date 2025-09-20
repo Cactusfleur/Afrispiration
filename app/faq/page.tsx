@@ -1,3 +1,4 @@
+import { getPageContent } from "@/lib/content"
 import { Button } from "@/components/ui/button"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
@@ -6,53 +7,22 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { HelpCircle } from "lucide-react"
 
 export default function FAQPage() {
-  const faqs = [
-    {
-      question: "Is there an application fee? (edited)",
-      answer:
-        "No, our platform is free for designers. We believe in supporting creative talent without financial barriers.",
-    },
-    {
-      question: "What types of designers do you accept?",
-      answer:
-        "We welcome designers across all categories - fashion, accessories, jewelry, and more. We particularly value innovation, sustainability, and cultural authenticity.",
-    },
-    {
-      question: "How long does the review process take?",
-      answer:
-        "Our curation team typically reviews applications within 2-3 weeks. We'll keep you updated throughout the process via email.",
-    },
-    {
-      question: "What are the requirements to join?",
-      answer:
-        "You'll need a portfolio showcasing your design work, professional biography, high-quality images of your collections, information about sustainable practices, and contact details.",
-    },
-    {
-      question: "Can I update my profile after being accepted?",
-      answer:
-        "Yes! Once accepted, you'll have access to update your profile, add new collections, and manage your presence on the platform.",
-    },
-    {
-      question: "How do you promote featured designers?",
-      answer:
-        "Featured designers are highlighted in our editorial content, social media, newsletters, and special events. We also prioritize them in search results and recommendations.",
-    },
-    {
-      question: "Do you work with emerging designers?",
-      answer:
-        "We're committed to supporting both emerging and established designers. We look for talent, innovation, and commitment to quality regardless of career stage.",
-    },
-    {
-      question: "What countries do you cover?",
-      answer:
-        "We showcase designers from 54+ countries and diaspora communities worldwide. Our platform celebrates global fashion talent and cultural diversity.",
-    },
-    {
-      question: "How can buyers connect with designers?",
-      answer:
-        "Buyers can browse our directory, view designer profiles, and contact designers directly through our platform. We facilitate connections while respecting designer preferences.",
-    },
-  ]
+  const content = await getPageContent('faq')
+  
+  // Fallback content if not found
+  const hero = content?.hero || {
+    title: "Frequently Asked Questions",
+    description: "Find answers to common questions about joining our designer directory and using our platform."
+  }
+  
+  const faqs = content?.questions || []
+  
+  const stillHaveQuestions = content?.stillHaveQuestions || {
+    title: "Still have questions?",
+    description: "Can't find what you're looking for? We're here to help.",
+    buttonText: "Join Our Directory",
+    buttonUrl: ""
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -65,9 +35,9 @@ export default function FAQPage() {
             <div className="flex justify-center mb-6">
               <HelpCircle className="h-12 w-12 text-primary" />
             </div>
-            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">Frequently Asked Questions</h1>
+            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">{hero.title}</h1>
             <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
-              Find answers to common questions about joining our designer directory and using our platform.
+              {hero.description}
             </p>
           </div>
         </section>
@@ -98,11 +68,11 @@ export default function FAQPage() {
 
             {/* Contact Section */}
             <div className="mt-12 text-center">
-              <h2 className="font-serif text-2xl font-semibold mb-4">Still have questions?</h2>
-              <p className="text-muted-foreground mb-6">Can't find what you're looking for? We're here to help.</p>
+              <h2 className="font-serif text-2xl font-semibold mb-4">{stillHaveQuestions.title}</h2>
+              <p className="text-muted-foreground mb-6">{stillHaveQuestions.description}</p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild>
-                  <a href="">Join Our Directory</a>
+                  <a href={stillHaveQuestions.buttonUrl}>{stillHaveQuestions.buttonText}</a>
                 </Button>
               </div>
             </div>

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { getPageContentClient } from "@/lib/content"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { DesignerCard } from "@/components/designer-card"
@@ -13,6 +14,7 @@ import { Loader2, Grid, List } from "lucide-react"
 export default function DesignersPage() {
   const [designers, setDesigners] = useState<Designer[]>([])
   const [filteredDesigners, setFilteredDesigners] = useState<Designer[]>([])
+  const [heroContent, setHeroContent] = useState<any>(null)
   const [designerCountries, setDesignerCountries] = useState<string[]>([])
   const [productionCountries, setProductionCountries] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
@@ -20,10 +22,19 @@ export default function DesignersPage() {
 
   useEffect(() => {
     fetchDesigners()
+    fetchHeroContent()
   }, [])
 
   const fetchDesigners = async () => {
     const supabase = createClient()
+  const fetchHeroContent = async () => {
+    const content = await getPageContentClient('designers')
+    setHeroContent(content?.hero || {
+      title: "Discover Exceptional Designers",
+      description: "Explore our curated collection of innovative fashion designers from around the world. Each profile showcases unique perspectives, sustainable practices, and cultural authenticity."
+    })
+  }
+
 
     const { data, error } = await supabase
       .from("designers")
@@ -123,11 +134,10 @@ export default function DesignersPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto">
               <h1 className="font-serif text-4xl md:text-5xl font-bold mb-4 text-balance">
-                Discover Exceptional Designers
+                {heroContent?.title || "Discover Exceptional Designers"}
               </h1>
               <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
-                Explore our curated collection of innovative fashion designers from around the world. Each profile
-                showcases unique perspectives, sustainable practices, and cultural authenticity.
+                {heroContent?.description || "Explore our curated collection of innovative fashion designers from around the world. Each profile showcases unique perspectives, sustainable practices, and cultural authenticity."}
               </p>
             </div>
           </div>

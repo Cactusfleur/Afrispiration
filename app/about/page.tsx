@@ -1,3 +1,4 @@
+import { getPageContent } from "@/lib/content"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
@@ -7,28 +8,40 @@ import { Heart, Users, Globe, Palette, Award, Target } from "lucide-react"
 import Link from "next/link"
 
 export default function AboutPage() {
-    const values = [
-        {
-            icon: Heart,
-            title: "Cultural Pride",
-            description: "Celebrating the rich heritage and diverse traditions that shape African design excellence.",
-        },
-        {
-            icon: Users,
-            title: "Community First",
-            description: "Building bridges between designers across Africa and the diaspora to foster collaboration.",
-        },
-        {
-            icon: Globe,
-            title: "Global Impact",
-            description: "Amplifying African voices and creativity on the world stage through meaningful connections.",
-        },
-        {
-            icon: Palette,
-            title: "Creative Excellence",
-            description: "Showcasing the highest standards of design innovation and artistic expression.",
-        },
-    ]
+    const content = await getPageContent('about')
+    
+    // Fallback content if not found
+    const hero = content?.hero || {
+        title: "Celebrating African Design Excellence",
+        description: "We are a vibrant community platform dedicated to showcasing the incredible talent, creativity, and cultural richness of African designers across the continent and diaspora.",
+        primaryButtonText: "Join Our Community",
+        primaryButtonUrl: "/submit",
+        secondaryButtonText: "Explore Designers", 
+        secondaryButtonUrl: "/designers"
+    }
+    
+    const mission = content?.mission || {
+        badge: "Our Mission",
+        title: "Empowering African Creativity Worldwide",
+        description1: "Afrispiration was born from a vision to create a unified platform where African designers can showcase their work, connect with peers, and access opportunities that celebrate their unique perspectives and cultural heritage.",
+        description2: "We believe that African design has the power to inspire global conversations about creativity, innovation, and cultural expression. Our platform serves as a bridge connecting talent across borders and generations."
+    }
+    
+    const values = content?.values || []
+    const cta = content?.cta || {
+        title: "Ready to Join Our Community?",
+        description: "Whether you're a designer looking to showcase your work or someone passionate about African creativity, there's a place for you in our growing community.",
+        buttonText: "Join as Designer",
+        buttonUrl: "/submit"
+    }
+    
+    // Icon mapping for values
+    const iconMap = {
+        "Cultural Pride": Heart,
+        "Community First": Users,
+        "Global Impact": Globe,
+        "Creative Excellence": Palette,
+    }
 
     const stats = [
         { number: "500+", label: "Talented Designers" },
@@ -69,24 +82,21 @@ export default function AboutPage() {
                         <Badge variant="secondary" className="mb-6">
                             About Afrispiration
                         </Badge>
-                        <h1 className="font-serif text-4xl md:text-6xl font-bold mb-6 text-balance">
-                            Celebrating African Design Excellence
-                        </h1>
+                        <h1 className="font-serif text-4xl md:text-6xl font-bold mb-6 text-balance">{hero.title}</h1>
                         <p className="text-lg md:text-xl text-muted-foreground leading-relaxed text-pretty mb-8">
-                            We are a vibrant community platform dedicated to showcasing the incredible talent, creativity, and
-                            cultural richness of African designers across the continent and diaspora.
+                            {hero.description}
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                            <Link href="/submit">
+                            <Link href={hero.primaryButtonUrl}>
                                 <Button size="lg">
                                     <Users className="mr-2 h-5 w-5" />
-                                    Join Our Community
+                                    {hero.primaryButtonText}
                                 </Button>
                             </Link>
-                            <Link href="/designers">
+                            <Link href={hero.secondaryButtonUrl}>
                                 <Button variant="outline" size="lg">
                                     <Palette className="mr-2 h-5 w-5" />
-                                    Explore Designers
+                                    {hero.secondaryButtonText}
                                 </Button>
                             </Link>
                         </div>
@@ -101,20 +111,14 @@ export default function AboutPage() {
                         <div>
                             <div className="flex items-center gap-2 mb-6">
                                 <Target className="h-6 w-6 text-primary" />
-                                <Badge variant="outline">Our Mission</Badge>
+                                <Badge variant="outline">{mission.badge}</Badge>
                             </div>
-                            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-balance">
-                                Empowering African Creativity Worldwide
-                            </h2>
+                            <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-balance">{mission.title}</h2>
                             <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                                Afrispiration was born from a vision to create a unified platform where African designers can showcase
-                                their work, connect with peers, and access opportunities that celebrate their unique perspectives and
-                                cultural heritage.
+                                {mission.description1}
                             </p>
                             <p className="text-lg text-muted-foreground leading-relaxed">
-                                We believe that African design has the power to inspire global conversations about creativity,
-                                innovation, and cultural expression. Our platform serves as a bridge connecting talent across borders
-                                and generations.
+                                {mission.description2}
                             </p>
                         </div>
                         <div className="relative">
@@ -149,7 +153,10 @@ export default function AboutPage() {
                             <Card key={index} className="border-0 shadow-sm hover:shadow-md transition-shadow">
                                 <CardContent className="p-6 text-center">
                                     <div className="w-12 h-12 bg-secondary rounded-lg flex items-center justify-center mx-auto mb-4">
-                                        <value.icon className="h-6 w-6 text-primary" />
+                                        {(() => {
+                                            const IconComponent = iconMap[value.title as keyof typeof iconMap] || Heart
+                                            return <IconComponent className="h-6 w-6 text-primary" />
+                                        })()}
                                     </div>
                                     <h3 className="font-serif text-xl font-bold mb-3">{value.title}</h3>
                                     <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
@@ -220,16 +227,15 @@ export default function AboutPage() {
             {/* CTA Section */}
             <section className="py-24 bg-primary text-primary-foreground">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-balance">Ready to Join Our Community?</h2>
+                    <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 text-balance">{cta.title}</h2>
                     <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-8 text-pretty">
-                        Whether you're a designer looking to showcase your work or someone passionate about African creativity,
-                        there's a place for you in our growing community.
+                        {cta.description}
                     </p>
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <Link href="/submit">
+                        <Link href={cta.buttonUrl}>
                             <Button size="lg" variant="secondary">
                                 <Users className="mr-2 h-5 w-5" />
-                                Join as Designer
+                                {cta.buttonText}
                             </Button>
                         </Link>
                     </div>
