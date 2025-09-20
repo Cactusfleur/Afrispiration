@@ -48,12 +48,6 @@ export default async function PagesContentPage() {
           <h1 className="text-3xl font-bold">Pages Content</h1>
           <p className="text-muted-foreground">Manage content for different pages across your website</p>
         </div>
-        <Button asChild>
-          <Link href="/admin/pages-content/new">
-            <Plus className="h-4 w-4 mr-2" />
-            Add New Page Content
-          </Link>
-        </Button>
       </div>
 
       {pageContents && pageContents.length > 0 ? (

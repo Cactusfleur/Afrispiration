@@ -37,9 +37,9 @@ const subcategories = {
   Swimwear: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Handbags & luggage": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Sportswear": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
-   "Textiles": ["Ready to Wear (RWT)", "Bespoke/Custom.",],
-   "Lingerie": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
-   "Haute Couture": [ "Bespoke/Custom.",],
+  "Textiles": ["Ready to Wear (RWT)", "Bespoke/Custom.",],
+  "Lingerie": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  "Haute Couture": ["Bespoke/Custom.",],
   "Beauty & Fragrance": ["Skincare", "Fragrance", "Hair Care"],
 }
 
@@ -271,7 +271,7 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
               <Badge variant="secondary" className="gap-1">
                 Production: {filters.productionLocation}
                 <button onClick={() => updateFilters({ productionLocation: "" })}>
-                  <X className="h-3 w-3 cursor-pointer"/>
+                  <X className="h-3 w-3 cursor-pointer" />
                 </button>
               </Badge>
             )}

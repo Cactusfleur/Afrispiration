@@ -1135,29 +1135,6 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Raw JSON (Advanced)</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div>
-              <Label>Content JSON</Label>
-              <Textarea
-                value={JSON.stringify(content, null, 2)}
-                onChange={(e) => {
-                  try {
-                    const newContent = JSON.parse(e.target.value)
-                    setContent(newContent)
-                  } catch (error) {
-                    // Invalid JSON, don't update
-                  }
-                }}
-                rows={10}
-                className="font-mono text-sm"
-              />
-            </div>
-          </CardContent>
-        </Card>
       </div>
     )
   }
