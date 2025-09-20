@@ -398,35 +398,12 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
         <Card>
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Values</CardTitle>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                const newValues = [...values, { title: "", description: "" }]
-                setContent({ ...content, values: newValues })
-              }}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Value
-            </Button>
           </CardHeader>
           <CardContent className="space-y-4">
             {values.map((value: any, index: number) => (
               <Card key={index} className="border-l-4 border-l-green-500">
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <Badge variant="secondary">Value {index + 1}</Badge>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => {
-                      const newValues = values.filter((_: any, i: number) => i !== index)
-                      setContent({ ...content, values: newValues })
-                    }}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div>
