@@ -16,6 +16,7 @@ export async function getPageContent(pageKey: string) {
 // Helper function to get content with fallback
 export async function getPageContentWithFallback(pageKey: string, fallback: any = {}) {
   const content = await getPageContent(pageKey)
+  console.log(content)
   return content || fallback
 }
 

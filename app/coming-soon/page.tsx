@@ -54,16 +54,16 @@ export default async function ComingSoonPage() {
           {/* Coming Soon Badge */}
           <Badge variant="secondary" className="px-4 py-2 text-sm font-medium">
             <Clock className="h-4 w-4 mr-2" />
-            Coming Soon
+            {pageContent.badge}
           </Badge>
 
           {/* Main Heading */}
           <div className="space-y-4">
             <h1 className="font-serif text-5xl md:text-6xl font-bold text-foreground">
-              {headerContent.title || "Shop Opening Soon"}
+              {pageContent.title || "Shop Opening Soon"}
             </h1>
             <p className="text-xl text-muted-foreground max-w-lg mx-auto leading-relaxed">
-              {headerContent.description ||
+              {pageContent.description ||
                 "We're working hard to bring you an amazing shopping experience. Stay tuned for the launch of our designer marketplace."}
             </p>
           </div>
