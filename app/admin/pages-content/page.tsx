@@ -31,6 +31,7 @@ export default async function PagesContentPage() {
       blog: "Blog Page",
       designers: "Designers Page",
       footer: "Footer Content",
+      home: "Home Page",
     }
     return displayNames[pageKey] || pageKey.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
   }
@@ -38,6 +39,7 @@ export default async function PagesContentPage() {
   const getPageUrl = (pageKey: string) => {
     if (pageKey === "footer") return "/"
     if (pageKey === "coming_soon") return "/shop"
+    if (pageKey === "home") return "/"
     return `/${pageKey}`
   }
 

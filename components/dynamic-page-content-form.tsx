@@ -10,7 +10,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Plus } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface DynamicPageContentFormProps {
   initialData?: {
@@ -31,7 +30,6 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
       setScrollToIndex(null)
     }
   }, [scrollToIndex])
-
 
   const [pageKey, setPageKey] = useState(initialData?.page_key || "")
   const [content, setContent] = useState(initialData?.content || {})
@@ -63,6 +61,8 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
         return renderSubmitForm()
       case "footer":
         return renderFooterForm()
+      case "home":
+        return renderHomeForm()
       default:
         return renderGenericForm()
     }
@@ -123,19 +123,20 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
               onClick={() => {
                 const newQuestions = [...questions, { question: "", answer: "" }]
                 setContent({ ...content, questions: newQuestions })
-                setScrollToIndex(newQuestions.length - 1)   // 👈 scroll to new card
+                setScrollToIndex(newQuestions.length - 1) // 👈 scroll to new card
               }}
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Question
             </Button>
-
           </CardHeader>
           <CardContent className="space-y-4">
             {questions.map((q: any, index: number) => (
               <Card
                 key={index}
-                ref={(el) => { questionRefs.current[index] = el }}   // 👈 attach ref
+                ref={(el) => {
+                  questionRefs.current[index] = el
+                }} // 👈 attach ref
                 className="border-l-4 border-l-blue-500"
               >
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -918,8 +919,6 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
             ))}
           </CardContent>
         </Card>
-
-
       </div>
     )
   }
@@ -1040,7 +1039,6 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
                 </Button>
               </div>
             </div>
-
           </CardContent>
         </Card>
 
@@ -1186,7 +1184,290 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
             </div>
           </CardContent>
         </Card>
+      </div>
+    )
+  }
 
+  const renderHomeForm = () => {
+    const hero = content.hero || {}
+    const stats = content.stats || {}
+    const featuredSection = content.featuredSection || {}
+    const eventsSection = content.eventsSection || {}
+    const journalSection = content.journalSection || {}
+
+    return (
+      <div className="space-y-6">
+        {/* Hero Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Hero Section</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label>Title</Label>
+              <Input
+                value={hero.title || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    hero: { ...hero, title: e.target.value },
+                  })
+                }
+                placeholder="Discover Exceptional"
+              />
+            </div>
+            <div>
+              <Label>Subtitle</Label>
+              <Input
+                value={hero.subtitle || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    hero: { ...hero, subtitle: e.target.value },
+                  })
+                }
+                placeholder="African Fashion"
+              />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea
+                value={hero.description || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    hero: { ...hero, description: e.target.value },
+                  })
+                }
+                placeholder="A curated platform showcasing emerging and established African fashion designers..."
+                rows={3}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Button Text</Label>
+                <Input
+                  value={hero.buttonText || ""}
+                  onChange={(e) =>
+                    setContent({
+                      ...content,
+                      hero: { ...hero, buttonText: e.target.value },
+                    })
+                  }
+                  placeholder="Explore Designers"
+                />
+              </div>
+              <div>
+                <Label>Button URL</Label>
+                <Input
+                  value={hero.buttonUrl || ""}
+                  onChange={(e) =>
+                    setContent({
+                      ...content,
+                      hero: { ...hero, buttonUrl: e.target.value },
+                    })
+                  }
+                  placeholder="/designers"
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Stats Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Stats Section Labels</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label>Designers Label</Label>
+              <Input
+                value={stats.designers || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    stats: { ...stats, designers: e.target.value },
+                  })
+                }
+                placeholder="Curated Designers"
+              />
+            </div>
+            <div>
+              <Label>Events Label</Label>
+              <Input
+                value={stats.events || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    stats: { ...stats, events: e.target.value },
+                  })
+                }
+                placeholder="Fashion Events"
+              />
+            </div>
+            <div>
+              <Label>Countries Label</Label>
+              <Input
+                value={stats.countries || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    stats: { ...stats, countries: e.target.value },
+                  })
+                }
+                placeholder="African Countries + Diaspora"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Featured Designers Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Featured Designers Section</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label>Title</Label>
+              <Input
+                value={featuredSection.title || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    featuredSection: { ...featuredSection, title: e.target.value },
+                  })
+                }
+                placeholder="Featured Designers"
+              />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea
+                value={featuredSection.description || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    featuredSection: { ...featuredSection, description: e.target.value },
+                  })
+                }
+                placeholder="Meet the innovative minds shaping the present and future of African fashion..."
+                rows={3}
+              />
+            </div>
+            <div>
+              <Label>Button Text</Label>
+              <Input
+                value={featuredSection.buttonText || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    featuredSection: { ...featuredSection, buttonText: e.target.value },
+                  })
+                }
+                placeholder="View All Designers"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Events Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Events Section</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label>Title</Label>
+              <Input
+                value={eventsSection.title || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    eventsSection: { ...eventsSection, title: e.target.value },
+                  })
+                }
+                placeholder="Upcoming Events"
+              />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea
+                value={eventsSection.description || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    eventsSection: { ...eventsSection, description: e.target.value },
+                  })
+                }
+                placeholder="Join us at the latest fashion events, workshops, and showcases..."
+                rows={3}
+              />
+            </div>
+            <div>
+              <Label>Button Text</Label>
+              <Input
+                value={eventsSection.buttonText || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    eventsSection: { ...eventsSection, buttonText: e.target.value },
+                  })
+                }
+                placeholder="View All Events"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Journal Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Journal Section</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label>Title</Label>
+              <Input
+                value={journalSection.title || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    journalSection: { ...journalSection, title: e.target.value },
+                  })
+                }
+                placeholder="Latest from the Journal"
+              />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea
+                value={journalSection.description || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    journalSection: { ...journalSection, description: e.target.value },
+                  })
+                }
+                placeholder="Insights, trends, and stories from the world of sustainable and innovative fashion design."
+                rows={3}
+              />
+            </div>
+            <div>
+              <Label>Button Text</Label>
+              <Input
+                value={journalSection.buttonText || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    journalSection: { ...journalSection, buttonText: e.target.value },
+                  })
+                }
+                placeholder="Read More Articles"
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
     )
   }
