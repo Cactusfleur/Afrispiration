@@ -91,17 +91,16 @@ export default function EditBlogPostPage() {
   if (!blogPost) {
     return (
       <AdminLayout>
-        <div className="max-w-2xl mx-auto text-center py-12">Loading...</div>
+        <div className="max-w-sm sm:max-w-2xl mx-auto text-center py-12">Loading...</div>
       </AdminLayout>
     )
   }
 
   return (
     <AdminLayout>
-      <div className="max-w-2xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex items-center gap-4">
-          <Button asChild variant="ghost" size="sm">
+      <div className="max-w-sm sm:max-w-2xl mx-auto space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+          <Button asChild variant="ghost" size="sm" className="w-fit">
             <Link href="/admin/blog">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Blog Posts
@@ -110,10 +109,10 @@ export default function EditBlogPostPage() {
         </div>
 
         <Card>
-          <CardHeader>
-            <CardTitle className="font-serif text-2xl">Edit Article</CardTitle>
+          <CardHeader className="p-4 sm:p-6">
+            <CardTitle className="font-serif text-xl sm:text-2xl">Edit Article</CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-4 sm:p-6 pt-0">
             <FormBuilder
               fields={blogFields}
               onSubmit={handleSubmit}

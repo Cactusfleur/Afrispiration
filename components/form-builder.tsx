@@ -196,10 +196,9 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
       case "tags":
         return (
           <div className="space-y-2">
-            {/* Input + add button */}
-            <div className="flex gap-2 items-center">
+            <div className="flex flex-col sm:flex-row gap-2 sm:items-center">
               <Input
-                className="flex-1"
+                className="flex-1 min-w-0"
                 value={tagInputs[field.name] || ""}
                 onChange={(e) =>
                   setTagInputs((prev) => ({
@@ -215,19 +214,28 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
                   }
                 }}
               />
-              <Button type="button" size="sm" onClick={() => addTag(field.name)} className="shrink-0">
-                <Plus className="h-4 w-4" />
+              <Button
+                type="button"
+                size="sm"
+                onClick={() => addTag(field.name)}
+                className="w-full sm:w-auto sm:shrink-0"
+              >
+                <Plus className="h-4 w-4 mr-1 sm:mr-0" />
+                <span className="sm:hidden">Add Tag</span>
               </Button>
             </div>
 
-            {/* Tags list */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               {(value || []).map((tag: string) => (
-                <Badge key={tag} variant="secondary" className="flex items-center gap-1 px-2 py-1 break-all max-w-full">
-                  <span className="truncate max-w-[300px]">{tag}</span>
+                <Badge
+                  key={tag}
+                  variant="secondary"
+                  className="flex items-center gap-1 px-2 py-1 text-xs sm:text-sm max-w-full"
+                >
+                  <span className="truncate max-w-[200px] sm:max-w-[300px]">{tag}</span>
                   <button
                     type="button"
-                    className="ml-1 text-muted-foreground hover:text-foreground shrink-0"
+                    className="ml-1 text-muted-foreground hover:text-foreground shrink-0 touch-manipulation"
                     onClick={() => removeTag(field.name, tag)}
                   >
                     <X className="h-3 w-3" />
@@ -247,8 +255,10 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             timeIntervals={15}
             dateFormat="MMMM d, yyyy h:mm aa"
             placeholderText={`Pick ${field.label}`}
-            className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            popperClassName="z-[9999]" // ensures calendar popup stays on top
+            className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring touch-manipulation"
+            popperClassName="z-[9999]"
+            popperPlacement="bottom-start"
+            showPopperArrow={false}
           />
         )
 
@@ -307,11 +317,11 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
       {fields.map((field) => (
         <div key={field.name} className="space-y-2">
           {!field.type.startsWith("image") && (
-            <Label htmlFor={field.name}>
+            <Label htmlFor={field.name} className="text-sm sm:text-base">
               {field.label}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </Label>
@@ -320,7 +330,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
         </div>
       ))}
 
-      <Button type="submit" disabled={isLoading} className="w-full">
+      <Button type="submit" disabled={isLoading} className="w-full min-h-[44px] touch-manipulation">
         {isLoading ? "Saving..." : submitLabel}
       </Button>
     </form>

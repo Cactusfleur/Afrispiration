@@ -5,9 +5,13 @@ import { useRouter } from "next/navigation"
 import { DynamicPageContentForm } from "@/components/dynamic-page-content-form"
 import { updatePageContent } from "../../components/action"
 import { createClient } from "@/lib/supabase/client"
+import AdminLayout from "@/components/admin-layout"
+import Button from "@/components/ui/button"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
 
 interface EditPageContentPageProps {
-  params: Promise<{ id: string }>   // 👈 params is a Promise now
+  params: Promise<{ id: string }> // 👈 params is a Promise now
 }
 
 export default function EditPageContentPage({ params }: EditPageContentPageProps) {
@@ -20,11 +24,7 @@ export default function EditPageContentPage({ params }: EditPageContentPageProps
   useEffect(() => {
     const fetchPageContent = async () => {
       const supabase = createClient()
-      const { data, error } = await supabase
-        .from("page_content")
-        .select("*")
-        .eq("id", id)
-        .single()
+      const { data, error } = await supabase.from("page_content").select("*").eq("id", id).single()
 
       if (error) {
         console.error("Error fetching page content:", error)
@@ -59,19 +59,25 @@ export default function EditPageContentPage({ params }: EditPageContentPageProps
   if (!pageContent) return <div>Page content not found</div>
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">Edit Page Content</h1>
-        <p className="text-muted-foreground">
-          Update content for {pageContent.page_key} with user-friendly forms
-        </p>
-      </div>
+    <AdminLayout>
+      <div className="max-w-sm sm:max-w-2xl lg:max-w-4xl mx-auto space-y-4 sm:space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold">Edit Page Content</h1>
+            <p className="text-muted-foreground text-sm sm:text-base">
+              Update content for {pageContent.page_key} with user-friendly forms
+            </p>
+          </div>
+          <Button asChild variant="outline" size="sm" className="w-full sm:w-auto bg-transparent">
+            <Link href="/admin/pages-content">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Pages
+            </Link>
+          </Button>
+        </div>
 
-      <DynamicPageContentForm
-        initialData={pageContent}
-        onSubmit={handleSubmit}
-        isLoading={isPending}
-      />
-    </div>
+        <DynamicPageContentForm initialData={pageContent} onSubmit={handleSubmit} isLoading={isPending} />
+      </div>
+    </AdminLayout>
   )
 }
