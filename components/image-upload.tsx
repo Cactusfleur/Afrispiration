@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import { X, Upload, Loader2 } from "lucide-react"
+import { X, Upload, Loader2, GripVertical } from "lucide-react"
 import { createBrowserClient } from "@supabase/ssr"
 
 interface ImageUploadProps {
@@ -27,6 +27,8 @@ export function ImageUpload({
 }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [dragActive, setDragActive] = useState(false)
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null)
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const supabase = createBrowserClient(
@@ -123,6 +125,50 @@ export function ImageUpload({
     }
   }
 
+  const handleImageDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index)
+    e.dataTransfer.effectAllowed = "move"
+  }
+
+  const handleImageDragOver = (e: React.DragEvent, index: number) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = "move"
+    setDragOverIndex(index)
+  }
+
+  const handleImageDragLeave = () => {
+    setDragOverIndex(null)
+  }
+
+  const handleImageDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault()
+
+    if (draggedIndex === null || draggedIndex === dropIndex) {
+      setDraggedIndex(null)
+      setDragOverIndex(null)
+      return
+    }
+
+    const newImages = [...currentImages]
+    const draggedImage = newImages[draggedIndex]
+
+    // Remove dragged item
+    newImages.splice(draggedIndex, 1)
+
+    // Insert at new position
+    const insertIndex = draggedIndex < dropIndex ? dropIndex - 1 : dropIndex
+    newImages.splice(insertIndex, 0, draggedImage)
+
+    onChange(newImages)
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+  }
+
+  const handleImageDragEnd = () => {
+    setDraggedIndex(null)
+    setDragOverIndex(null)
+  }
+
   return (
     <div className="space-y-4">
       <Label>
@@ -184,27 +230,61 @@ export function ImageUpload({
 
       {/* Image Previews */}
       {currentImages.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {currentImages.map((imageUrl, index) => (
-            <div key={index} className="relative group">
-              <div className="aspect-square rounded-lg overflow-hidden bg-muted">
-                <img
-                  src={imageUrl || "/placeholder.svg"}
-                  alt={`Upload ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <Button
-                type="button"
-                variant="destructive"
-                size="sm"
-                className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                onClick={() => removeImage(imageUrl)}
-              >
-                <X className="h-4 w-4" />
-              </Button>
+        <div className="space-y-3">
+          {multiple && currentImages.length > 1 && (
+            <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
+              <strong>💡 Tip:</strong> Drag and drop images to reorder them. The first image will be the main portfolio
+              image.
             </div>
-          ))}
+          )}
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {currentImages.map((imageUrl, index) => (
+              <div
+                key={`${imageUrl}-${index}`}
+                className={`relative group cursor-move transition-all duration-200 ${
+                  draggedIndex === index ? "opacity-50 scale-95" : ""
+                } ${dragOverIndex === index ? "ring-2 ring-primary ring-offset-2" : ""}`}
+                draggable={multiple && currentImages.length > 1}
+                onDragStart={(e) => handleImageDragStart(e, index)}
+                onDragOver={(e) => handleImageDragOver(e, index)}
+                onDragLeave={handleImageDragLeave}
+                onDrop={(e) => handleImageDrop(e, index)}
+                onDragEnd={handleImageDragEnd}
+              >
+                <div className="aspect-square rounded-lg overflow-hidden bg-muted">
+                  <img
+                    src={imageUrl || "/placeholder.svg"}
+                    alt={`Upload ${index + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {multiple && currentImages.length > 1 && (
+                  <div className="absolute top-2 left-2 bg-black/70 text-white px-2 py-1 rounded text-xs flex items-center gap-1">
+                    <GripVertical className="h-3 w-3" />
+                    {index + 1}
+                  </div>
+                )}
+
+                {multiple && index === 0 && (
+                  <div className="absolute bottom-2 left-2 bg-primary text-primary-foreground px-2 py-1 rounded text-xs font-medium">
+                    Main
+                  </div>
+                )}
+
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                  onClick={() => removeImage(imageUrl)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -212,6 +292,7 @@ export function ImageUpload({
       {multiple && currentImages.length > 0 && (
         <div className="text-sm text-muted-foreground">
           {currentImages.length} image{currentImages.length !== 1 ? "s" : ""} uploaded
+          {currentImages.length > 1 && " • Drag to reorder"}
         </div>
       )}
     </div>
