@@ -98,9 +98,7 @@ export default async function PagesContentPage() {
                           Edit
                         </Link>
                       </Button>
-                      <div className="flex-1">
-                        <DeletePageContentButton id={content.id} pageKey={content.page_key} />
-                      </div>
+                      
                     </div>
                   </div>
                 </CardContent>
