@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Navigation } from "@/components/navigation"
-import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Lightbox } from "@/components/lightbox"
@@ -80,10 +79,18 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
 
               {/* Category and Subcategory */}
               <div className="text-center">
-                <p className="text-sm text-muted-foreground lowercase tracking-wide">
-                  {designer.category}
-                  {designer.subcategory && ` ${designer.subcategory}`}
-                </p>
+                <div className="space-y-2">
+                  {designer.category && designer.category.length > 0 && (
+                    <p className="text-sm text-muted-foreground lowercase tracking-wide">
+                      {designer.category.join(" • ")}
+                    </p>
+                  )}
+                  {designer.subcategory && designer.subcategory.length > 0 && (
+                    <p className="text-xs text-muted-foreground/80 lowercase tracking-wide">
+                      {designer.subcategory.join(" • ")}
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -139,23 +146,33 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   </div>
                 )}
 
-                {designer.category && (
+                {designer.category && designer.category.length > 0 && (
                   <div>
-                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">CATEGORY</h3>
-                    <Badge variant="secondary" className="text-sm">
-                      {designer.category}
-                    </Badge>
+                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
+                      {designer.category.length > 1 ? "CATEGORIES" : "CATEGORY"}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {designer.category.map((cat, index) => (
+                        <Badge key={index} variant="secondary" className="text-sm">
+                          {cat}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 )}
 
-                {designer.subcategory && (
+                {designer.subcategory && designer.subcategory.length > 0 && (
                   <div>
                     <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
-                      SUBCATEGORY
+                      {designer.subcategory.length > 1 ? "SUBCATEGORIES" : "SUBCATEGORY"}
                     </h3>
-                    <Badge variant="outline" className="text-sm">
-                      {designer.subcategory}
-                    </Badge>
+                    <div className="flex flex-wrap gap-2">
+                      {designer.subcategory.map((subcat, index) => (
+                        <Badge key={index} variant="outline" className="text-sm">
+                          {subcat}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
                 )}
 
@@ -180,8 +197,17 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
                       >
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
                         </svg>
                       </a>
@@ -293,7 +319,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
         )}
       </main>
 
-      <Footer />
 
       <Lightbox
         images={portfolioImages}

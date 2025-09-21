@@ -32,7 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`}>
       <body className="font-sans antialiased">
-        <Suspense fallback={null}>{children}</Suspense>
+        <Suspense fallback={null}>
+          {children}
+        </Suspense>
         <Analytics />
       </body>
     </html>

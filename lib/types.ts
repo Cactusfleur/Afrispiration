@@ -13,8 +13,8 @@ export interface Designer {
   email?: string
   phone?: string
   image_url?: string
-  category?: string
-  subcategory?: string
+  category?: string[] // Updated category to support arrays
+  subcategory?: string[] // Updated subcategory to support arrays
   cover_image?: string
   portfolio_images?: string[]
   is_featured: boolean

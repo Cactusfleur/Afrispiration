@@ -65,14 +65,24 @@ export default async function AdminDesignersPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {designer.category && (
-                    <div className="flex flex-wrap gap-1">
-                      <Badge variant="secondary" className="text-xs">
-                        {designer.category}
-                      </Badge>
-                      <Badge variant="secondary" className="text-xs">
-                        {designer.subcategory}
-                      </Badge>
+                  {designer.category && designer.category.length > 0 && (
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap gap-1">
+                        {designer.category.map((cat, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {cat}
+                          </Badge>
+                        ))}
+                      </div>
+                      {designer.subcategory && designer.subcategory.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {designer.subcategory.map((subcat, index) => (
+                            <Badge key={index} variant="outline" className="text-xs">
+                              {subcat}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
 

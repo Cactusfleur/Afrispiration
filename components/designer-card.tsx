@@ -45,15 +45,21 @@ export function DesignerCard({ designer }: DesignerCardProps) {
               </div>
             )}
 
-            <div className="flex space-x-2 my-2">
-              <Badge variant="secondary" className="text-xs">
-                {designer.category}
-              </Badge>
-              {designer.subcategory && (
-                <Badge variant="secondary" className="text-xs">
-                  {designer.subcategory}
-                </Badge>
-              )}
+            <div className="flex flex-wrap gap-1 my-2">
+              {designer.category &&
+                designer.category.length > 0 &&
+                designer.category.map((cat, index) => (
+                  <Badge key={index} variant="secondary" className="text-xs">
+                    {cat}
+                  </Badge>
+                ))}
+              {designer.subcategory &&
+                designer.subcategory.length > 0 &&
+                designer.subcategory.map((subcat, index) => (
+                  <Badge key={index} variant="outline" className="text-xs">
+                    {subcat}
+                  </Badge>
+                ))}
             </div>
 
             <p className="text-sm leading-relaxed line-clamp-3">{designer.bio}</p>

@@ -10,6 +10,7 @@ import type { Designer, Event } from "@/lib/types"
 import { DesignerCard } from "@/components/designer-card"
 import { getPageContentWithFallback, getNestedContent } from "@/lib/page-content"
 
+
 async function getFeaturedDesigners(): Promise<Designer[]> {
   const supabase = await createClient()
   const { data, error } = await supabase
