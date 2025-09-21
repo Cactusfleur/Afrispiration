@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -22,6 +22,17 @@ interface DynamicPageContentFormProps {
 }
 
 export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: DynamicPageContentFormProps) {
+  const questionRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [scrollToIndex, setScrollToIndex] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (scrollToIndex !== null) {
+      questionRefs.current[scrollToIndex]?.scrollIntoView({ behavior: "smooth", block: "center" })
+      setScrollToIndex(null)
+    }
+  }, [scrollToIndex])
+
+
   const [pageKey, setPageKey] = useState(initialData?.page_key || "")
   const [content, setContent] = useState(initialData?.content || {})
 
@@ -112,15 +123,21 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
               onClick={() => {
                 const newQuestions = [...questions, { question: "", answer: "" }]
                 setContent({ ...content, questions: newQuestions })
+                setScrollToIndex(newQuestions.length - 1)   // 👈 scroll to new card
               }}
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Question
             </Button>
+
           </CardHeader>
           <CardContent className="space-y-4">
             {questions.map((q: any, index: number) => (
-              <Card key={index} className="border-l-4 border-l-blue-500">
+              <Card
+                key={index}
+                ref={(el) => { questionRefs.current[index] = el }}   // 👈 attach ref
+                className="border-l-4 border-l-blue-500"
+              >
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <Badge variant="secondary">Question {index + 1}</Badge>
                   <Button
@@ -971,24 +988,59 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
               />
             </div>
             <div>
-              <Label>Links (JSON format)</Label>
-              <Textarea
-                value={JSON.stringify(company.links || [], null, 2)}
-                onChange={(e) => {
-                  try {
-                    const links = JSON.parse(e.target.value)
-                    setContent({
-                      ...content,
-                      company: { ...company, links },
-                    })
-                  } catch (error) {
-                    // Invalid JSON, don't update
-                  }
-                }}
-                placeholder='[{"label": "About Us", "url": "/about"}]'
-                rows={6}
-              />
+              <Label>Links</Label>
+              <div className="space-y-4">
+                {(company.links || []).map((link: any, index: number) => (
+                  <div key={index} className="flex gap-2">
+                    {/* Label input */}
+                    <Input
+                      placeholder="Label"
+                      value={link.label || ""}
+                      onChange={(e) => {
+                        const newLinks = [...(company.links || [])]
+                        newLinks[index] = { ...link, label: e.target.value }
+                        setContent({ ...content, company: { ...company, links: newLinks } })
+                      }}
+                    />
+                    {/* URL input */}
+                    <Input
+                      placeholder="URL"
+                      value={link.url || ""}
+                      onChange={(e) => {
+                        const newLinks = [...(company.links || [])]
+                        newLinks[index] = { ...link, url: e.target.value }
+                        setContent({ ...content, company: { ...company, links: newLinks } })
+                      }}
+                    />
+                    {/* Remove button */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        const newLinks = (company.links || []).filter((_: any, i: number) => i !== index)
+                        setContent({ ...content, company: { ...company, links: newLinks } })
+                      }}
+                    >
+                      Remove
+                    </Button>
+                  </div>
+                ))}
+
+                {/* Add new link */}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const newLinks = [...(company.links || []), { label: "", url: "" }]
+                    setContent({ ...content, company: { ...company, links: newLinks } })
+                  }}
+                >
+                  + Add Link
+                </Button>
+              </div>
             </div>
+
           </CardContent>
         </Card>
 
@@ -1148,24 +1200,10 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
     <form onSubmit={handleSubmit} className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Page Selection</CardTitle>
+          <CardTitle>Current Page</CardTitle>
         </CardHeader>
         <CardContent>
-          <div>
-            <Label htmlFor="page-key">Page Key</Label>
-            <Select value={pageKey} onValueChange={setPageKey}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a page" />
-              </SelectTrigger>
-              <SelectContent>
-                {pageOptions.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    {option.replace("_", " ").toUpperCase()}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+          <Label htmlFor="page-key">{pageKey.toUpperCase()}</Label>
         </CardContent>
       </Card>
 
