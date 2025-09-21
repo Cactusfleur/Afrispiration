@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect  } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { AdminLayout } from "@/components/admin-layout"
 import { FormBuilder } from "@/components/form-builder"
@@ -10,15 +10,12 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-import { designerFields } from "../components/designer-fields"
+import { useDynamicDesignerFields } from "../components/dynamic-designer-fields"
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 
 // ✅ Direct supabase client (using anon key from .env)
-const supabase = createSupabaseClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+const supabase = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
 // ✅ Debugging helper: list all buckets
 async function listBuckets() {
@@ -31,7 +28,7 @@ async function listBuckets() {
 }
 async function listAfrispirationFiles() {
   const { data, error } = await supabase.storage
-    .from("afrispiration")   // ✅ use your bucket name
+    .from("afrispiration") // ✅ use your bucket name
     .list("", { limit: 100 }) // "" means root folder
 
   if (error) {
@@ -41,16 +38,15 @@ async function listAfrispirationFiles() {
   }
 }
 
-
 function slugify(text: string, suffix?: number) {
-  let base = text
+  const base = text
     .toString()
     .toLowerCase()
     .trim()
     .replace(/\s+/g, "-")
     .replace(/&/g, "-and-")
-    .replace(/[^\w\-]+/g, "")
-    .replace(/\-\-+/g, "-")
+    .replace(/[^\w-]+/g, "")
+    .replace(/--+/g, "-")
 
   return suffix ? `${base}-${suffix}` : base
 }
@@ -58,6 +54,8 @@ function slugify(text: string, suffix?: number) {
 export default function NewDesignerPage() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
+
+  const { designerFields, isLoading: fieldsLoading } = useDynamicDesignerFields()
 
   useEffect(() => {
     listAfrispirationFiles()
@@ -68,17 +66,13 @@ export default function NewDesignerPage() {
     const supabase = createClient()
 
     try {
-      let baseSlug = slugify(data.name)
+      const baseSlug = slugify(data.name)
       let slug = baseSlug
       let suffix = 1
 
       // 🔍 check if slug already exists
       while (true) {
-        const { data: existing } = await supabase
-          .from("designers")
-          .select("id")
-          .eq("slug", slug)
-          .maybeSingle()
+        const { data: existing } = await supabase.from("designers").select("id").eq("slug", slug).maybeSingle()
 
         if (!existing) break // slug is unique ✅
         slug = slugify(baseSlug, suffix++) // add -1, -2, etc.
@@ -101,6 +95,33 @@ export default function NewDesignerPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (fieldsLoading) {
+    return (
+      <AdminLayout>
+        <div className="max-w-2xl mx-auto space-y-6">
+          <div className="flex items-center gap-4">
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/admin/designers">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Designers
+              </Link>
+            </Button>
+          </div>
+          <Card>
+            <CardContent className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="text-lg">Loading categories...</div>
+                <div className="text-sm text-muted-foreground mt-2">
+                  Please wait while we fetch the latest categories
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </AdminLayout>
+    )
   }
 
   return (

@@ -10,8 +10,7 @@ import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 
-
-import { designerFields } from "../../components/designer-fields"
+import { useDynamicDesignerFields } from "../../components/dynamic-designer-fields"
 
 export default function EditDesignerPage() {
   const [designer, setDesigner] = useState<any>(null)
@@ -20,14 +19,12 @@ export default function EditDesignerPage() {
   const params = useParams()
   const id = params?.id as string
 
+  const { designerFields, isLoading: fieldsLoading } = useDynamicDesignerFields()
+
   useEffect(() => {
     const fetchDesigner = async () => {
       const supabase = createClient()
-      const { data, error } = await supabase
-        .from("designers")
-        .select("*")
-        .eq("id", id)
-        .single()
+      const { data, error } = await supabase.from("designers").select("*").eq("id", id).single()
 
       if (error) {
         console.error("Error fetching designer:", error)
@@ -63,10 +60,29 @@ export default function EditDesignerPage() {
     }
   }
 
-  if (!designer) {
+  if (fieldsLoading || !designer) {
     return (
       <AdminLayout>
-        <div className="max-w-2xl mx-auto text-center py-12">Loading...</div>
+        <div className="max-w-2xl mx-auto space-y-6">
+          <div className="flex items-center gap-4">
+            <Button asChild variant="ghost" size="sm">
+              <Link href="/admin/designers">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Designers
+              </Link>
+            </Button>
+          </div>
+          <Card>
+            <CardContent className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="text-lg">{fieldsLoading ? "Loading categories..." : "Loading designer..."}</div>
+                <div className="text-sm text-muted-foreground mt-2">
+                  Please wait while we fetch the latest information
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </AdminLayout>
     )
   }

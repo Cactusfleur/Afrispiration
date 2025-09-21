@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 import { X, Search, Leaf } from "lucide-react"
+import { useCategories } from "@/hooks/use-categories"
 
 interface DesignerFiltersProps {
   onFiltersChange: (filters: {
@@ -22,43 +23,9 @@ interface DesignerFiltersProps {
   productionCountries: string[]
 }
 
-const categories = [
-  "Women",
-  "Men",
-  "Unisex",
-  "Kids",
-  "Accessories",
-  "Shoes",
-  "Jewellery",
-  "Beauty & Fragrance",
-  "Handbags & luggage",
-  "Bridal",
-  "Sportswear",
-  "Swimwear",
-  "Textiles",
-  "Lingerie",
-  "Haute Couture",
-]
-
-const subcategories = {
-  Women: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Men: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Unisex: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Kids: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Accessories: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Shoes: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Jewellery: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Bridal: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Swimwear: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  "Handbags & luggage": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Activewear: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  Textiles: ["Ready to Wear (RWT)", "Bespoke/Custom."],
-  Lingerie: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom."],
-  "Haute Couture": ["Bespoke/Custom."],
-  "Beauty & Fragrance": ["Skincare", "Fragrance", "Hair Care"],
-}
-
 export function DesignerFilters({ onFiltersChange, designerCountries, productionCountries }: DesignerFiltersProps) {
+  const { categories, getCategoryOptions, getSubcategoriesForCategory } = useCategories()
+
   const [filters, setFilters] = useState({
     search: "",
     category: "",
@@ -104,9 +71,7 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
     country.toLowerCase().includes(productionLocationSearch.toLowerCase()),
   )
 
-  const availableSubcategories = filters.category
-    ? subcategories[filters.category as keyof typeof subcategories] || []
-    : []
+  const availableSubcategories = filters.category ? getSubcategoriesForCategory(filters.category) : []
 
   return (
     <div className="space-y-6 p-6 bg-muted/30 rounded-lg">
@@ -150,7 +115,7 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All categories</SelectItem>
-            {categories.map((category) => (
+            {getCategoryOptions().map((category) => (
               <SelectItem key={category} value={category}>
                 {category}
               </SelectItem>
