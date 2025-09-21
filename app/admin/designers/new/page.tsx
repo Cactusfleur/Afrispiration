@@ -14,6 +14,7 @@ import { designerFields } from "../components/designer-fields"
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 
+
 // ✅ Direct supabase client (using anon key from .env)
 const supabase = createSupabaseClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
