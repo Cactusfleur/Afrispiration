@@ -13,8 +13,8 @@ import { Bubblegum_Sans } from "next/font/google"
 interface DesignerFiltersProps {
   onFiltersChange: (filters: {
     search: string
-    category: string[]  //Changed to an array 19/09/2025
-    subcategory: string[] //Changed to an array 19/09/2025
+    category: string
+    subcategory: string
     designerLocation: string
     productionLocation: string
     sustainability: boolean
@@ -36,7 +36,7 @@ const subcategories = {
   Bridal: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   Swimwear: ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Handbags & luggage": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
-  "Sportswear": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
+  "Activewear": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Textiles": ["Ready to Wear (RWT)", "Bespoke/Custom.",],
   "Lingerie": ["Ready to Wear (RWT)", "Made to measure", "Bespoke/Custom.",],
   "Haute Couture": ["Bespoke/Custom.",],
