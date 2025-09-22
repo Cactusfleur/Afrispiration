@@ -42,6 +42,8 @@ interface FormField {
   options?: readonly string[]
   maxSelections?: number
   bucket?: string // For image uploads
+  onChange?: (value: any) => void
+  disabled?: boolean
 }
 
 export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = "Save", isLoading }: FormBuilderProps) {
@@ -70,6 +72,15 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
 
   const updateField = (name: string, value: any) => {
     setFormData((prev: any) => ({ ...prev, [name]: value }))
+
+    const field = fields.find((f) => f.name === name)
+    if (field?.onChange) {
+      field.onChange(value)
+    }
+
+    if (name === "category") {
+      setFormData((prev: any) => ({ ...prev, subcategory: [] }))
+    }
   }
 
   const addTag = (fieldName: string) => {
@@ -96,13 +107,11 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
     const isSelected = currentValues.includes(option)
 
     if (isSelected) {
-      // Remove option
       updateField(
         fieldName,
         currentValues.filter((val: string) => val !== option),
       )
     } else {
-      // Add option if under limit
       if (!maxSelections || currentValues.length < maxSelections) {
         updateField(fieldName, [...currentValues, option])
       } else {
@@ -148,6 +157,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             onChange={(e) => updateField(field.name, e.target.value)}
             placeholder={field.placeholder}
             required={field.required}
+            disabled={field.disabled}
           />
         )
 
@@ -159,6 +169,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             onChange={(e) => updateField(field.name, Number.parseInt(e.target.value) || 0)}
             placeholder={field.placeholder}
             required={field.required}
+            disabled={field.disabled}
           />
         )
 
@@ -170,11 +181,18 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             placeholder={field.placeholder}
             required={field.required}
             rows={4}
+            disabled={field.disabled}
           />
         )
 
       case "switch":
-        return <Switch checked={value || false} onCheckedChange={(checked) => updateField(field.name, checked)} />
+        return (
+          <Switch
+            checked={value || false}
+            onCheckedChange={(checked) => updateField(field.name, checked)}
+            disabled={field.disabled}
+          />
+        )
 
       case "select":
         return (
@@ -183,6 +201,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             onChange={(e) => updateField(field.name, e.target.value)}
             required={field.required}
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            disabled={field.disabled}
           >
             <option value="">Select {field.label}</option>
             {field.options?.map((option) => (
@@ -213,12 +232,14 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
                     addTag(field.name)
                   }
                 }}
+                disabled={field.disabled}
               />
               <Button
                 type="button"
                 size="sm"
                 onClick={() => addTag(field.name)}
                 className="w-full sm:w-auto sm:shrink-0"
+                disabled={field.disabled}
               >
                 <Plus className="h-4 w-4 mr-1 sm:mr-0" />
                 <span className="sm:hidden">Add Tag</span>
@@ -237,6 +258,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
                     type="button"
                     className="ml-1 text-muted-foreground hover:text-foreground shrink-0 touch-manipulation"
                     onClick={() => removeTag(field.name, tag)}
+                    disabled={field.disabled}
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -259,11 +281,14 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             popperClassName="z-[9999]"
             popperPlacement="bottom-start"
             showPopperArrow={false}
+            disabled={field.disabled}
           />
         )
 
       case "multi-select":
         const selectedValues = value || []
+        const isDisabled = field.disabled || false
+
         return (
           <div className="space-y-3">
             <div className="text-sm text-muted-foreground">
@@ -281,6 +306,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
                       type="button"
                       onClick={() => toggleMultiSelectOption(field.name, selectedValue, field.maxSelections)}
                       className="ml-1 text-muted-foreground hover:text-foreground"
+                      disabled={isDisabled}
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -292,12 +318,15 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
             {/* Options dropdown */}
             <select
               onChange={(e) => {
-                if (e.target.value) {
+                if (e.target.value && !isDisabled) {
                   toggleMultiSelectOption(field.name, e.target.value, field.maxSelections)
                   e.target.value = "" // Reset dropdown
                 }
               }}
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              disabled={isDisabled}
+              className={`flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                isDisabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
               <option value="">{field.placeholder || `Add ${field.label}`}</option>
               {field.options

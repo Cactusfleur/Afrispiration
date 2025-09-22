@@ -147,7 +147,7 @@ export function DesignerFilters({ onFiltersChange, designerCountries, production
       )}
 
       <div className="space-y-2">
-        <Label>Designer Location</Label>
+        <Label>Designer Nationality</Label>
         <Select
           value={filters.designerLocation}
           onValueChange={(value) => updateFilters({ designerLocation: value === "all" ? "" : value })}

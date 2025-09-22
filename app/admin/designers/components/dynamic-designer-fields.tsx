@@ -1,10 +1,21 @@
 "use client"
 
+import { useState } from "react"
 import { AFRICAN_COUNTRIES, WORLD_COUNTRIES } from "@/lib/countries"
 import { useCategories } from "@/hooks/use-categories"
 
 export function useDynamicDesignerFields() {
-  const { getCategoryOptions, getSubcategoryOptions, isLoading } = useCategories()
+  const { getCategoryOptions, getSubcategoriesForCategory, isLoading } = useCategories()
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+
+  const getFilteredSubcategoryOptions = () => {
+    if (selectedCategories.length === 0) {
+      return [] // No subcategories if no categories selected
+    }
+
+    const allSubcategories = selectedCategories.flatMap((category) => getSubcategoriesForCategory(category))
+    return [...new Set(allSubcategories)] // Remove duplicates
+  }
 
   const designerFields = [
     { name: "name", label: "Designer Name", type: "text" as const, required: true },
@@ -33,13 +44,15 @@ export function useDynamicDesignerFields() {
       type: "multi-select" as const,
       options: getCategoryOptions(),
       placeholder: "Select categories",
+      onChange: (values: string[]) => setSelectedCategories(values),
     },
     {
       name: "subcategory",
       label: "Sub Categories",
       type: "multi-select" as const,
-      options: getSubcategoryOptions(),
-      placeholder: "Select subcategories",
+      options: getFilteredSubcategoryOptions(),
+      placeholder: selectedCategories.length === 0 ? "Select categories first" : "Select subcategories",
+      disabled: selectedCategories.length === 0,
     },
     { name: "is_featured", label: "Featured Designer", type: "switch" as const },
     { name: "is_sustainable", label: "Sustainable Designer", type: "switch" as const },
@@ -66,5 +79,5 @@ export function useDynamicDesignerFields() {
     },
   ]
 
-  return { designerFields, isLoading }
+  return { designerFields, isLoading, selectedCategories, setSelectedCategories }
 }
