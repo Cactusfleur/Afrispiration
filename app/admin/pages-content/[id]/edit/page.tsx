@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useTransition, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useParams } from "next/navigation"
 import { DynamicPageContentForm } from "@/components/dynamic-page-content-form"
 import { updatePageContent } from "../../components/action"
 import { createClient } from "@/lib/supabase/client"
@@ -10,12 +10,9 @@ import Button from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-interface EditPageContentPageProps {
-  params: Promise<{ id: string }> // 👈 params is a Promise now
-}
-
-export default function EditPageContentPage({ params }: EditPageContentPageProps) {
-  const { id } = React.use(params)
+export default function EditPageContentPage() {
+  const params = useParams()
+  const id = params.id as string
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [pageContent, setPageContent] = useState<any>(null)
