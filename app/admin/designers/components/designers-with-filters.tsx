@@ -138,8 +138,10 @@ export function DesignersWithFilters({ initialDesigners }: DesignersWithFiltersP
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div>
-                  <CardTitle className="text-lg">{designer.name}</CardTitle>
-                  <p className="text-sm text-muted-foreground">
+                  
+                  <CardTitle className="text-lg">{designer.brand}</CardTitle>
+                  <h4 className="text-md">{designer.name}</h4>
+                  <p className="text-sm text-muted-foreground mt-2">
                     {designer.location && designer.location.length > 0
                       ? designer.location.join(", ")
                       : "No location specified"}
