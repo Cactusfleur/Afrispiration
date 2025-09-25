@@ -122,6 +122,17 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                   <h1 className="font-serif text-3xl font-bold mb-6">{designer.name}</h1>
                 </div>
 
+                {designer.brand && (
+                  <div>
+                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
+                      DESIGNER BRAND
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <span className="text-foreground">{designer.brand}</span>
+                    </div>
+                  </div>
+
+                )}
                 {designer.location && designer.location.length > 0 && (
                   <div>
                     <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">

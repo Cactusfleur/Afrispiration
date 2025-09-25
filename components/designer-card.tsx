@@ -38,6 +38,9 @@ export function DesignerCard({ designer }: DesignerCardProps) {
             </div>
             <Separator className="my-3" />
             <h3 className="font-serif text-xl font-semibold mb-2">{designer.name}</h3>
+            {designer.brand && (
+              <h4 className="font-serif text-md font-medium mb-2">{designer.brand}</h4>
+            )}
             {designer.location && designer.location.length > 0 && (
               <div className="flex items-center gap-1  text-muted-foreground text-sm">
                 <MapPin className="h-3 w-3" />

@@ -5,6 +5,7 @@ export interface Designer {
   name: string
   slug: string
   bio?: string
+  brand?: string
   location?: AfricanCountry[] // Updated to array of African countries
   production_location?: WorldCountry[] // Updated to array of world countries
   website_url?: string

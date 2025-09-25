@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS public.designers (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL,
   bio TEXT,
+  brand TEXT,
   location TEXT,
   website_url TEXT,
   instagram_url TEXT,

@@ -17,26 +17,7 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 // ✅ Direct supabase client (using anon key from .env)
 const supabase = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
-// ✅ Debugging helper: list all buckets
-async function listBuckets() {
-  const { data, error } = await supabase.storage.listBuckets()
-  if (error) {
-    console.error("❌ Error listing buckets:", error)
-  } else {
-    console.log("✅ Buckets:", data)
-  }
-}
-async function listAfrispirationFiles() {
-  const { data, error } = await supabase.storage
-    .from("afrispiration") // ✅ use your bucket name
-    .list("", { limit: 100 }) // "" means root folder
 
-  if (error) {
-    console.error("❌ Error listing files:", error)
-  } else {
-    console.log("✅ Files in afrispiration bucket:", data)
-  }
-}
 
 function slugify(text: string, suffix?: number) {
   const base = text
@@ -56,10 +37,6 @@ export default function NewDesignerPage() {
   const router = useRouter()
 
   const { designerFields, isLoading: fieldsLoading } = useDynamicDesignerFields()
-
-  useEffect(() => {
-    listAfrispirationFiles()
-  }, [])
 
   const handleSubmit = async (data: any) => {
     setIsLoading(true)

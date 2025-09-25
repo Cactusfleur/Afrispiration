@@ -20,6 +20,7 @@ export function useDynamicDesignerFields() {
   const designerFields = [
     { name: "name", label: "Designer Name", type: "text" as const, required: true },
     { name: "bio", label: "Biography", type: "textarea" as const, placeholder: "Tell us about the designer..." },
+    { name: "brand", label: "Brand", type: "textarea" as const, placeholder: "Designer Brand" },
     {
       name: "location",
       label: "Designer Nationality (up to 2)",
