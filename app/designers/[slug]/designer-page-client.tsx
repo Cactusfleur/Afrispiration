@@ -203,7 +203,7 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                     )}
                     {designer.tiktok_url && (
                       <a
-                        href={designer.instagram_url}
+                        href={designer.tiktok_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-muted-foreground hover:text-foreground"
