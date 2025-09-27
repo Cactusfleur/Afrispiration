@@ -149,7 +149,21 @@ export default async function EventPage({ params }: EventPageProps) {
                           <User className="h-4 w-4 text-muted-foreground" />
                           <h4 className="font-medium text-sm text-muted-foreground">Organizer</h4>
                         </div>
-                        <p className="font-semibold">{event.organizer_name}</p>
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold">{event.organizer_name}</p>
+                          {event.instagram_url && (
+                            <Button asChild variant="ghost" size="sm" className="h-6 w-6 p-0">
+                              <a
+                                href={event.instagram_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Follow on Instagram"
+                              >
+                                <Instagram className="h-3 w-3" />
+                              </a>
+                            </Button>
+                          )}
+                        </div>
                       </CardContent>
                     </Card>
                   )}
@@ -162,23 +176,6 @@ export default async function EventPage({ params }: EventPageProps) {
                           <h4 className="font-medium text-sm text-muted-foreground">Capacity</h4>
                         </div>
                         <p className="font-semibold">{event.capacity} attendees</p>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {event.instagram_url && (
-                    <Card className="sm:col-span-2">
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Instagram className="h-4 w-4 text-muted-foreground" />
-                          <h4 className="font-medium text-sm text-muted-foreground">Follow on Instagram</h4>
-                        </div>
-                        <Button asChild variant="outline" size="sm">
-                          <a href={event.instagram_url} target="_blank" rel="noopener noreferrer">
-                            <Instagram className="h-4 w-4 mr-2" />
-                            View on Instagram
-                          </a>
-                        </Button>
                       </CardContent>
                     </Card>
                   )}
