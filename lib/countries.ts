@@ -132,6 +132,7 @@ export const WORLD_COUNTRIES = [
   "Guyana",
   "Haiti",
   "Honduras",
+  "Hong Kong",
   "Hungary",
   "Iceland",
   "India",
