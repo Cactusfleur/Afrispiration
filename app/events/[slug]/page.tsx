@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { createClient } from "@/lib/supabase/server"
 import type { Event } from "@/lib/types"
-import { Calendar, MapPin, Clock, ExternalLink, ArrowLeft, User, Users } from "lucide-react"
+import { Calendar, MapPin, Clock, ExternalLink, ArrowLeft, User, Users, Instagram } from "lucide-react"
 import { formatEventDate, formatEventTime } from "@/lib/events"
 import Link from "next/link"
+import { EventImageCarousel } from "@/components/event-image-carousel"
 
 interface EventPageProps {
   params: Promise<{ slug: string }>
@@ -39,9 +40,14 @@ export default async function EventPage({ params }: EventPageProps) {
   const eventTime = formatEventTime(event.event_date)
   const endTime = event.end_date ? formatEventTime(event.end_date) : null
   const startDateTime = `${formatEventDate(event.event_date)} ${formatEventTime(event.event_date)}`
-  const endDateTime = event.end_date
-    ? `${formatEventDate(event.end_date)} ${formatEventTime(event.end_date)}`
-    : null
+  const endDateTime = event.end_date ? `${formatEventDate(event.end_date)} ${formatEventTime(event.end_date)}` : null
+
+  const displayImages =
+    event.gallery_images && event.gallery_images.length > 0
+      ? event.gallery_images
+      : event.featured_image_url
+        ? [event.featured_image_url]
+        : []
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -64,20 +70,13 @@ export default async function EventPage({ params }: EventPageProps) {
         <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              {/* Event Image */}
-              <div className="aspect-[4/3] bg-muted rounded-lg overflow-hidden">
-                {event.featured_image_url ? (
-                  <img
-                    src={event.featured_image_url || "/placeholder.svg"}
-                    alt={event.title}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10 flex items-center justify-center">
-                    <Calendar className="h-16 w-16 text-muted-foreground" />
-                  </div>
-                )}
-              </div>
+              {/* Event Image Carousel */}
+              <EventImageCarousel
+                images={displayImages}
+                title={event.title}
+                aspectRatio="aspect-[4/3]"
+                showDots={true}
+              />
 
               {/* Event Info */}
               <div className="space-y-6">
@@ -163,6 +162,23 @@ export default async function EventPage({ params }: EventPageProps) {
                           <h4 className="font-medium text-sm text-muted-foreground">Capacity</h4>
                         </div>
                         <p className="font-semibold">{event.capacity} attendees</p>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {event.instagram_url && (
+                    <Card className="sm:col-span-2">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Instagram className="h-4 w-4 text-muted-foreground" />
+                          <h4 className="font-medium text-sm text-muted-foreground">Follow on Instagram</h4>
+                        </div>
+                        <Button asChild variant="outline" size="sm">
+                          <a href={event.instagram_url} target="_blank" rel="noopener noreferrer">
+                            <Instagram className="h-4 w-4 mr-2" />
+                            View on Instagram
+                          </a>
+                        </Button>
                       </CardContent>
                     </Card>
                   )}

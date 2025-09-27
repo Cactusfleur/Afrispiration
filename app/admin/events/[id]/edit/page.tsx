@@ -115,10 +115,22 @@ export default async function EditEventPage({
       placeholder: "Link to purchase tickets",
     },
     {
+      name: "instagram_url",
+      label: "Instagram URL",
+      type: "text" as const,
+      placeholder: "https://instagram.com/...",
+    },
+    {
       name: "featured_image_url",
       label: "Featured Image",
       type: "image" as const,
       bucket: "event-featured",
+    },
+    {
+      name: "gallery_images",
+      label: "Event Gallery",
+      type: "image-multiple" as const,
+      bucket: "event-gallery",
     },
     {
       name: "tags",
@@ -152,7 +164,9 @@ export default async function EditEventPage({
     capacity: event.capacity || 0,
     price_info: event.price_info || "",
     ticket_url: event.ticket_url || "",
+    instagram_url: event.instagram_url || "",
     featured_image_url: event.featured_image_url || "",
+    gallery_images: event.gallery_images || [],
     tags: event.tags || [],
     featured: event.featured || false,
     published: event.published || false,

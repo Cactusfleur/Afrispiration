@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import type { Event } from "@/lib/types"
 import { Calendar, MapPin, Clock, ExternalLink } from "lucide-react"
 import { formatEventDate, formatEventTime } from "@/lib/events"
+import { EventImageCarousel } from "@/components/event-image-carousel"
 
 interface EventCardProps {
   event: Event
@@ -15,26 +16,26 @@ export function EventCard({ event, featured = false }: EventCardProps) {
   const eventDate = formatEventDate(event.event_date)
   const eventTime = formatEventTime(event.event_date)
 
+  const displayImages =
+    event.gallery_images && event.gallery_images.length > 0
+      ? event.gallery_images
+      : event.featured_image_url
+        ? [event.featured_image_url]
+        : []
+
   return (
     <Card className={`group hover:shadow-lg transition-all duration-300 ${featured ? "lg:col-span-2" : ""}`}>
       <CardContent className="p-0">
         <Link href={`/events/${event.slug}`}>
-          <div className={`${featured ? "aspect-[16/9]" : "aspect-[16/10]"} bg-muted relative overflow-hidden`}>
-            {event.featured_image_url ? (
-              <img
-                src={event.featured_image_url || "/placeholder.svg"}
-                alt={event.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-            ) : (
-              <div className="w-full h-full bg-gradient-to-br from-muted to-muted-foreground/10 flex items-center justify-center">
-                <Calendar className="h-12 w-12 text-muted-foreground" />
-              </div>
-            )}
-            {event.featured && (
-              <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">Featured</Badge>
-            )}
-          </div>
+          <EventImageCarousel
+            images={displayImages}
+            title={event.title}
+            aspectRatio={featured ? "aspect-[16/9]" : "aspect-[16/10]"}
+            className="group-hover:scale-105 transition-transform duration-300"
+          />
+          {event.featured && (
+            <Badge className="absolute top-3 left-3 bg-primary text-primary-foreground">Featured</Badge>
+          )}
         </Link>
 
         <div className={`p-6 ${featured ? "lg:p-8" : ""}`}>

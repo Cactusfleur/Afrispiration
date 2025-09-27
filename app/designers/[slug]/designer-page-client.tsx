@@ -58,8 +58,8 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
           {/* Modern Card Overlay */}
           <div className="relative z-10 flex items-center justify-center h-full px-4 opacity-80">
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 max-w-md w-full shadow-2xl">
-              {/* Designer Name */}
-              <h1 className="font-serif text-4xl font-bold text-gray-900 mb-4 text-center">{designer.name}</h1>
+              {/* Brand Name */}
+              <h1 className="font-serif text-4xl font-bold text-gray-900 mb-4 text-center">{designer.brand}</h1>
 
               {/* Verification and Award Icons */}
               <div className="flex items-center justify-center gap-4 mb-6">

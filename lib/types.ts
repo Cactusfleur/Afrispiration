@@ -58,6 +58,8 @@ export interface Event {
   ticket_url?: string
   price_info?: string
   featured_image_url?: string
+  gallery_images?: string[] // Added gallery_images field
+  instagram_url?: string // Added instagram_url field
   organizer_name?: string
   organizer_contact?: string
   capacity?: number

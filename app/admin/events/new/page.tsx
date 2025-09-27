@@ -87,10 +87,22 @@ export default async function NewEventPage() {
       placeholder: "Link to purchase tickets",
     },
     {
+      name: "instagram_url",
+      label: "Instagram URL",
+      type: "text" as const,
+      placeholder: "https://instagram.com/...",
+    },
+    {
       name: "featured_image_url",
       label: "Featured Image",
       type: "image" as const,
       bucket: "event-featured",
+    },
+    {
+      name: "gallery_images",
+      label: "Event Gallery",
+      type: "image-multiple" as const,
+      bucket: "event-gallery",
     },
     {
       name: "tags",
