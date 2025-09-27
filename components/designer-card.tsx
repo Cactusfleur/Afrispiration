@@ -5,6 +5,7 @@ import type { Designer } from "@/lib/types"
 import { Factory, MapPin } from "lucide-react"
 import { SustainabilityIcon } from "./icons"
 import { Separator } from "./ui/separator"
+import { GiAfrica } from "react-icons/gi";
 
 interface DesignerCardProps {
   designer: Designer
@@ -45,7 +46,8 @@ export function DesignerCard({ designer }: DesignerCardProps) {
             )}
             {designer.location && designer.location.length > 0 && (
               <div className="flex items-center gap-1  text-muted-foreground text-sm">
-                <MapPin className="h-3 w-3" />
+                <GiAfrica className="h-4 w-4" />
+                {/* <MapPin className="h-3 w-3" /> */}
                 <span>{designer.location.join(", ")}</span>
               </div>
             )}
