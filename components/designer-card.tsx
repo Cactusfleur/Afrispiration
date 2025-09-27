@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Designer } from "@/lib/types"
-import { MapPin } from "lucide-react"
+import { Factory, MapPin } from "lucide-react"
 import { SustainabilityIcon } from "./icons"
 import { Separator } from "./ui/separator"
 
@@ -30,8 +30,8 @@ export function DesignerCard({ designer }: DesignerCardProps) {
 
               {designer.production_location && designer.production_location.length > 0 && (
                 <div className="flex items-center gap-1  text-muted-foreground text-sm">
-                  Made in
-                  <MapPin className="h-3 w-3" />
+                  | Made in
+                  <Factory className="h-4 w-4 text-muted-foreground" />
                   <span>{designer.production_location.join(", ")}</span>
                 </div>
               )}

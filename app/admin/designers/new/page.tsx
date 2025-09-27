@@ -43,7 +43,7 @@ export default function NewDesignerPage() {
     const supabase = createClient()
 
     try {
-      const baseSlug = slugify(data.name)
+      const baseSlug = slugify(data.brand)
       let slug = baseSlug
       let suffix = 1
 
