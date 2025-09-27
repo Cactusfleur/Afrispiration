@@ -4,12 +4,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { ArrowRight, Users, Calendar, MapPin } from "lucide-react"
+import { ArrowRight, Users, Calendar, MapPin } from 'lucide-react'
 import { createClient } from "@/lib/supabase/server"
-import type { Designer, Event } from "@/lib/types"
+import type { Designer, Event, BlogPost } from "@/lib/types"
 import { DesignerCard } from "@/components/designer-card"
+import { BlogCard } from "@/components/blog-card"
 import { getPageContentWithFallback, getNestedContent } from "@/lib/page-content"
-
+import { getFeaturedBlogPosts } from "@/lib/blog"
 
 async function getFeaturedDesigners(): Promise<Designer[]> {
   const supabase = await createClient()
@@ -86,10 +87,11 @@ async function getStats() {
 }
 
 export default async function HomePage() {
-  const [featuredDesigners, upcomingEvents, stats, pageContent] = await Promise.all([
+  const [featuredDesigners, upcomingEvents, stats, featuredBlogs, pageContent] = await Promise.all([
     getFeaturedDesigners(),
     getUpcomingEvents(),
     getStats(),
+    getFeaturedBlogPosts(3),
     getPageContentWithFallback("home", {
       hero: {
         title: "Discover Exceptional",
@@ -233,27 +235,31 @@ export default async function HomePage() {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                 {upcomingEvents.map((event) => (
-                  <Card key={event.id} className="group hover:shadow-lg transition-shadow">
-                    <CardContent className="p-0">
-                      <div className="aspect-[16/10] bg-muted rounded-t-lg">
-                        <img
-                          src={event.featured_image_url || "/placeholder.svg?height=300&width=500"}
-                          alt={event.title}
-                          className="w-full h-full object-cover rounded-t-lg"
-                        />
-                      </div>
-                      <div className="p-6">
-                        <Badge variant="secondary" className="mb-3">
-                          {new Date(event.event_date).toLocaleDateString()}
-                        </Badge>
-                        <h3 className="font-serif text-xl font-semibold mb-3 text-balance">{event.title}</h3>
-                        <p className="text-muted-foreground text-sm mb-2">{event.location}</p>
-                        <p className="text-muted-foreground text-sm leading-relaxed">
-                          {event.short_description || event.description}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <Link key={event.id} href={`/events/${event.slug}`}>
+                    <Card className="group hover:shadow-lg transition-shadow cursor-pointer">
+                      <CardContent className="p-0">
+                        <div className="aspect-[16/10] bg-muted rounded-t-lg">
+                          <img
+                            src={event.featured_image_url || "/placeholder.svg?height=300&width=500"}
+                            alt={event.title}
+                            className="w-full h-full object-cover rounded-t-lg"
+                          />
+                        </div>
+                        <div className="p-6">
+                          <Badge variant="secondary" className="mb-3">
+                            {new Date(event.event_date).toLocaleDateString()}
+                          </Badge>
+                          <h3 className="font-serif text-xl font-semibold mb-3 text-balance group-hover:text-primary transition-colors">
+                            {event.title}
+                          </h3>
+                          <p className="text-muted-foreground text-sm mb-2">{event.location}</p>
+                          <p className="text-muted-foreground text-sm leading-relaxed">
+                            {event.short_description || event.description}
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 ))}
               </div>
 
@@ -282,14 +288,33 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <div className="text-center">
-              <Button asChild variant="outline" size="lg">
-                <Link href="/blog">
-                  {journalContent.buttonText || "Read More Articles"}
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-            </div>
+            {featuredBlogs.length > 0 ? (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                  {featuredBlogs.map((post) => (
+                    <BlogCard key={post.id} post={post} />
+                  ))}
+                </div>
+                <div className="text-center">
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="/blog">
+                      {journalContent.buttonText || "Read More Articles"}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center">
+                <p className="text-muted-foreground mb-6">No blog posts available yet.</p>
+                <Button asChild variant="outline" size="lg">
+                  <Link href="/blog">
+                    {journalContent.buttonText || "Visit Blog"}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            )}
           </div>
         </section>
       </main>
