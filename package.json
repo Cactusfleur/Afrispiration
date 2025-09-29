@@ -59,7 +59,7 @@
     "react-hook-form": "latest",
     "react-icons": "latest",
     "react-resizable-panels": "latest",
-    "react-simple-maps": "^3.0.0",
+    "react-simple-maps": "latest",
     "recharts": "latest",
     "sonner": "latest",
     "tailwind-merge": "^2.5.5",
