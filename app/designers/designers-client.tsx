@@ -13,6 +13,7 @@ interface Props {
   designerCountries: string[]
   productionCountries: string[]
   initialDesignerIso2?: string
+  initialProductionIso2?: string
 }
 
 export default function DesignersClient({
@@ -20,6 +21,7 @@ export default function DesignersClient({
   designerCountries,
   productionCountries,
   initialDesignerIso2,
+  initialProductionIso2,
 }: Props) {
   const [filteredDesigners, setFilteredDesigners] = useState(designers)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
@@ -27,14 +29,26 @@ export default function DesignersClient({
   const initialDesignerLocationName =
     initialDesignerIso2 && (designerCountries.find((c) => countryNameToIso2(c) === initialDesignerIso2) || undefined)
 
+  const initialProductionLocationName =
+    initialProductionIso2 &&
+    (productionCountries.find((c) => countryNameToIso2(c) === initialProductionIso2) || undefined)
+
   useEffect(() => {
-    if (!initialDesignerIso2) return
-    const filtered = designers.filter((d) =>
-      (d.location ?? []).some((loc) => countryNameToIso2(loc) === initialDesignerIso2),
-    )
-    setFilteredDesigners(filtered)
+    if (initialProductionIso2) {
+      const filtered = designers.filter((d) =>
+        (d.production_location ?? []).some((loc) => countryNameToIso2(loc) === initialProductionIso2),
+      )
+      setFilteredDesigners(filtered)
+      return
+    }
+    if (initialDesignerIso2) {
+      const filtered = designers.filter((d) =>
+        (d.location ?? []).some((loc) => countryNameToIso2(loc) === initialDesignerIso2),
+      )
+      setFilteredDesigners(filtered)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialDesignerIso2, designers])
+  }, [initialDesignerIso2, initialProductionIso2, designers])
 
   const handleFiltersChange = (filters: {
     search: string
@@ -84,11 +98,11 @@ export default function DesignersClient({
               designerCountries={designerCountries}
               productionCountries={productionCountries}
               initialFilters={
-                initialDesignerLocationName
-                  ? {
-                      designerLocation: initialDesignerLocationName,
-                    }
-                  : undefined
+                initialProductionLocationName
+                  ? { productionLocation: initialProductionLocationName }
+                  : initialDesignerLocationName
+                    ? { designerLocation: initialDesignerLocationName }
+                    : undefined
               }
             />
           </div>

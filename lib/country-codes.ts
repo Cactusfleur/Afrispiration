@@ -209,7 +209,7 @@ const MAP: Record<string, string> = {
   "united kingdom": "GB",
   uk: "GB",
   "great britain": "GB",
-  "united states": "US",
+  "united states of america": "US",
   usa: "US",
   uruguay: "UY",
   uzbekistan: "UZ",

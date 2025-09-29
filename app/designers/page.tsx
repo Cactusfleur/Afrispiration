@@ -42,6 +42,9 @@ export default async function DesignersPage({
   const initialDesignerIso2 =
     (typeof searchParams?.designerIso2 === "string" && searchParams?.designerIso2) || undefined
 
+  const initialProductionIso2 =
+    (typeof searchParams?.productionIso2 === "string" && searchParams?.productionIso2) || undefined
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -65,6 +68,7 @@ export default async function DesignersPage({
         designerCountries={designerCountries}
         productionCountries={productionCountries}
         initialDesignerIso2={initialDesignerIso2}
+        initialProductionIso2={initialProductionIso2}
       />
 
       <Footer />

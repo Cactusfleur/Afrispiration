@@ -11,7 +11,7 @@ import { DesignerCard } from "@/components/designer-card"
 import { BlogCard } from "@/components/blog-card"
 import { getPageContentWithFallback, getNestedContent } from "@/lib/page-content"
 import { getFeaturedBlogPosts } from "@/lib/blog"
-import { AfricaMap } from "@/components/africa-map"
+import { MapExplorer } from "@/components/map-explorer"
 import { countryNameToIso2 } from "@/lib/country-codes"
 
 async function getFeaturedDesigners(): Promise<Designer[]> {
@@ -99,7 +99,25 @@ async function getDesignerCountsByCountryIso2(): Promise<Record<string, number>>
   const counts: Record<string, number> = {}
   designers?.forEach((d: { location?: string[] | null }) => {
     ;(d.location ?? []).forEach((countryName) => {
-      // Map to ISO-2 using our utility; skip if not a concrete country (e.g., African Diaspora)
+      const iso2 = countryNameToIso2(countryName)
+      if (!iso2) return
+      counts[iso2] = (counts[iso2] || 0) + 1
+    })
+  })
+  return counts
+}
+
+async function getProductionCountsByCountryIso2(): Promise<Record<string, number>> {
+  const supabase = await createClient()
+  const { data: designers } = await supabase
+    .from("designers")
+    .select("production_location")
+    .eq("status", "active")
+    .not("production_location", "is", null)
+
+  const counts: Record<string, number> = {}
+  designers?.forEach((d: { production_location?: string[] | null }) => {
+    ;(d.production_location ?? []).forEach((countryName) => {
       const iso2 = countryNameToIso2(countryName)
       if (!iso2) return
       counts[iso2] = (counts[iso2] || 0) + 1
@@ -109,44 +127,46 @@ async function getDesignerCountsByCountryIso2(): Promise<Record<string, number>>
 }
 
 export default async function HomePage() {
-  const [featuredDesigners, upcomingEvents, stats, featuredBlogs, pageContent, countsByIso2] = await Promise.all([
-    getFeaturedDesigners(),
-    getUpcomingEvents(),
-    getStats(),
-    getFeaturedBlogPosts(3),
-    getPageContentWithFallback("home", {
-      hero: {
-        title: "Discover Exceptional",
-        subtitle: "African Fashion",
-        description:
-          "A curated platform showcasing emerging and established African fashion designers from around the world. Explore sustainable, innovative, and culturally rich design.",
-        buttonText: "Explore Designers",
-        buttonUrl: "/designers",
-      },
-      stats: {
-        designers: "Curated Designers",
-        events: "Fashion Events",
-        countries: "African Countries + Diaspora",
-      },
-      featuredSection: {
-        title: "Featured Designers",
-        description:
-          "Meet the innovative minds shaping the present and future of African fashion with sustainable practices and cultural authenticity.",
-        buttonText: "View All Designers",
-      },
-      eventsSection: {
-        title: "Upcoming Events",
-        description: "Join us at the latest fashion events, workshops, and showcases happening around the world.",
-        buttonText: "View All Events",
-      },
-      journalSection: {
-        title: "Latest from the Journal",
-        description: "Insights, trends, and stories from the world of sustainable and innovative fashion design.",
-        buttonText: "Read More Articles",
-      },
-    }),
-    getDesignerCountsByCountryIso2(),
-  ])
+  const [featuredDesigners, upcomingEvents, stats, featuredBlogs, pageContent, countsByIso2, productionCountsByIso2] =
+    await Promise.all([
+      getFeaturedDesigners(),
+      getUpcomingEvents(),
+      getStats(),
+      getFeaturedBlogPosts(3),
+      getPageContentWithFallback("home", {
+        hero: {
+          title: "Discover Exceptional",
+          subtitle: "African Fashion",
+          description:
+            "A curated platform showcasing emerging and established African fashion designers from around the world. Explore sustainable, innovative, and culturally rich design.",
+          buttonText: "Explore Designers",
+          buttonUrl: "/designers",
+        },
+        stats: {
+          designers: "Curated Designers",
+          events: "Fashion Events",
+          countries: "African Countries + Diaspora",
+        },
+        featuredSection: {
+          title: "Featured Designers",
+          description:
+            "Meet the innovative minds shaping the present and future of African fashion with sustainable practices and cultural authenticity.",
+          buttonText: "View All Designers",
+        },
+        eventsSection: {
+          title: "Upcoming Events",
+          description: "Join us at the latest fashion events, workshops, and showcases happening around the world.",
+          buttonText: "View All Events",
+        },
+        journalSection: {
+          title: "Latest from the Journal",
+          description: "Insights, trends, and stories from the world of sustainable and innovative fashion design.",
+          buttonText: "Read More Articles",
+        },
+      }),
+      getDesignerCountsByCountryIso2(),
+      getProductionCountsByCountryIso2(), // new
+    ])
 
   const heroContent = getNestedContent(pageContent, "hero", {})
   const statsContent = getNestedContent(pageContent, "stats", {})
@@ -215,14 +235,19 @@ export default async function HomePage() {
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8 text-center">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">Designers Across Africa</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">
+                Explore Designer & Production Locations
+              </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Hover over a country to see how many designers we feature from there.
+                Toggle between where designers are from and where they produce. Click in Designer mode, or hover in
+                Production mode, to view designers filtered by that country.
               </p>
             </div>
-            <div className="rounded-lg border bg-background p-4">
-              <AfricaMap countsByIso2={countsByIso2} />
-            </div>
+            <MapExplorer
+              designerCountsByIso2={countsByIso2}
+              productionCountsByIso2={productionCountsByIso2}
+              className=""
+            />
           </div>
         </section>
 
