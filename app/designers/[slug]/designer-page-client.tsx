@@ -9,6 +9,7 @@ import type { Designer } from "@/lib/types"
 import { MapPin, Instagram, Mail, Phone, Factory, Award, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import { DesignerCard } from "@/components/designer-card"
+import { CountryFlags } from "@/components/country-flags"
 
 interface DesignerPageClientProps {
   designer: Designer
@@ -131,7 +132,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                       <span className="text-foreground">{designer.brand}</span>
                     </div>
                   </div>
-
                 )}
                 {designer.location && designer.location.length > 0 && (
                   <div>
@@ -139,7 +139,7 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                       DESIGNER NATIONALITY
                     </h3>
                     <div className="flex items-center gap-2">
-                      <MapPin className="h-4 w-4 text-muted-foreground" />
+                      <CountryFlags countries={designer.location} size={20} />
                       <span className="text-foreground">{designer.location.join(", ")}</span>
                     </div>
                   </div>
@@ -329,7 +329,6 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
           </section>
         )}
       </main>
-
 
       <Lightbox
         images={portfolioImages}

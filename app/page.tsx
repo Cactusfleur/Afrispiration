@@ -4,13 +4,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { ArrowRight, Users, Calendar, MapPin } from 'lucide-react'
+import { ArrowRight, Users, Calendar, MapPin } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
-import type { Designer, Event, BlogPost } from "@/lib/types"
+import type { Designer, Event } from "@/lib/types"
 import { DesignerCard } from "@/components/designer-card"
 import { BlogCard } from "@/components/blog-card"
 import { getPageContentWithFallback, getNestedContent } from "@/lib/page-content"
 import { getFeaturedBlogPosts } from "@/lib/blog"
+import { AfricaMap } from "@/components/africa-map"
+import { countryNameToIso2 } from "@/lib/country-codes"
 
 async function getFeaturedDesigners(): Promise<Designer[]> {
   const supabase = await createClient()
@@ -86,8 +88,28 @@ async function getStats() {
   }
 }
 
+async function getDesignerCountsByCountryIso2(): Promise<Record<string, number>> {
+  const supabase = await createClient()
+  const { data: designers } = await supabase
+    .from("designers")
+    .select("location")
+    .eq("status", "active")
+    .not("location", "is", null)
+
+  const counts: Record<string, number> = {}
+  designers?.forEach((d: { location?: string[] | null }) => {
+    ;(d.location ?? []).forEach((countryName) => {
+      // Map to ISO-2 using our utility; skip if not a concrete country (e.g., African Diaspora)
+      const iso2 = countryNameToIso2(countryName)
+      if (!iso2) return
+      counts[iso2] = (counts[iso2] || 0) + 1
+    })
+  })
+  return counts
+}
+
 export default async function HomePage() {
-  const [featuredDesigners, upcomingEvents, stats, featuredBlogs, pageContent] = await Promise.all([
+  const [featuredDesigners, upcomingEvents, stats, featuredBlogs, pageContent, countsByIso2] = await Promise.all([
     getFeaturedDesigners(),
     getUpcomingEvents(),
     getStats(),
@@ -123,6 +145,7 @@ export default async function HomePage() {
         buttonText: "Read More Articles",
       },
     }),
+    getDesignerCountsByCountryIso2(),
   ])
 
   const heroContent = getNestedContent(pageContent, "hero", {})
@@ -185,6 +208,20 @@ export default async function HomePage() {
                 <h3 className="font-serif text-3xl font-bold mb-2">{stats.countryCount}+</h3>
                 <p className="text-muted-foreground">{statsContent.countries || "African Countries + Diaspora"}</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8 text-center">
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">Designers Across Africa</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Hover over a country to see how many designers we feature from there.
+              </p>
+            </div>
+            <div className="rounded-lg border bg-background p-4">
+              <AfricaMap countsByIso2={countsByIso2} />
             </div>
           </div>
         </section>

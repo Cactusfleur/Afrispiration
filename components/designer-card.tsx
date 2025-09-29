@@ -2,17 +2,17 @@ import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { Designer } from "@/lib/types"
-import { Factory, MapPin } from "lucide-react"
+import { Factory } from "lucide-react"
 import { SustainabilityIcon } from "./icons"
 import { Separator } from "./ui/separator"
-import { GiAfrica } from "react-icons/gi";
+import { GiAfrica } from "react-icons/gi"
+import { CountryFlags } from "@/components/country-flags"
 
 interface DesignerCardProps {
   designer: Designer
 }
 
 export function DesignerCard({ designer }: DesignerCardProps) {
-  const slug = designer.slug
 
   return (
     <Card key={designer.id} className="group hover:shadow-lg transition-shadow">
@@ -30,24 +30,20 @@ export function DesignerCard({ designer }: DesignerCardProps) {
               {designer.is_sustainable && <SustainabilityIcon />}
 
               {designer.production_location && designer.production_location.length > 0 && (
-                <div className="flex items-center gap-1  text-muted-foreground text-sm">
-                  | Made in
+                <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                  <span className="opacity-60">|</span>
                   <Factory className="h-4 w-4 text-muted-foreground" />
                   <span>{designer.production_location.join(", ")}</span>
                 </div>
               )}
             </div>
             <Separator className="my-3" />
-            {designer.brand && (
-            <h3 className="font-serif text-xl font-semibold mb-2">{designer.brand}</h3>
-            )}
-            {designer.name && (
-              <h4 className="font-serif text-md font-medium mb-2">{designer.name}</h4>
-            )}
+            {designer.brand && <h3 className="font-serif text-xl font-semibold mb-2">{designer.brand}</h3>}
+            {designer.name && <h4 className="font-serif text-md font-medium mb-2">{designer.name}</h4>}
             {designer.location && designer.location.length > 0 && (
-              <div className="flex items-center gap-1  text-muted-foreground text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <CountryFlags countries={designer.location} size={20} />
                 <GiAfrica className="h-4 w-4" />
-                {/* <MapPin className="h-3 w-3" /> */}
                 <span>{designer.location.join(", ")}</span>
               </div>
             )}
