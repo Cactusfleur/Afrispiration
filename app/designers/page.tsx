@@ -4,7 +4,11 @@ import { getPageContentWithFallback, getNestedContent } from "@/lib/page-content
 import DesignersClient from "./designers-client"
 import { createClient } from "@/lib/supabase/server"
 
-export default async function DesignersPage() {
+export default async function DesignersPage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>
+}) {
   const supabase = await createClient()
 
   // ✅ Fetch editable content for hero/intro section
@@ -29,13 +33,14 @@ export default async function DesignersPage() {
   // ✅ Extract unique filter options
   const safeDesigners = designers ?? []
 
-  const designerCountries = Array.from(
-    new Set(safeDesigners.flatMap(d => d.location ?? []).filter(Boolean))
-  )
+  const designerCountries = Array.from(new Set(safeDesigners.flatMap((d) => d.location ?? []).filter(Boolean)))
 
   const productionCountries = Array.from(
-    new Set(safeDesigners.flatMap(d => d.production_location ?? []).filter(Boolean))
+    new Set(safeDesigners.flatMap((d) => d.production_location ?? []).filter(Boolean)),
   )
+
+  const initialDesignerIso2 =
+    (typeof searchParams?.designerIso2 === "string" && searchParams?.designerIso2) || undefined
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -59,6 +64,7 @@ export default async function DesignersPage() {
         designers={designers ?? []}
         designerCountries={designerCountries}
         productionCountries={productionCountries}
+        initialDesignerIso2={initialDesignerIso2}
       />
 
       <Footer />

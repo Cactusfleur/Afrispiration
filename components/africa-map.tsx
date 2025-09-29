@@ -4,6 +4,7 @@ import { useState } from "react"
 import { ComposableMap, Geographies, Geography } from "react-simple-maps"
 import { countryNameToIso2 } from "@/lib/country-codes"
 import { AFRICAN_COUNTRIES } from "@/lib/countries"
+import { useRouter } from "next/navigation"
 
 const WORLD_GEOJSON_URL = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json"
 
@@ -54,6 +55,7 @@ export function AfricaMap({ countsByIso2, className }: AfricaMapProps) {
     name: "",
     count: 0,
   })
+  const router = useRouter()
 
   return (
     <div className={className}>
@@ -72,6 +74,7 @@ export function AfricaMap({ countsByIso2, className }: AfricaMapProps) {
 
               const count = countsByIso2[iso2] || 0
               const { fill, fillOpacity } = getChoropleth(count)
+              const isClickable = count > 0
 
               return (
                 <Geography
@@ -86,6 +89,7 @@ export function AfricaMap({ countsByIso2, className }: AfricaMapProps) {
                       stroke: "var(--border)",
                       strokeWidth: 0.5,
                       transition: "fill 150ms ease, fill-opacity 150ms ease",
+                      cursor: isClickable ? "pointer" : "default",
                     },
                     hover: {
                       fill: "var(--primary)",
@@ -93,6 +97,7 @@ export function AfricaMap({ countsByIso2, className }: AfricaMapProps) {
                       outline: "none",
                       stroke: "var(--border)",
                       strokeWidth: 0.6,
+                      cursor: isClickable ? "pointer" : "default",
                     },
                     pressed: {
                       fill: "var(--primary)",
@@ -115,6 +120,17 @@ export function AfricaMap({ countsByIso2, className }: AfricaMapProps) {
                     setTooltip((t) => ({ ...t, x: clientX, y: clientY }))
                   }}
                   onMouseLeave={() => setTooltip((t) => ({ ...t, visible: false }))}
+                  onClick={() => {
+                    if (isClickable && iso2) {
+                      router.push(`/designers?designerIso2=${iso2}`)
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if ((e.key === "Enter" || e.key === " ") && isClickable && iso2) {
+                      e.preventDefault()
+                      router.push(`/designers?designerIso2=${iso2}`)
+                    }
+                  }}
                 >
                   {/* Keep native tooltip for accessibility/fallback */}
                   <title>{`${name}: ${count} ${count === 1 ? "designer" : "designers"}`}</title>
@@ -140,6 +156,7 @@ export function AfricaMap({ countsByIso2, className }: AfricaMapProps) {
           <span>
             {tooltip.count} {tooltip.count === 1 ? "designer" : "designers"}
           </span>
+          {tooltip.count > 0 && <span className="ml-1 text-muted-foreground">(click to view)</span>}
         </div>
       )}
     </div>

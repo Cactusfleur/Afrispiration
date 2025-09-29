@@ -21,18 +21,31 @@ interface DesignerFiltersProps {
   }) => void
   designerCountries: string[]
   productionCountries: string[]
+  initialFilters?: Partial<{
+    search: string
+    category: string
+    subcategory: string
+    designerLocation: string
+    productionLocation: string
+    sustainability: boolean
+  }>
 }
 
-export function DesignerFilters({ onFiltersChange, designerCountries, productionCountries }: DesignerFiltersProps) {
+export function DesignerFilters({
+  onFiltersChange,
+  designerCountries,
+  productionCountries,
+  initialFilters,
+}: DesignerFiltersProps) {
   const { categories, getCategoryOptions, getSubcategoriesForCategory } = useCategories()
 
   const [filters, setFilters] = useState({
-    search: "",
-    category: "",
-    subcategory: "",
-    designerLocation: "",
-    productionLocation: "",
-    sustainability: false,
+    search: initialFilters?.search ?? "",
+    category: initialFilters?.category ?? "",
+    subcategory: initialFilters?.subcategory ?? "",
+    designerLocation: initialFilters?.designerLocation ?? "",
+    productionLocation: initialFilters?.productionLocation ?? "",
+    sustainability: initialFilters?.sustainability ?? false,
   })
 
   const [designerLocationSearch, setDesignerLocationSearch] = useState("")

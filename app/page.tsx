@@ -98,7 +98,7 @@ async function getDesignerCountsByCountryIso2(): Promise<Record<string, number>>
 
   const counts: Record<string, number> = {}
   designers?.forEach((d: { location?: string[] | null }) => {
-    ; (d.location ?? []).forEach((countryName) => {
+    ;(d.location ?? []).forEach((countryName) => {
       // Map to ISO-2 using our utility; skip if not a concrete country (e.g., African Diaspora)
       const iso2 = countryNameToIso2(countryName)
       if (!iso2) return
@@ -160,7 +160,7 @@ export default async function HomePage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative pt-24 lg:pt-32">
+        <section className="relative py-24 lg:py-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
               <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-balance mb-6">
@@ -179,22 +179,6 @@ export default async function HomePage() {
                   </Link>
                 </Button>
               </div>
-            </div>
-          </div>
-        </section>
-
-
-        {/* Africa Map Section */}
-        <section className="py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-8 text-center">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">Designers Across Africa</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Hover over a country to see how many designers we feature from there.
-              </p>
-            </div>
-            <div className="rounded-lg border bg-background p-4">
-              <AfricaMap countsByIso2={countsByIso2} />
             </div>
           </div>
         </section>
@@ -228,6 +212,19 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8 text-center">
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">Designers Across Africa</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Hover over a country to see how many designers we feature from there.
+              </p>
+            </div>
+            <div className="rounded-lg border bg-background p-4">
+              <AfricaMap countsByIso2={countsByIso2} />
+            </div>
+          </div>
+        </section>
 
         {/* Featured Designers Preview */}
         <section className="py-24">

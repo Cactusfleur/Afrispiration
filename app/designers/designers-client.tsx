@@ -1,21 +1,40 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { DesignerCard } from "@/components/designer-card"
 import { DesignerFilters } from "@/components/designer-filters"
 import { Button } from "@/components/ui/button"
 import { Grid, List } from "lucide-react"
 import type { Designer } from "@/lib/types"
+import { countryNameToIso2 } from "@/lib/country-codes"
 
 interface Props {
   designers: Designer[]
   designerCountries: string[]
   productionCountries: string[]
+  initialDesignerIso2?: string
 }
 
-export default function DesignersClient({ designers, designerCountries, productionCountries }: Props) {
+export default function DesignersClient({
+  designers,
+  designerCountries,
+  productionCountries,
+  initialDesignerIso2,
+}: Props) {
   const [filteredDesigners, setFilteredDesigners] = useState(designers)
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+
+  const initialDesignerLocationName =
+    initialDesignerIso2 && (designerCountries.find((c) => countryNameToIso2(c) === initialDesignerIso2) || undefined)
+
+  useEffect(() => {
+    if (!initialDesignerIso2) return
+    const filtered = designers.filter((d) =>
+      (d.location ?? []).some((loc) => countryNameToIso2(loc) === initialDesignerIso2),
+    )
+    setFilteredDesigners(filtered)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialDesignerIso2, designers])
 
   const handleFiltersChange = (filters: {
     search: string
@@ -64,6 +83,13 @@ export default function DesignersClient({ designers, designerCountries, producti
               onFiltersChange={handleFiltersChange}
               designerCountries={designerCountries}
               productionCountries={productionCountries}
+              initialFilters={
+                initialDesignerLocationName
+                  ? {
+                      designerLocation: initialDesignerLocationName,
+                    }
+                  : undefined
+              }
             />
           </div>
 
