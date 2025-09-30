@@ -6,8 +6,7 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps"
 import { useRouter } from "next/navigation"
 import { countryNameToIso2 } from "@/lib/country-codes"
 
-const WORLD_GEOJSON_URL =
-  "https://unpkg.com/world-atlas@2.0.2/countries-110m.json"
+const WORLD_GEOJSON_URL = "/countries-50m.json"
 
 type CountsByIso2 = Record<string, number>
 
