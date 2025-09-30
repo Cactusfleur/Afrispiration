@@ -228,6 +228,9 @@ export function countryNameToIso2(name: string): string | undefined {
   const n = norm(name)
   const code = MAP[n]
   // empty string used to explicitly skip flags (e.g., African Diaspora)
-  if (code === "") return undefined
+  if (code === "") {
+    console.log("MISSING COUNTRY: ", name)
+    return undefined
+  }
   return code
 }

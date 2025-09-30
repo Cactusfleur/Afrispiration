@@ -6,7 +6,7 @@ import { countryNameToIso2 } from "@/lib/country-codes"
 import { AFRICAN_COUNTRIES } from "@/lib/countries"
 import { useRouter } from "next/navigation"
 
-const WORLD_GEOJSON_URL = "https://unpkg.com/world-atlas@2.0.2/countries-110m.json"
+const WORLD_GEOJSON_URL = "/countries-110m.json"
 
 type CountsByIso2 = Record<string, number>
 
