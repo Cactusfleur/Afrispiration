@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import { DesignerPageClient } from "./designer-page-client"
 import { getDesignerBySlug, getRelatedDesigners } from "@/lib/designers"
 import { Footer } from "@/components/footer"
+import { ScrollToTop } from "@/components/ScrollToTop"
 
 interface DesignerPageProps {
   params: Promise<{ slug: string }>
@@ -19,7 +20,9 @@ export default async function DesignerPage({ params }: DesignerPageProps) {
 
     const relatedDesigners = await getRelatedDesigners(designer.id, designer.category, 4)
 
-    return <> <DesignerPageClient designer={designer} relatedDesigners={relatedDesigners} />
+    return <> 
+    <ScrollToTop />
+    <DesignerPageClient designer={designer} relatedDesigners={relatedDesigners} />
     <Footer/> 
     </>
   } catch (error) {
