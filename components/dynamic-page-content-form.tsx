@@ -642,7 +642,9 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
 
   const renderSubmitForm = () => {
     const hero = content.hero || {}
-    const submitCard = content.submitCard || {}
+    // Backward-compat: fall back to legacy "submitCard" if "application" is missing
+    const application = content.application || content.submitCard || {}
+    const eventApplication = content.eventApplication || {}
     const whatToExpect = content.whatToExpect || []
     const requirements = content.requirements || {}
     const faq = content.faq || []
@@ -685,20 +687,19 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
           </CardContent>
         </Card>
 
-        {/* Submit Card */}
         <Card>
           <CardHeader>
-            <CardTitle>Submit Card</CardTitle>
+            <CardTitle>Designer Application Card</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
               <Label>Title</Label>
               <Input
-                value={submitCard.title || ""}
+                value={application.title || ""}
                 onChange={(e) =>
                   setContent({
                     ...content,
-                    submitCard: { ...submitCard, title: e.target.value },
+                    application: { ...application, title: e.target.value },
                   })
                 }
                 placeholder="Submit Your Application"
@@ -707,41 +708,103 @@ export function DynamicPageContentForm({ initialData, onSubmit, isLoading }: Dyn
             <div>
               <Label>Description</Label>
               <Textarea
-                value={submitCard.description || ""}
+                value={application.description || ""}
                 onChange={(e) =>
                   setContent({
                     ...content,
-                    submitCard: { ...submitCard, description: e.target.value },
+                    application: { ...application, description: e.target.value },
                   })
                 }
                 placeholder="Share your work and philosophy..."
               />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <Label>Button Text</Label>
                 <Input
-                  value={submitCard.buttonText || ""}
+                  value={application.buttonText || ""}
                   onChange={(e) =>
                     setContent({
                       ...content,
-                      submitCard: { ...submitCard, buttonText: e.target.value },
+                      application: { ...application, buttonText: e.target.value },
                     })
                   }
                   placeholder="Submit Application"
                 />
               </div>
               <div>
-                <Label>Button URL</Label>
+                <Label>Button URL (Google Form)</Label>
                 <Input
-                  value={submitCard.buttonUrl || ""}
+                  value={application.buttonUrl || ""}
                   onChange={(e) =>
                     setContent({
                       ...content,
-                      submitCard: { ...submitCard, buttonUrl: e.target.value },
+                      application: { ...application, buttonUrl: e.target.value },
                     })
                   }
                   placeholder="https://forms.gle/..."
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Event Submission Card</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label>Title</Label>
+              <Input
+                value={eventApplication.title || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    eventApplication: { ...eventApplication, title: e.target.value },
+                  })
+                }
+                placeholder="Submit an Event"
+              />
+            </div>
+            <div>
+              <Label>Description</Label>
+              <Textarea
+                value={eventApplication.description || ""}
+                onChange={(e) =>
+                  setContent({
+                    ...content,
+                    eventApplication: { ...eventApplication, description: e.target.value },
+                  })
+                }
+                placeholder="Share your upcoming fashion event details..."
+              />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <Label>Button Text</Label>
+                <Input
+                  value={eventApplication.buttonText || ""}
+                  onChange={(e) =>
+                    setContent({
+                      ...content,
+                      eventApplication: { ...eventApplication, buttonText: e.target.value },
+                    })
+                  }
+                  placeholder="Submit Event"
+                />
+              </div>
+              <div>
+                <Label>Button URL (Google Form)</Label>
+                <Input
+                  value={eventApplication.buttonUrl || ""}
+                  onChange={(e) =>
+                    setContent({
+                      ...content,
+                      eventApplication: { ...eventApplication, buttonUrl: e.target.value },
+                    })
+                  }
+                  placeholder="https://forms.gle/your-event-form"
                 />
               </div>
             </div>

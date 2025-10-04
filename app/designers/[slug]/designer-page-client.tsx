@@ -193,7 +193,7 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                     </div>
                   </div>
                 )}
-                
+
                 {/* Designer Language(s) */}
                 {languages.length > 0 && (
                   <div>
@@ -209,19 +209,19 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                 )}
 
                 {/* Ships Internationally */}
-                {designer.ships_internationally && (
-                  <div>
-                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
-                      SHIPPING
-                    </h3>
-                    <div className="flex items-center gap-2">
-                      <Globe className="h-4 w-4 text-muted-foreground" />
+                <div>
+                  <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">SHIPPING</h3>
+                  <div className="flex items-center gap-2">
+                    <Globe className="h-4 w-4 text-muted-foreground" />
+                    {designer.ships_internationally ? (
                       <Badge variant="secondary" className="text-xs">
                         Ships Internationally
                       </Badge>
-                    </div>
+                    ) : (
+                      <span className="text-muted-foreground text-sm">International Shipping: No</span>
+                    )}
                   </div>
-                )}
+                </div>
 
                 {/* Social Links */}
                 <div>

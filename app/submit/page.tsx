@@ -20,6 +20,12 @@ export default async function SubmitPage() {
       buttonText: "Submit Application",
       buttonUrl: "https://forms.gle/PSoHZw5gV2sxP5MbA",
     },
+    eventApplication: {
+      title: "Submit an Event",
+      description: "Share your upcoming fashion event details to be featured on our platform.",
+      buttonText: "Submit Event",
+      buttonUrl: "https://forms.gle/your-event-form",
+    },
     features: [
       {
         title: "Curated Platform",
@@ -65,6 +71,7 @@ export default async function SubmitPage() {
 
   const heroContent = getNestedContent(pageContent, "hero", {})
   const applicationContent = getNestedContent(pageContent, "application", {})
+  const eventApplicationContent = getNestedContent(pageContent, "eventApplication", {})
   const featuresContent = getNestedContent(pageContent, "whatToExpect", [])
   const requirementsContent = getNestedContent(pageContent, "requirements", {})
   const faqsContent = getNestedContent(pageContent, "faq", [])
@@ -103,28 +110,52 @@ export default async function SubmitPage() {
         {/* Submit Application + Info */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            {/* Application Card */}
-            <Card className="shadow-xl">
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <Clock className="h-7 w-7 text-primary" />
-                  <h2 className="font-serif text-2xl font-semibold">
-                    {applicationContent.title || "Submit Your Application"}
-                  </h2>
-                </div>
-                <p className="text-muted-foreground leading-relaxed mb-6">
-                  {applicationContent.description ||
-                    "Share your work and philosophy to be part of our global directory."}
-                </p>
-                <Link href={applicationContent.buttonUrl || "https://forms.gle/PSoHZw5gV2sxP5MbA"} target="_blank">
-                  <Button size="lg" className="w-full">
-                    {applicationContent.buttonText || "Submit Application"}
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
+            {/* Application Cards Column */}
+            <div className="space-y-8">
+              {/* Designer Application Card (existing) */}
+              <Card className="shadow-xl">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Clock className="h-7 w-7 text-primary" />
+                    <h2 className="font-serif text-2xl font-semibold">
+                      {applicationContent.title || "Submit Your Application"}
+                    </h2>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {applicationContent.description ||
+                      "Share your work and philosophy to be part of our global directory."}
+                  </p>
+                  <Link href={applicationContent.buttonUrl || "https://forms.gle/PSoHZw5gV2sxP5MbA"} target="_blank">
+                    <Button size="lg" className="w-full">
+                      {applicationContent.buttonText || "Submit Application"}
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
 
-            {/* What to Expect + Requirements */}
+              {/* Event Submission Card */}
+              <Card className="shadow-xl">
+                <CardContent className="p-8">
+                  <div className="flex items-center gap-3 mb-6">
+                    <Clock className="h-7 w-7 text-primary" />
+                    <h2 className="font-serif text-2xl font-semibold">
+                      {eventApplicationContent.title || "Submit an Event"}
+                    </h2>
+                  </div>
+                  <p className="text-muted-foreground leading-relaxed mb-6">
+                    {eventApplicationContent.description ||
+                      "Share your upcoming fashion event details to be featured on our platform."}
+                  </p>
+                  <Link href={eventApplicationContent.buttonUrl || "https://forms.gle/your-event-form"} target="_blank">
+                    <Button size="lg" className="w-full">
+                      {eventApplicationContent.buttonText || "Submit Event"}
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* What to Expect + Requirements Column (existing) */}
             <div className="space-y-12">
               {/* What to Expect */}
               <div className="space-y-6">
