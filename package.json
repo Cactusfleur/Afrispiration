@@ -9,6 +9,10 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fullcalendar/core": "latest",
+    "@fullcalendar/daygrid": "latest",
+    "@fullcalendar/interaction": "latest",
+    "@fullcalendar/react": "latest",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
