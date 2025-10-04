@@ -8,6 +8,8 @@ export interface Designer {
   brand?: string
   location?: AfricanCountry[] // Updated to array of African countries
   production_location?: WorldCountry[] // Updated to array of world countries
+  language?: string | string[] // support multiple languages (and keep backward compatibility)
+  ships_internationally?: boolean
   website_url?: string
   instagram_url?: string
   tiktok_url?: string

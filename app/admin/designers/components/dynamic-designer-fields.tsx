@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { AFRICAN_COUNTRIES, WORLD_COUNTRIES } from "@/lib/countries"
 import { useCategories } from "@/hooks/use-categories"
+import { LANGUAGES } from "@/lib/languages" // import languages list
 
 export function useDynamicDesignerFields() {
   const { getCategoryOptions, getSubcategoriesForCategory, isLoading } = useCategories()
@@ -39,6 +40,14 @@ export function useDynamicDesignerFields() {
       required: true,
       placeholder: "Select production location(s)",
     },
+    {
+      name: "language",
+      label: "Languages",
+      type: "multi-select" as const,
+      options: LANGUAGES,
+      placeholder: "Select one or more languages",
+    }, // change language from text to multi-select with provided options
+    { name: "ships_internationally", label: "Ships Internationally", type: "switch" as const },
     {
       name: "category",
       label: "Categories",

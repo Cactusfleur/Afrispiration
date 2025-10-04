@@ -1,5 +1,6 @@
 // components/forms/designer-fields.ts
 import { AFRICAN_COUNTRIES, WORLD_COUNTRIES } from "@/lib/countries"
+import { LANGUAGES } from "@/lib/languages" // import languages list
 
 export const designerFields = [
   { name: "name", label: "Designer Name", type: "text" as const, required: true },
@@ -22,6 +23,14 @@ export const designerFields = [
     required: true,
     placeholder: "Select production location(s)",
   },
+  {
+    name: "language",
+    label: "Languages",
+    type: "multi-select" as const,
+    options: LANGUAGES,
+    placeholder: "Select one or more languages",
+  },
+  { name: "ships_internationally", label: "Ships Internationally", type: "switch" as const },
   {
     name: "category",
     label: "Categories",

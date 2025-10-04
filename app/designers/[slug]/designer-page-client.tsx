@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Lightbox } from "@/components/lightbox"
 import type { Designer } from "@/lib/types"
-import { MapPin, Instagram, Mail, Phone, Factory, Award, CheckCircle } from "lucide-react"
+import { Instagram, Mail, Phone, Factory, Award, CheckCircle, Globe } from "lucide-react"
 import Link from "next/link"
 import { DesignerCard } from "@/components/designer-card"
 import { CountryFlags } from "@/components/country-flags"
@@ -38,6 +38,13 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
   const previousImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + portfolioImages.length) % portfolioImages.length)
   }
+
+  // Normalize language to array for display
+  const languages: string[] = Array.isArray(designer.language)
+    ? designer.language
+    : designer.language
+      ? [designer.language]
+      : []
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -183,6 +190,35 @@ export function DesignerPageClient({ designer, relatedDesigners }: DesignerPageC
                           {subcat}
                         </Badge>
                       ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Designer Language(s) */}
+                {languages.length > 0 && (
+                  <div>
+                    {/* Pluralize heading based on count */}
+                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
+                      {languages.length > 1 ? "LANGUAGES" : "LANGUAGE"}
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground">{languages.join(", ")}</span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Ships Internationally */}
+                {designer.ships_internationally && (
+                  <div>
+                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wide mb-2">
+                      SHIPPING
+                    </h3>
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4 text-muted-foreground" />
+                      <Badge variant="secondary" className="text-xs">
+                        Ships Internationally
+                      </Badge>
                     </div>
                   </div>
                 )}

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { AdminLayout } from "@/components/admin-layout"
 import { FormBuilder } from "@/components/form-builder"
@@ -16,8 +16,6 @@ import { createClient as createSupabaseClient } from "@supabase/supabase-js"
 
 // ✅ Direct supabase client (using anon key from .env)
 const supabase = createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
-
-
 
 function slugify(text: string, suffix?: number) {
   const base = text
@@ -123,7 +121,7 @@ export default function NewDesignerPage() {
               onSubmit={handleSubmit}
               submitLabel="Create Designer"
               isLoading={isLoading}
-              initialData={{ status: "active", is_featured: false }}
+              initialData={{ status: "active", is_featured: false, ships_internationally: false }}
             />
           </CardContent>
         </Card>
