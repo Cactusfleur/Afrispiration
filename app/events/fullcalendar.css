@@ -14,8 +14,7 @@
 
 /* Base container */
 .fc {
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-    "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: var(--font-serif), ui-serif, Georgia, "Times New Roman", Times, serif;
   font-size: 0.875rem;
   background: var(--fc-bg);
   color: var(--fc-card-foreground);
@@ -29,6 +28,7 @@
   margin-bottom: 0.75rem;
 }
 .fc .fc-toolbar-title {
+  font-family: var(--font-serif), ui-serif, Georgia, "Times New Roman", Times, serif;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.02em;
