@@ -2,14 +2,15 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { usePathname } from "next/navigation" // Added usePathname import for active page detection
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Menu, X } from "lucide-react"
-import { cn } from "@/lib/utils" // Added cn utility for conditional styling
+import { cn } from "@/lib/utils"
+import GoogleTranslate from "./google-translate"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname() // Added pathname hook to detect current page
+  const pathname = usePathname()
 
   const navItems = [
     { href: "/designers", label: "Designers" },
@@ -24,15 +25,16 @@ export function Navigation() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="font-serif text-2xl font-bold tracking-tight">Afrispiration</span>
+            <span className="font-serif text-2xl font-bold tracking-tight">
+              Afrispiration
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-
-
             {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+              const isActive =
+                pathname === item.href || pathname.startsWith(item.href + "/")
               return (
                 <Link
                   key={item.href}
@@ -41,44 +43,63 @@ export function Navigation() {
                     "transition-colors text-sm font-medium tracking-wide",
                     isActive
                       ? "text-foreground font-semibold border-b-2 border-foreground pb-1"
-                      : "text-foreground/80 hover:text-foreground",
+                      : "text-foreground/80 hover:text-foreground"
                   )}
                 >
                   {item.label}
                 </Link>
               )
             })}
+
             <Link
               href="/submit"
               className={cn(
                 "block px-3 py-2 transition-colors text-sm font-medium",
-                pathname === "/submit" ? "text-foreground font-semibold" : "text-foreground/80 hover:text-foreground",
+                pathname === "/submit"
+                  ? "text-foreground font-semibold"
+                  : "text-foreground/80 hover:text-foreground"
               )}
               onClick={() => setIsOpen(false)}
             >
               Join our directory
             </Link>
+
             <Link
               href="/coming-soon"
               className={cn(
                 "transition-colors text-sm font-medium tracking-wide",
-                pathname === "/coming-soon" ? "text-foreground" : "text-foreground/80 hover:text-foreground",
+                pathname === "/coming-soon"
+                  ? "text-foreground"
+                  : "text-foreground/80 hover:text-foreground"
               )}
             >
               <div
                 className={cn(
                   "w-20 h-8 cursor-pointer flex justify-center items-center transition-colors text-sm font-medium tracking-wide border-2",
-                  pathname === "/coming-soon" ? "border-black bg-black text-white" : "border-black",
+                  pathname === "/coming-soon"
+                    ? "border-black bg-black text-white"
+                    : "border-black"
                 )}
               >
                 SHOP
               </div>
             </Link>
+
+
+          </div>
+
+          <div className="ml-4">
+            <GoogleTranslate />
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
-            <Button variant="ghost" size="sm" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+          <div className="md:hidden flex items-center ml-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle menu"
+            >
               {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
@@ -89,7 +110,8 @@ export function Navigation() {
           <div className="md:hidden border-t border-border">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navItems.map((item) => {
-                const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
+                const isActive =
+                  pathname === item.href || pathname.startsWith(item.href + "/")
                 return (
                   <Link
                     key={item.href}
@@ -98,7 +120,7 @@ export function Navigation() {
                       "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
                       isActive
                         ? "bg-muted text-foreground font-semibold"
-                        : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                        : "text-foreground/80 hover:text-foreground hover:bg-muted"
                     )}
                     onClick={() => setIsOpen(false)}
                   >
@@ -107,14 +129,13 @@ export function Navigation() {
                 )
               })}
 
-
               <Link
                 href="/submit"
                 className={cn(
                   "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
                   pathname === "/submit"
                     ? "bg-muted text-foreground font-semibold"
-                    : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                    : "text-foreground/80 hover:text-foreground hover:bg-muted"
                 )}
                 onClick={() => setIsOpen(false)}
               >
@@ -127,7 +148,7 @@ export function Navigation() {
                   "block px-3 py-2 transition-colors text-sm font-medium rounded-md",
                   pathname === "/coming-soon"
                     ? "bg-muted text-foreground font-semibold"
-                    : "text-foreground/80 hover:text-foreground hover:bg-muted",
+                    : "text-foreground/80 hover:text-foreground hover:bg-muted"
                 )}
                 onClick={() => setIsOpen(false)}
               >

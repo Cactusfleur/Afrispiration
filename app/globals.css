@@ -124,3 +124,41 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+
+
+
+/* Hide Google default branding */
+.goog-te-gadget {
+  font-size: 0 !important;
+}
+
+.goog-te-gadget span {
+  display: none !important;
+}
+
+.goog-te-combo {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Custom hover */
+.goog-te-combo:hover {
+  border-color: #555;
+}
+
+
+/* Mobile view - make width smaller */
+@media (max-width: 480px) {
+  .goog-te-combo {
+    width: 120px !important; /* adjust size as needed */
+    font-size: 12px !important; 
+    padding: 4px 6px !important;
+  }
+}
