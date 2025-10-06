@@ -47,7 +47,6 @@ export function useDynamicDesignerFields() {
       options: LANGUAGES,
       placeholder: "Select one or more languages",
     }, // change language from text to multi-select with provided options
-    { name: "ships_internationally", label: "Ships Internationally", type: "switch" as const },
     {
       name: "category",
       label: "Categories",
@@ -64,6 +63,7 @@ export function useDynamicDesignerFields() {
       placeholder: selectedCategories.length === 0 ? "Select categories first" : "Select subcategories",
       disabled: selectedCategories.length === 0,
     },
+    { name: "ships_internationally", label: "Ships Internationally", type: "switch" as const },
     { name: "is_featured", label: "Featured Designer", type: "switch" as const },
     { name: "is_sustainable", label: "Sustainable Designer", type: "switch" as const },
     { name: "is_verified", label: "Verified Designer", type: "switch" as const },
@@ -74,7 +74,7 @@ export function useDynamicDesignerFields() {
       bucket: "designer-portfolios",
     },
     { name: "website_url", label: "Website URL", type: "text" as const, placeholder: "https://..." },
-    { name: "instagram_url", label: "Instagram URL", type: "text" as const, placeholder: "https://instagram.com/..." },
+    { name: "instagram_url", label: "Instagram URL", type: "text" as const, placeholder: "https://instagram.com/...", defaultValue: "https://instagram.com/",  },
     { name: "tiktok_url", label: "TikTok URL", type: "text" as const, placeholder: "https://tiktok.com/..." },
     { name: "email", label: "Email", type: "email" as const },
     { name: "phone", label: "Phone", type: "text" as const },

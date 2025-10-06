@@ -39,6 +39,7 @@ interface FormField {
     | "image-multiple"
   required?: boolean
   placeholder?: string
+  defaultValue?: string
   options?: readonly string[]
   maxSelections?: number
   bucket?: string // For image uploads
@@ -121,7 +122,7 @@ export function FormBuilder({ initialData = {}, onSubmit, fields, submitLabel = 
   }
 
   const renderField = (field: FormField) => {
-    const value = formData[field.name]
+    const value = formData[field.name] ?? field.defaultValue ?? ""
 
     switch (field.type) {
       case "image":
