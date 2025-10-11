@@ -69,7 +69,10 @@ export default function EventsClient() {
       })
     } else if (showUpcoming) {
       const now = new Date()
-      filtered = filtered.filter((event) => new Date(event.event_date) >= now)
+      filtered = filtered.filter((event) => {
+        const dateToCheck = event.end_date ? new Date(event.end_date) : new Date(event.event_date);
+        return dateToCheck >= now;
+      });
     }
 
     if (searchTerm) {

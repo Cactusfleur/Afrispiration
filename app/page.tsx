@@ -37,7 +37,7 @@ async function getUpcomingEvents(): Promise<Event[]> {
     .from("events")
     .select("*")
     .eq("published", true)
-    .gte("event_date", new Date().toISOString())
+    .gte("end_date", new Date().toISOString())
     .order("event_date", { ascending: true })
     .limit(2)
 
