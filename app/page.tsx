@@ -211,21 +211,21 @@ export default async function HomePage() {
                 <div className="flex justify-center mb-4">
                   <Users className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">{stats.designerCount}+</h3>
+                <h3 className="font-serif text-3xl font-bold mb-2">{stats.designerCount - 1}+</h3>
                 <p className="text-muted-foreground">{statsContent.designers || "Curated Designers"}</p>
               </div>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <Calendar className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">{stats.eventCount}+</h3>
+                <h3 className="font-serif text-3xl font-bold mb-2">{stats.eventCount - 1}+</h3>
                 <p className="text-muted-foreground">{statsContent.events || "Fashion Events"}</p>
               </div>
               <div className="text-center">
                 <div className="flex justify-center mb-4">
                   <MapPin className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">{stats.countryCount}+</h3>
+                <h3 className="font-serif text-3xl font-bold mb-2">{stats.countryCount - 1}+</h3>
                 <p className="text-muted-foreground">{statsContent.countries || "African Countries + Diaspora"}</p>
               </div>
             </div>
