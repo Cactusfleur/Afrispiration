@@ -98,7 +98,7 @@ async function getDesignerCountsByCountryIso2(): Promise<Record<string, number>>
 
   const counts: Record<string, number> = {}
   designers?.forEach((d: { location?: string[] | null }) => {
-    ;(d.location ?? []).forEach((countryName) => {
+    ; (d.location ?? []).forEach((countryName) => {
       const iso2 = countryNameToIso2(countryName)
       if (!iso2) return
       counts[iso2] = (counts[iso2] || 0) + 1
@@ -117,7 +117,7 @@ async function getProductionCountsByCountryIso2(): Promise<Record<string, number
 
   const counts: Record<string, number> = {}
   designers?.forEach((d: { production_location?: string[] | null }) => {
-    ;(d.production_location ?? []).forEach((countryName) => {
+    ; (d.production_location ?? []).forEach((countryName) => {
       const iso2 = countryNameToIso2(countryName)
       if (!iso2) return
       counts[iso2] = (counts[iso2] || 0) + 1
@@ -225,8 +225,8 @@ export default async function HomePage() {
                 <div className="flex justify-center mb-4">
                   <MapPin className="h-8 w-8 text-primary" />
                 </div>
-                <h3 className="font-serif text-3xl font-bold mb-2">{stats.countryCount - 1}+</h3>
-                <p className="text-muted-foreground">{statsContent.countries || "African Countries + Diaspora"}</p>
+                <h3 className="font-serif text-3xl font-bold mb-2"> {stats.countryCount} {stats.countryCount < 54 && "+"}</h3>
+                <p className="text-muted-foreground"> {statsContent.countries || "African Countries + Diaspora"}</p>
               </div>
             </div>
           </div>
