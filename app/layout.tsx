@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   description:
     "A curated platform showcasing emerging and established African fashion designers from around the world. Discover sustainable, innovative, and culturally rich fashion.",
   generator: "v0.app",
+  icons: {
+    icon: "/favicon-32.png",
+  },
 }
 
 export default function RootLayout({
